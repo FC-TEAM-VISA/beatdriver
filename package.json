@@ -9,12 +9,23 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@reduxjs/toolkit": "^1.9.0",
+    "firebase": "^9.13.0",
+    "firebase-admin": "^11.2.0",
     "next": "13.0.2",
+    "next-auth": "^4.16.4",
     "react": "18.2.0",
-    "react-dom": "18.2.0"
+    "react-dom": "18.2.0",
+    "react-redux": "^8.0.5",
+    "react-router-dom": "^6.4.3",
+    "reactronica": "^0.8.1-canary.0",
+    "tone": "^14.7.77"
   },
   "devDependencies": {
+    "autoprefixer": "^10.4.13",
     "eslint": "8.27.0",
-    "eslint-config-next": "13.0.2"
+    "eslint-config-next": "13.0.2",
+    "postcss": "^8.4.18",
+    "tailwindcss": "^3.2.3"
   }
 }
