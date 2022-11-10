@@ -1,13 +1,30 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import Head from "next/head";
 import Image from "next/image";
 import styles from "../../styles/Home.module.css";
-import { getUsers } from "../../utils/users";
+// import { getUsers } from "../../utils/users";
+import { app, database } from "../../utils/firebase";
+import { collection, getDocs } from "firebase/firestore";
 
 export default function Home() {
+  const [users, setUsers] = useState([]);
+  const dbInstance = collection(database, "users");
+
+  const getUsers = async () => {
+    getDocs(dbInstance).then((data) => {
+      setUsers(
+        data.docs.map((item) => {
+          return { ...item.data(), id: item.id };
+        })
+      );
+    });
+  };
+
   useEffect(() => {
     getUsers();
   }, []);
+
+  console.log(users);
 
   return (
     <div className={styles.container}>
@@ -21,6 +38,16 @@ export default function Home() {
         <h1 className="bg-blue-300">
           Welcome to <a href="https://nextjs.org">Next.js!</a>
         </h1>
+
+        <div className="bg-blue-500">
+          {users.map((user) => {
+            return (
+              <div className="text-lg">
+                <p>{user.username}</p>
+              </div>
+            );
+          })}
+        </div>
       </main>
     </div>
   );
