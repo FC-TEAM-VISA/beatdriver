@@ -2,29 +2,17 @@ import { useEffect, useState } from "react";
 import Head from "next/head";
 import Image from "next/image";
 import styles from "../../styles/Home.module.css";
-// import { getUsers } from "../../utils/users";
 import { app, database } from "../../utils/firebase";
 import { collection, getDocs } from "firebase/firestore";
+import { useCollectionData } from "react-firebase-hooks/firestore";
+import Navbar from "../components/navbar/Navbar";
 
 export default function Home() {
   const [users, setUsers] = useState([]);
   const dbInstance = collection(database, "users");
+  const [docs, loading, error] = useCollectionData(dbInstance);
 
-  const getUsers = async () => {
-    getDocs(dbInstance).then((data) => {
-      setUsers(
-        data.docs.map((item) => {
-          return { ...item.data(), id: item.id };
-        })
-      );
-    });
-  };
-
-  useEffect(() => {
-    getUsers();
-  }, []);
-
-  console.log(users);
+  console.log("docs", docs);
 
   return (
     <div className={styles.container}>
@@ -34,15 +22,16 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
+      <Navbar />
       <main className={styles.main}>
         <h1 className="bg-blue-300">
           Welcome to <a href="https://nextjs.org">Next.js!</a>
         </h1>
 
         <div className="bg-blue-500">
-          {users.map((user) => {
+          {docs?.map((user, index) => {
             return (
-              <div className="text-lg">
+              <div key={index + 1} className="text-lg">
                 <p>{user.username}</p>
               </div>
             );
