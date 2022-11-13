@@ -63,6 +63,78 @@ function drumpad() {
       >
         <button>DO</button>
       </div>
+      <div
+        className="padborder"
+        onClick={() => synth.triggerAttackRelease("C4", "4n")}
+      >
+        <button>DO</button>
+      </div>
+      <div
+        className="padborder"
+        onClick={() => synth.triggerAttackRelease("C4", "4n")}
+      >
+        <button>DO</button>
+      </div>
+      <div
+        className="padborder"
+        onClick={() => synth.triggerAttackRelease("C4", "4n")}
+      >
+        <button>DO</button>
+      </div>
+      <div
+        className="padborder"
+        onClick={() => synth.triggerAttackRelease("C4", "4n")}
+      >
+        <button>DO</button>
+      </div>
+      <div
+        className="padborder"
+        onClick={() => synth.triggerAttackRelease("C4", "4n")}
+      >
+        <button>DO</button>
+      </div>
+      <div
+        className="padborder"
+        onClick={() => synth.triggerAttackRelease("C4", "4n")}
+      >
+        <button>DO</button>
+      </div>
+      <div
+        className="padborder"
+        onClick={() => synth.triggerAttackRelease("C4", "4n")}
+      >
+        <button>DO</button>
+      </div>
+      <div
+        className="padborder"
+        onClick={() => synth.triggerAttackRelease("C4", "4n")}
+      >
+        <button>DO</button>
+      </div>
+      <div
+        className="padborder"
+        onClick={() => synth.triggerAttackRelease("C4", "4n")}
+      >
+        <button>DO</button>
+      </div>
+      <div
+        className="padborder"
+        onClick={() => synth.triggerAttackRelease("C4", "4n")}
+      >
+        <button>DO</button>
+      </div>
+      <div
+        className="padborder"
+        onClick={() => synth.triggerAttackRelease("C4", "4n")}
+      >
+        <button>DO</button>
+      </div>
+      <div
+        className="padborder"
+        onClick={() => synth.triggerAttackRelease("C4", "4n")}
+      >
+        <button>DO</button>
+      </div>
     </div>
   );
 }

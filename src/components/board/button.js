@@ -15,7 +15,7 @@ const Button = ({ activated, triggered, toggleActivation }) => {
   let color = changeColor(activated, triggered);
 
   return (
-    <button className={color} onClick={toggleActivation}>
+    <button className={`${color} w-20`} onClick={toggleActivation}>
       <div className="h-24"></div>
     </button>
   );

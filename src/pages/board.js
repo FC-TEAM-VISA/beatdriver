@@ -4,6 +4,7 @@ import AudioPlayer from "../components/board/audioPlayer";
 
 const Board = () => {
   const [beat, setBeat] = useState("./samples/drums/clap-808.wav");
+
   return (
     <>
       <label>Beat:</label>
@@ -12,8 +13,8 @@ const Board = () => {
         <option value="./samples/drums/clap-analog.wav">clap-analog</option>
         <option value="./samples/drums/clap-crushed.wav">clap-crushed</option>
       </select>
+
       <label>Tempo:</label>
-      
 
       <AudioPlayer beat={beat}>
         {({ player }) => {

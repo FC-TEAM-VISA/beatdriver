@@ -3,16 +3,18 @@ import Grid from "./grid";
 import * as Tone from "tone";
 import PlayButton from "./playButton";
 
-const steps = 8;
+const steps = 6;
 const buttonState = { triggered: false, activated: false };
-const sounds = ["boom", "metal", "clean", "cc"];
+const sounds = ["boom", "metal", "clean", "cc", "col5", "col6"];
 
 //sets up how big the grid will be
 const initialGrid = [
-  new Array(8).fill(buttonState),
-  new Array(8).fill(buttonState),
-  new Array(8).fill(buttonState),
-  new Array(8).fill(buttonState),
+  new Array(6).fill(buttonState),
+  new Array(6).fill(buttonState),
+  new Array(6).fill(buttonState),
+  new Array(6).fill(buttonState),
+  new Array(6).fill(buttonState),
+  new Array(6).fill(buttonState),
 ];
 
 const Looper = ({ player }) => {

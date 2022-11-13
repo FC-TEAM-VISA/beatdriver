@@ -8,9 +8,11 @@ const AudioPlayer = ({ children, beat }) => {
     const player = new Tone.Players(
       {
         boom: beat,
-        clean: "./samples/drums/tom-808.wav",
-        metal: "/metal.mp3",
+        clean: "./samples/drums/hihat-reso.wav",
+        metal: "./samples/drums/hihat-808.wav",
         cc: "./samples/drums/tom-808.wav",
+        col5: "./samples/drums/tom-lofi.wav",
+        col6: "./samples/drums/snare-808.wav",
       },
       () => {
         setPlayer(player);
