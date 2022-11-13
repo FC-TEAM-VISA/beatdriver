@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Grid from "./grid";
 import * as Tone from "tone";
-import PlayerProvider from "./audioPlayer";
 import PlayButton from "./playButton";
 
 const steps = 8;
@@ -13,13 +12,14 @@ const initialGrid = [
   new Array(8).fill(buttonState),
   new Array(8).fill(buttonState),
   new Array(8).fill(buttonState),
-  // new Array(8).fill(buttonState),
+  new Array(8).fill(buttonState),
 ];
 
 const Looper = ({ player }) => {
   const [grid, setGrid] = useState(initialGrid);
   const [playing, setPlaying] = useState(false);
   const [currButton, setCurrButton] = useState(0);
+  const [sound, setSound] = useState("./samples/drums/clap-crushed.wav");
 
   //turns button on and off
   const toggleActivation = (row, col) => {
@@ -39,6 +39,7 @@ const Looper = ({ player }) => {
         if (triggered && activated) {
           //plays the sound associated with the button
           player.player(sounds[i]).start();
+          // player.player(sound).start();
         }
       }
     }
@@ -53,7 +54,7 @@ const Looper = ({ player }) => {
         nextButton(currButton);
       }
       //use line below to control speed of timer/works like tempo!
-    }, 300);
+    }, 500);
     return () => {
       clearTimeout(timer);
     };

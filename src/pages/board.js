@@ -12,6 +12,8 @@ const Board = () => {
         <option value="./samples/drums/clap-analog.wav">clap-analog</option>
         <option value="./samples/drums/clap-crushed.wav">clap-crushed</option>
       </select>
+      <label>Tempo:</label>
+      
 
       <AudioPlayer beat={beat}>
         {({ player }) => {
