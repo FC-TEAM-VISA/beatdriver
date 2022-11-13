@@ -1,12 +1,13 @@
 import React from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { useSession, signIn, signOut } from "next-auth/react";
 
 function Navbar() {
   const { data: session } = useSession();
 
   if (session) {
-    console.log("session here:", session.user.name);
+    console.log("session here:", session.user);
   }
 
   return (
@@ -26,15 +27,33 @@ function Navbar() {
           <Link href="/board">
             <p className="link">New Project</p>
           </Link>
-          <div onClick={signIn} className="link">
-            <p className="font-extrabold md:text-sm">
-              {session ? `Hello, ${session.user.name}!` : "Sign In"}
-            </p>
-          </div>
-          {session && (
-            <div onClick={signOut} className="link">
-              <p>Sign Out</p>
+          {!session && (
+            <div onClick={signIn} className="link">
+              <p>Sign In</p>
             </div>
+          )}
+          {session && (
+            <>
+              <Link href="/user" className="flex p-2">
+                <Image
+                  src={session.user.image}
+                  alt=""
+                  width={40}
+                  height={40}
+                  className="link rounded-full"
+                />
+
+                <p className="font-bold text-md md:text-sm ml-3 mt-3">
+                  {`Hello, ${session.user.name}!`}
+                </p>
+              </Link>
+
+              <div>
+                <p className="link" onClick={signOut}>
+                  Sign Out
+                </p>
+              </div>
+            </>
           )}
         </div>
       </div>
@@ -43,12 +62,3 @@ function Navbar() {
 }
 
 export default Navbar;
-
-{
-  /* <div className="flex items-center space-x-3 p-2 pl-6 bg-blue-400 text-white text-sm">
-
-<p className="link">My Projects</p>
-<p className="link">Login</p>
-<p className="link">Sign Up</p>
-</div> */
-}

@@ -1,6 +1,4 @@
-import { useEffect, useState } from "react";
-
-import Image from "next/image";
+import React, { useEffect, useState } from "react";
 import styles from "../../styles/Home.module.css";
 import Navbar from "../components/navbar/Navbar";
 import User from "../components/users/User";
