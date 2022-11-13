@@ -1,15 +1,18 @@
 import "../../styles/globals.css";
 import Head from "next/head";
+import { SessionProvider } from "next-auth/react";
 import Navbar from "../components/navbar/Navbar";
 
-function MyApp({ Component, pageProps }) {
+function MyApp({ Component, pageProps: { session, ...pageProps } }) {
   return (
     <>
-      <Head>
-        <title>Bombest Beats</title>
-      </Head>
-      <Navbar />
-      <Component {...pageProps} />
+      <SessionProvider session={session}>
+        <Head>
+          <title>Bomb Beatz</title>
+        </Head>
+        <Navbar />
+        <Component {...pageProps} />
+      </SessionProvider>
     </>
   );
 }
