@@ -2,13 +2,17 @@ import React from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useSession, signIn, signOut } from "next-auth/react";
+import { useRouter } from "next/router";
 
 function Navbar() {
+  const { push, asPath } = useRouter();
   const { data: session } = useSession();
 
   if (session) {
     console.log("session here:", session.user);
   }
+
+  const handleSignIn = () => push(`/auth/signin?callbackUrl=${asPath}`);
 
   return (
     <header>
