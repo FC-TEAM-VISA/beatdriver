@@ -6,13 +6,14 @@ import PlayButton from "./playButton";
 
 const steps = 8;
 const buttonState = { triggered: false, activated: false };
-const sounds = ["boom", "metal", "clean"];
+const sounds = ["boom", "metal", "clean", "cc"];
 
 //sets up how big the grid will be
 const initialGrid = [
   new Array(8).fill(buttonState),
   new Array(8).fill(buttonState),
   new Array(8).fill(buttonState),
+  // new Array(8).fill(buttonState),
 ];
 
 const Looper = ({ player }) => {
