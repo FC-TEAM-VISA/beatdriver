@@ -7,7 +7,7 @@ const Button = ({ activated, triggered, toggleActivation }) => {
     } else if (activated == true && triggered == false) {
       return "bg-purple-400 rounded-sm shadow-xl";
     } else if (activated == false && triggered == true) {
-      return "bg-blue-200 rounded-sm shadow-xl";
+      return "bg-sky-500 rounded-sm shadow-xl";
     } else {
       return "bg-purple-100 rounded-sm shadow-xl";
     }

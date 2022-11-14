@@ -10,21 +10,38 @@ const grid = [
 
 const Board = () => {
   const [beat, setBeat] = useState("./samples/drums/clap-808.wav");
+  const [bpm, setBpm] = useState(120);
 
   return (
     <>
       <div className="grid grid-cols-12">
-        <div className="col-span-10">
-          <label>Beat:</label>
-          <select name="beat" onChange={(e) => setBeat(e.target.value)}>
-            <option value="./samples/drums/clap-808.wav">clap-808</option>
-            <option value="./samples/drums/clap-analog.wav">clap-analog</option>
-            <option value="./samples/drums/clap-crushed.wav">
-              clap-crushed
-            </option>
-          </select>
+        {/* TOOLBAR */}
+        <div className="flex flex-grow col-span-9 bg-slate-400">
+          <div className="p-2">
+            {/* DROPDOWN */}
+            <label>Beat:</label>
+            <select name="beat" onChange={(e) => setBeat(e.target.value)}>
+              <option value="./samples/drums/clap-808.wav">clap-808</option>
+              <option value="./samples/drums/clap-analog.wav">
+                clap-analog
+              </option>
+              <option value="./samples/drums/clap-crushed.wav">
+                clap-crushed
+              </option>
+            </select>
+          </div>
 
-          <label>Tempo:</label>
+          <div className="p-2">
+            {/* BPM */}
+            <label className="p-2">BPM:</label>
+            <input
+              type="range"
+              min="50"
+              max="300"
+              onChange={(e) => setBpm(e.target.value)}
+            />
+            <output className="p-1">{bpm}</output>
+          </div>
         </div>
 
         {/*main div for grid */}
