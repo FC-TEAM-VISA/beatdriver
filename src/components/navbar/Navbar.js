@@ -6,19 +6,33 @@ import { auth } from "../../../utils/firebase";
 import { signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 import { useAuthState } from "react-firebase-hooks/auth";
 // import { onUserCreate } from "../../../utils/firebase";
+import { collection, addDoc } from "firebase/firestore";
+import { database } from "../../../utils/firebase";
+
+export const createUser = (user) => {
+  const userRef = collection(database, "users");
+  return addDoc(userRef, {
+    id: user.uid,
+    name: user.displayName,
+    email: user.email,
+    photo: user.photoURL,
+  });
+};
 
 function Navbar() {
   const googleAuth = new GoogleAuthProvider();
+  const [user, setUser] = useAuthState(auth);
 
   const login = async () => {
     const result = await signInWithPopup(auth, googleAuth);
   };
-  const [user, setUser] = useAuthState(auth);
+
   // onUserCreate(user);
 
   useEffect(() => {
     if (user) {
-      console.log("current user:", user.displayName);
+      console.log("current user:", user);
+      createUser(user);
     }
   }, [user]);
 
