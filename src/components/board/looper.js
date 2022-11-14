@@ -40,7 +40,7 @@ const Looper = ({ player, bpm }) => {
         if (triggered && activated) {
           Tone.context.lookAhead = 0;
           //plays the sound associated with the button
-          player.player(sounds[j]).start();
+          player.player(sounds[i]).start();
         }
       }
     }
