@@ -5,7 +5,7 @@ import PlayButton from "./playButton";
 
 const steps = 8;
 const buttonState = { triggered: false, activated: false };
-const sounds = ["boom", "metal", "clean", "cc", "col5", "col6"];
+const sounds = [["boom"], ["metal"], ["clean"], ["cc"], ["col5"], ["col6"]];
 
 //sets up how big the grid will be
 const initialGrid = [
@@ -15,18 +15,8 @@ const initialGrid = [
   new Array(8).fill(buttonState),
 ];
 
-// const initialGrid = [
-//   buttonState,
-//   buttonState,
-//   buttonState,
-//   buttonState,
-//   buttonState,
-//   buttonState,
-//   buttonState,
-//   buttonState,
-// ];
 
-const Looper = ({ player }) => {
+const Looper = ({ player, bpm }) => {
   const [grid, setGrid] = useState(initialGrid);
   const [playing, setPlaying] = useState(false);
   const [currButton, setCurrButton] = useState(0);
@@ -50,13 +40,15 @@ const Looper = ({ player }) => {
   const nextButton = (currButton) => {
     for (let i = 0; i < grid.length; i++) {
       for (let j = 0; j < grid[i].length; j++) {
-        const { triggered, activated } = grid[i][j];
+        const { activated } = grid[i][j];
         grid[i][j] = { activated, triggered: j === currButton };
-        if (triggered && activated) {
-          //plays the sound associated with the button
-          player.player(sounds[i]).start(Tone.context.currentTime);
-          // player.player(sound).start();
-        }
+
+        console.log('GRID', grid[i][j]);
+        if (grid[i][j].triggered && grid[i][j].activated) {
+					// Tone.context.lookAhead = 0;
+					//plays the sound associated with the button
+					player.player(sounds[i]).start();
+				}
       }
     }
     setGrid(grid);
@@ -83,7 +75,7 @@ const Looper = ({ player }) => {
         nextButton(currButton);
       }
       //use line below to control speed of timer/works like tempo!
-    }, 500);
+    }, 60000 / bpm); //(60,000 / bpm = milliseconds for 1/4 notes)
     return () => {
       clearTimeout(timer);
     };
