@@ -14,6 +14,11 @@ const AudioPlayer = ({ children, beat, bpm }) => {
         cc: "./samples/drums/tom-808.wav",
         col5: "./samples/drums/tom-lofi.wav",
         col6: "./samples/drums/snare-808.wav",
+        seven: "./samples/drums/snare-lofi01.wav",
+        eight: "./samples/drums/hihat-digital.wav",
+        nine: "./samples/drums/snare-lofi01.wav",
+        ten: "./samples/drums/hihat-plain.wav",
+        eleven: "./samples/drums/hihat-reso.wav",
       },
       () => {
         setPlayer(player);
