@@ -35,13 +35,14 @@ const Looper = ({ player, bpm }) => {
   const nextButton = (currButton) => {
     for (let i = 0; i < grid.length; i++) {
       for (let j = 0; j < grid[i].length; j++) {
-        const { triggered, activated } = grid[i][j];
+        const { activated } = grid[i][j];
         grid[i][j] = { activated, triggered: j === currButton };
-        if (triggered && activated) {
-          Tone.context.lookAhead = 0;
-          //plays the sound associated with the button
-          player.player(sounds[j]).start();
-        }
+        console.log('GRID', grid[i][j]);
+        if (grid[i][j].triggered && grid[i][j].activated) {
+					// Tone.context.lookAhead = 0;
+					//plays the sound associated with the button
+					player.player(sounds[i]).start();
+				}
       }
     }
     setGrid(grid);
