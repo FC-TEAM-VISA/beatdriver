@@ -15,7 +15,6 @@ const initialGrid = [
   new Array(8).fill(buttonState),
 ];
 
-
 const Looper = ({ player, bpm }) => {
   const [grid, setGrid] = useState(initialGrid);
   const [playing, setPlaying] = useState(false);
@@ -43,12 +42,12 @@ const Looper = ({ player, bpm }) => {
         const { activated } = grid[i][j];
         grid[i][j] = { activated, triggered: j === currButton };
 
-        console.log('GRID', grid[i][j]);
+        console.log("GRID", grid[i][j]);
         if (grid[i][j].triggered && grid[i][j].activated) {
-					// Tone.context.lookAhead = 0;
-					//plays the sound associated with the button
-					player.player(sounds[i]).start();
-				}
+          // Tone.context.lookAhead = 0;
+          //plays the sound associated with the button
+          player.player(sounds[i]).start();
+        }
       }
     }
     setGrid(grid);
@@ -86,14 +85,17 @@ const Looper = ({ player, bpm }) => {
       <div>
         <Grid grid={grid} toggleActivation={toggleActivation} />
       </div>
-      <div className="w-10 h-3">
-        {/* <PlayButton
-          playing={playing}
-          onClick={() => {
-            setPlaying(!playing);
-            Tone.start();
-          }}
-        /> */}
+      <div className="flex flex-grow col-span-9 bg-teal-800">
+        PLAYBAR
+        <div className="w-10 h-3">
+          <PlayButton
+            playing={playing}
+            onClick={() => {
+              setPlaying(!playing);
+              Tone.start();
+            }}
+          />
+        </div>
       </div>
     </>
   );
