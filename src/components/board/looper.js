@@ -9,6 +9,7 @@ const sounds = [["boom"], ["metal"], ["clean"], ["cc"], ["col5"], ["col6"]];
 
 //sets up how big the grid will be
 const initialGrid = [
+  //cols
   new Array(6).fill(buttonState),
   new Array(6).fill(buttonState),
   new Array(6).fill(buttonState),
