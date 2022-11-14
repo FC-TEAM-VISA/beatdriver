@@ -5,7 +5,7 @@ import PlayButton from "./playButton";
 
 const steps = 8;
 const buttonState = { triggered: false, activated: false };
-const sounds = [["boom"], ["metal"], ["clean"], ["cc"], ["col5"], ["col6"]];
+const sounds = ["boom", "metal", "clean", "cc", "col5", "col6"];
 
 //sets up how big the grid will be
 const initialGrid = [
