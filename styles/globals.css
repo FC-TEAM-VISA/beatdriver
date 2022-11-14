@@ -33,6 +33,11 @@ a {
   box-sizing: border-box;
 }
 
+body {
+  background-color: black;
+  color: white;
+}
+
 @media (prefers-color-scheme: dark) {
   html {
     color-scheme: dark;
