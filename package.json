@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "@chakra-ui/react": "^2.3.7",
-    "@next-auth/firebase-adapter": "^1.0.2",
+    "@next-auth/firebase-adapter": "^1.0.1",
     "@reduxjs/toolkit": "^1.9.0",
     "firebase": "^9.13.0",
     "firebase-admin": "^11.2.0",

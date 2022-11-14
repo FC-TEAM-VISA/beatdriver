@@ -1,18 +1,26 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { useSession, signIn, signOut } from "next-auth/react";
 import { useRouter } from "next/router";
+import { auth } from "../../../utils/firebase";
+import { signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+import { useAuthState } from "react-firebase-hooks/auth";
+// import { onUserCreate } from "../../../utils/firebase";
 
 function Navbar() {
-  const { push, asPath } = useRouter();
-  const { data: session } = useSession();
+  const googleAuth = new GoogleAuthProvider();
 
-  if (session) {
-    console.log("session here:", session.user);
-  }
+  const login = async () => {
+    const result = await signInWithPopup(auth, googleAuth);
+  };
+  const [user, setUser] = useAuthState(auth);
+  // onUserCreate(user);
 
-  const handleSignIn = () => push(`/auth/signin?callbackUrl=${asPath}`);
+  useEffect(() => {
+    if (user) {
+      console.log("current user:", user.displayName);
+    }
+  }, [user]);
 
   return (
     <header>
@@ -31,16 +39,16 @@ function Navbar() {
           <Link href="/board">
             <p className="link">New Project</p>
           </Link>
-          {!session && (
-            <div onClick={signIn} className="link">
+          {!user && (
+            <div onClick={login} className="link">
               <p>Sign In</p>
             </div>
           )}
-          {session && (
+          {user && (
             <>
               <Link href="/user" className="flex p-2">
                 <Image
-                  src={session.user.image}
+                  src={user.photoURL}
                   alt=""
                   width={40}
                   height={40}
@@ -48,12 +56,12 @@ function Navbar() {
                 />
 
                 <p className="font-bold text-md md:text-sm ml-3 mt-3">
-                  {`Hello, ${session.user.name}!`}
+                  {`Hello, ${user.displayName}!`}
                 </p>
               </Link>
 
               <div>
-                <p className="link" onClick={signOut}>
+                <p className="link" onClick={() => auth.signOut()}>
                   Sign Out
                 </p>
               </div>
