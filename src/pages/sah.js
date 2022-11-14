@@ -1,6 +1,6 @@
 import React, { useRef, useState } from "react";
-import Looper from "../components/board/looper";
-import AudioPlayer from "../components/board/audioPlayer";
+import Looper from "../components/sah/scratch/Looper";
+import AudioPlayer from "../components/sah/audioPlayer";
 
 const Board = () => {
   const [beat, setBeat] = useState("./samples/drums/clap-808.wav");

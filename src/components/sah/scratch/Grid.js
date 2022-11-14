@@ -7,7 +7,7 @@ const Grid = ({ grid, toggleActivation }) => {
       <div className="flex-1 max-w-4xl mx-auto p-10">
         <ul className="grid grid-cols-8 grid-rows-4 gap-8">
           {grid.map((line, i) =>
-            line.map((time, j) => {
+            line.map((button, j) => {
               return (
                 <>
                   <Button
