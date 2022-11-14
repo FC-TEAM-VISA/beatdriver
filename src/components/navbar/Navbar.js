@@ -1,18 +1,50 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { useSession, signIn, signOut } from "next-auth/react";
 import { useRouter } from "next/router";
+import { auth } from "../../../utils/firebase";
+import { signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+import { useAuthState } from "react-firebase-hooks/auth";
+// import { onUserCreate } from "../../../utils/firebase";
+import { collection, addDoc } from "firebase/firestore";
+import { database } from "../../../utils/firebase";
+import { useCollectionData } from "react-firebase-hooks/firestore";
 
 function Navbar() {
-  const { push, asPath } = useRouter();
-  const { data: session } = useSession();
+  const googleAuth = new GoogleAuthProvider();
+  const [user, setUser] = useAuthState(auth);
 
-  if (session) {
-    console.log("session here:", session.user);
-  }
+  const dbInstance = collection(database, "users");
+  const [docs, loading, error] = useCollectionData(dbInstance);
 
-  const handleSignIn = () => push(`/auth/signin?callbackUrl=${asPath}`);
+  const createUser = (user) => {
+    return addDoc(dbInstance, {
+      id: user.uid,
+      name: user.displayName,
+      email: user.email,
+      photo: user.photoURL,
+    });
+  };
+
+  const login = async () => {
+    const result = await signInWithPopup(auth, googleAuth);
+  };
+
+  // onUserCreate(user);
+
+  useEffect(() => {
+    if (user) {
+      console.log("current user:", user);
+      createUser(user);
+      docs?.filter((currUser) => {
+        if (currUser.email === user.email) {
+          console.log("you already exist");
+        } else {
+          console.log("creating new user");
+        }
+      });
+    }
+  }, [user]);
 
   return (
     <header>
@@ -31,16 +63,16 @@ function Navbar() {
           <Link href="/board">
             <p className="link">New Project</p>
           </Link>
-          {!session && (
-            <div onClick={signIn} className="link">
+          {!user && (
+            <div onClick={login} className="link">
               <p>Sign In</p>
             </div>
           )}
-          {session && (
+          {user && (
             <>
               <Link href="/user" className="flex p-2">
                 <Image
-                  src={session.user.image}
+                  src={user.photoURL}
                   alt=""
                   width={40}
                   height={40}
@@ -48,12 +80,12 @@ function Navbar() {
                 />
 
                 <p className="font-bold text-md md:text-sm ml-3 mt-3">
-                  {`Hello, ${session.user.name}!`}
+                  {`Hello, ${user.displayName}!`}
                 </p>
               </Link>
 
               <div>
-                <p className="link" onClick={signOut}>
+                <p className="link" onClick={() => auth.signOut()}>
                   Sign Out
                 </p>
               </div>
