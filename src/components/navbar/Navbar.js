@@ -44,6 +44,7 @@ function Navbar() {
       if (!userExists) {
         createUser(user);
       }
+      userExists = false;
     }
   }, [user]);
 
