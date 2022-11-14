@@ -5,7 +5,7 @@ import PlayButton from "./playButton";
 
 const steps = 8;
 const buttonState = { triggered: false, activated: false };
-const sounds = [["boom"], ["metal"], ["clean"], ["cc"], ["col5"], ["col6"]];
+const sounds = ["boom", "metal", "clean", "cc", "col5", "col6"];
 
 //sets up how big the grid will be
 const initialGrid = [
@@ -20,13 +20,6 @@ const Looper = ({ player, bpm }) => {
   const [playing, setPlaying] = useState(false);
   const [currButton, setCurrButton] = useState(0);
 
-  //turns button on and off
-  // const toggleActivation = (index) => {
-  //   const gridCopy = [...grid];
-  //   const { triggered, activated } = gridCopy[index];
-  //   gridCopy[index] = { triggered, activated: !activated };
-  //   setGrid(gridCopy);
-  // };
   const toggleActivation = (row, col) => {
     const gridCopy = [...grid];
     const { triggered, activated } = gridCopy[row][col];
@@ -52,19 +45,6 @@ const Looper = ({ player, bpm }) => {
     }
     setGrid(grid);
   };
-
-  // const nextButton = (currButton) => {
-  //   for (let i = 0; i < grid.length; i++) {
-  //     const { triggered, activated } = grid[i];
-  //     grid[i] = { activated, triggered: i === currButton };
-  //     if (triggered && activated) {
-  //       //plays the sound associated with the button
-  //       player.player(sounds[i]).start();
-  //       // player.player(sound).start();
-  //     }
-  //   }
-  //   setGrid(grid);
-  // };
 
   //timer of the loop, sets what rows are triggered
   useEffect(() => {
