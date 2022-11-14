@@ -19,30 +19,32 @@ const Board = () => {
             </option>
           </select>
 
-      <label>BPM:</label>
-      <input
-        type="range"
-        min="50"
-        max="300"
-        onChange={(e) => setBpm(e.target.value)}
-      />
-      <output>{bpm}</output>
+          <label>BPM:</label>
+          <input
+            type="range"
+            min="50"
+            max="300"
+            onChange={(e) => setBpm(e.target.value)}
+          />
+          <output>{bpm}</output>
 
-  <div className="col-span-9">
-      <AudioPlayer beat={beat} bpm={bpm}>
-        {({ player }) => {
-          if (!player) {
-            return <p>loading....</p>;
-          }
-          return <Looper player={player} bpm={bpm} />;
-        }}
-      </AudioPlayer>
-       </div>
-             <div className="col-span-2">
-          <h4>MIXER</h4>
+          <div className="col-span-9">
+            <AudioPlayer beat={beat} bpm={bpm}>
+              {({ player }) => {
+                if (!player) {
+                  return <p>loading....</p>;
+                }
+                return <Looper player={player} bpm={bpm} />;
+              }}
+            </AudioPlayer>
+          </div>
+          <div className="col-span-2">
+            <h4>MIXER</h4>
+          </div>
+
+          <div className="col-span-9">PLAYBAR</div>
         </div>
       </div>
-      <div className="col-span-9">PLAYBAR</div>
     </>
   );
 };
