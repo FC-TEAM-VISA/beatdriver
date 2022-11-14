@@ -8,20 +8,23 @@ import { useAuthState } from "react-firebase-hooks/auth";
 // import { onUserCreate } from "../../../utils/firebase";
 import { collection, addDoc } from "firebase/firestore";
 import { database } from "../../../utils/firebase";
-
-export const createUser = (user) => {
-  const userRef = collection(database, "users");
-  return addDoc(userRef, {
-    id: user.uid,
-    name: user.displayName,
-    email: user.email,
-    photo: user.photoURL,
-  });
-};
+import { useCollectionData } from "react-firebase-hooks/firestore";
 
 function Navbar() {
   const googleAuth = new GoogleAuthProvider();
   const [user, setUser] = useAuthState(auth);
+
+  const dbInstance = collection(database, "users");
+  const [docs, loading, error] = useCollectionData(dbInstance);
+
+  const createUser = (user) => {
+    return addDoc(dbInstance, {
+      id: user.uid,
+      name: user.displayName,
+      email: user.email,
+      photo: user.photoURL,
+    });
+  };
 
   const login = async () => {
     const result = await signInWithPopup(auth, googleAuth);
@@ -33,6 +36,13 @@ function Navbar() {
     if (user) {
       console.log("current user:", user);
       createUser(user);
+      docs?.filter((currUser) => {
+        if (currUser.email === user.email) {
+          console.log("you already exist");
+        } else {
+          console.log("creating new user");
+        }
+      });
     }
   }, [user]);
 
