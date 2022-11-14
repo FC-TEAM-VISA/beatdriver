@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/router";
@@ -15,7 +15,6 @@ function Navbar() {
   const [user, setUser] = useAuthState(auth);
   const dbInstance = collection(database, "users");
   const [docs, loading, error] = useCollectionData(dbInstance);
-  let userExists = false;
 
   const createUser = (user) => {
     return addDoc(dbInstance, {
@@ -31,20 +30,14 @@ function Navbar() {
   };
 
   // onUserCreate(user);
+  //help
 
   useEffect(() => {
     if (user) {
-      docs?.filter((currUser) => {
-        if (currUser.email === user.email) {
-          userExists = true;
-          console.log("you already exist");
-        }
-      });
-
+      let userExists = !docs?.filter((doc) => doc.email === user.email);
       if (!userExists) {
         createUser(user);
       }
-      userExists = false;
     }
   }, [user]);
 
@@ -100,5 +93,3 @@ function Navbar() {
 }
 
 export default Navbar;
-
-//let's get it
