@@ -1,6 +1,5 @@
 import React from "react";
 import Button from "./button";
-import Menu from "./menu";
 
 const Grid = ({ grid, toggleActivation }) => {
   return (
@@ -19,7 +18,6 @@ const Grid = ({ grid, toggleActivation }) => {
                     triggered={grid[i][j]["triggered"]}
                     toggleActivation={() => toggleActivation(i, j)}
                   />
-                  {/* <Menu /> */}
                 </>
               );
             })

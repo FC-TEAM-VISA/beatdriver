@@ -5,7 +5,7 @@ import PlayButton from "./playButton";
 
 const steps = 6;
 const buttonState = { triggered: false, activated: false };
-const sounds = ["boom", "metal", "clean", "cc", "col5", "col6"];
+const sounds = [["boom"], ["metal"], ["clean"], ["cc"], ["col5"], ["col6"]];
 
 //sets up how big the grid will be
 const initialGrid = [
@@ -17,11 +17,10 @@ const initialGrid = [
   new Array(6).fill(buttonState),
 ];
 
-const Looper = ({ player }) => {
+const Looper = ({ player, bpm }) => {
   const [grid, setGrid] = useState(initialGrid);
   const [playing, setPlaying] = useState(false);
   const [currButton, setCurrButton] = useState(0);
-  const [sound, setSound] = useState("./samples/drums/clap-crushed.wav");
 
   //turns button on and off
   const toggleActivation = (row, col) => {
@@ -39,9 +38,9 @@ const Looper = ({ player }) => {
         const { triggered, activated } = grid[i][j];
         grid[i][j] = { activated, triggered: j === currButton };
         if (triggered && activated) {
+          Tone.context.lookAhead = 0;
           //plays the sound associated with the button
-          player.player(sounds[i]).start();
-          // player.player(sound).start();
+          player.player(sounds[j]).start();
         }
       }
     }
@@ -56,7 +55,7 @@ const Looper = ({ player }) => {
         nextButton(currButton);
       }
       //use line below to control speed of timer/works like tempo!
-    }, 500);
+    }, 60000 / bpm); //(60,000 / bpm = milliseconds for 1/4 notes)
     return () => {
       clearTimeout(timer);
     };
