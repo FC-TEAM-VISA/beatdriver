@@ -15,7 +15,7 @@ function User() {
       {docs?.map((user, index) => {
         return (
           <div key={index + 1} className="text-lg">
-            <p>{user.username}</p>
+            <p>{user.email}</p>
           </div>
         );
       })}

@@ -13,9 +13,9 @@ import { useCollectionData } from "react-firebase-hooks/firestore";
 function Navbar() {
   const googleAuth = new GoogleAuthProvider();
   const [user, setUser] = useAuthState(auth);
-
   const dbInstance = collection(database, "users");
   const [docs, loading, error] = useCollectionData(dbInstance);
+  let userExists = false;
 
   const createUser = (user) => {
     return addDoc(dbInstance, {
@@ -34,15 +34,16 @@ function Navbar() {
 
   useEffect(() => {
     if (user) {
-      console.log("current user:", user);
-      createUser(user);
       docs?.filter((currUser) => {
         if (currUser.email === user.email) {
+          userExists = true;
           console.log("you already exist");
-        } else {
-          console.log("creating new user");
         }
       });
+
+      if (!userExists) {
+        createUser(user);
+      }
     }
   }, [user]);
 
