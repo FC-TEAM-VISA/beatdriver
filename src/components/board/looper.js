@@ -13,10 +13,6 @@ const initialGrid = [
   new Array(8).fill(buttonState),
   new Array(8).fill(buttonState),
   new Array(8).fill(buttonState),
-  new Array(8).fill(buttonState),
-  new Array(8).fill(buttonState),
-  new Array(8).fill(buttonState),
-  new Array(8).fill(buttonState),
 ];
 
 // const initialGrid = [
@@ -96,16 +92,16 @@ const Looper = ({ player }) => {
   return (
     <>
       <div>
-        <PlayButton
+        <Grid grid={grid} toggleActivation={toggleActivation} />
+      </div>
+      <div className="w-10 h-3">
+        {/* <PlayButton
           playing={playing}
           onClick={() => {
             setPlaying(!playing);
             Tone.start();
           }}
-        />
-      </div>
-      <div>
-        <Grid grid={grid} toggleActivation={toggleActivation} />
+        /> */}
       </div>
     </>
   );

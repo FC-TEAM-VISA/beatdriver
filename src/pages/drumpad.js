@@ -1,5 +1,12 @@
 import React, { useRef, useState } from "react";
-import Looper from "../components/sah/scratch/Looper";
+
+const steps = 8;
+const buttonState = { triggered: false, activated: false };
+const grid = [
+  new Array(8).fill(buttonState),
+  new Array(8).fill(buttonState),
+  new Array(8).fill(buttonState),
+];
 
 const Board = () => {
   const [beat, setBeat] = useState("./samples/drums/clap-808.wav");
@@ -20,8 +27,31 @@ const Board = () => {
           <label>Tempo:</label>
         </div>
 
+        {/*main div for grid */}
         <div className="col-span-9">
-          <Looper />
+          <div className="min-h-screen flex items-center bg-black">
+            <div className="flex-1 max-w-4xl mx-auto p-10">
+              <ul className="grid grid-cols-8 grid-rows-4 gap-8">
+                {grid.map((line, i) =>
+                  line.map((button, j) => {
+                    return (
+                      <>
+                        {/* <Button
+                          key={i + j}
+                          column={j + 1}
+                          row={i + 1}
+                          activated={grid[i][j]["activated"]}
+                          triggered={grid[i][j]["triggered"]}
+                          toggleActivation={() => toggleActivation(i, j)}
+                        /> */}
+                        <button className="padborder">huh</button>
+                      </>
+                    );
+                  })
+                )}
+              </ul>
+            </div>
+          </div>
         </div>
         <div className="col-span-2">
           <h4>MIXER</h4>

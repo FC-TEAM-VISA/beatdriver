@@ -35,6 +35,7 @@ const Board = () => {
           <h4>MIXER</h4>
         </div>
       </div>
+      <div className="col-span-9">PLAYBAR</div>
     </>
   );
 };
