@@ -29,6 +29,7 @@ function user() {
           height={400}
           width={300}
           className="p-5"
+          alt=""
         />
       </div>
       <div className="col-span-4">
