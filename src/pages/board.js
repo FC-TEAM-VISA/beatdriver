@@ -3,6 +3,7 @@ import * as Tone from "tone";
 import Looper from "../components/board/looper";
 import AudioPlayer from "../components/board/audioPlayer";
 import { BsFillPlayFill, BsStopFill } from "react-icons/bs";
+import { BiSave } from "react-icons/bi";
 
 const Board = () => {
   const [beat, setBeat] = useState("./samples/drums/clap-808.wav");
@@ -15,13 +16,6 @@ const Board = () => {
         {/* TOOLBAR */}
         <div className="flex flex-grow col-span-9 bg-teal-800">
           <div className="flex bg-teal-800 ml-3">
-            {/* <PlayButton
-                playing={playing}
-                onClick={() => {
-                  setPlaying(!playing);
-                  Tone.start();
-                }}
-              /> */}
             <button
               onClick={() => {
                 setPlaying(!playing);
@@ -33,6 +27,14 @@ const Board = () => {
               ) : (
                 <BsFillPlayFill className="text-white bg-teal-800 h-12 w-12 p-2" />
               )}
+            </button>
+          </div>
+          <div>
+            <BiSave className="mt-4 mr-3 ml-2" />
+          </div>
+          <div>
+            <button className="mt-1 mx-2 border-2 p-1 bg-red-900 hover:bg-red-600 border-white">
+              CLEAR BOARD
             </button>
           </div>
           <div className="p-2">

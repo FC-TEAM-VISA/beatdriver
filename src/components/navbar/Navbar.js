@@ -6,6 +6,7 @@ import { auth } from "../../../utils/firebase";
 import { signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 import { useAuthState } from "react-firebase-hooks/auth";
 // import { onUserCreate } from "../../../utils/firebase";
+
 import { collection, addDoc, doc, getDoc, setDoc } from "firebase/firestore";
 import { database } from "../../../utils/firebase";
 import { useCollectionData } from "react-firebase-hooks/firestore";
@@ -98,5 +99,3 @@ function Navbar() {
 }
 
 export default Navbar;
-
-//let's get it
