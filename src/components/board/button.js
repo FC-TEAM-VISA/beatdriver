@@ -3,11 +3,12 @@ import React from "react";
 const Button = ({ activated, triggered, toggleActivation }) => {
   const changeColor = (activated, triggered) => {
     if (activated == true && triggered == true) {
-      return "bg-purple-900 rounded-sm shadow-xl pulsed";
+
+      return "bg-purple-800 rounded-sm shadow-xl animate-pulse";
     } else if (activated == true && triggered == false) {
       return "bg-purple-400 rounded-sm shadow-xl";
     } else if (activated == false && triggered == true) {
-      return "bg-sky-500 rounded-sm shadow-xl";
+      return "bg-sky-500 rounded-sm shadow-xl animate-pulse";
     } else {
       return "bg-purple-100 rounded-sm shadow-xl";
     }

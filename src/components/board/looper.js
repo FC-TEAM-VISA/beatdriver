@@ -22,9 +22,9 @@ const initialGrid = [
   new Array(8).fill(buttonState),
 ];
 
-const Looper = ({ player, bpm }) => {
+const Looper = ({ player, bpm, playing }) => {
   const [grid, setGrid] = useState(initialGrid);
-  const [playing, setPlaying] = useState(false);
+  // const [playing, setPlaying] = useState(false);
   const [currButton, setCurrButton] = useState(0);
 
   const toggleActivation = (row, col) => {
@@ -68,20 +68,8 @@ const Looper = ({ player, bpm }) => {
 
   return (
     <>
-      <div>
+      <div className="">
         <Grid grid={grid} toggleActivation={toggleActivation} />
-      </div>
-      <div className="flex flex-grow col-span-9 bg-teal-800">
-        PLAYBAR
-        <div className="w-10 h-3">
-          <PlayButton
-            playing={playing}
-            onClick={() => {
-              setPlaying(!playing);
-              Tone.start();
-            }}
-          />
-        </div>
       </div>
     </>
   );
