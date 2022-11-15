@@ -45,7 +45,9 @@ const UploadButton = () => {
     <div>
       <input type="file" onChange={handleChange} accept="/image/*" />
       <button onClick={handleUpload}>Upload to Firebase</button>
-      <p>{percent} % done</p>
+      <p>
+        {percent} % done {percent === 100 ? "FILE UPLOADED!" : ""}
+      </p>
     </div>
   );
 };
