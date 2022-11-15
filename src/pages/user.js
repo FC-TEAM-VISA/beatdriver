@@ -19,8 +19,6 @@ function user() {
     currentUser = docs?.filter((doc) => doc.email === user.email)[0];
   }
 
-  console.log("currentuser", currentUser);
-
   return (
     <div className="grid grid-cols-10 mt-2">
       <div className="col-span-3">
