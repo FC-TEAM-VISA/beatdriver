@@ -7,8 +7,7 @@ import { signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 import { useAuthState } from "react-firebase-hooks/auth";
 // import { onUserCreate } from "../../../utils/firebase";
 
-import { collection, addDoc, doc, getDoc } from "firebase/firestore";
-
+import { collection, addDoc, doc, getDoc, setDoc } from "firebase/firestore";
 import { database } from "../../../utils/firebase";
 import { useCollectionData } from "react-firebase-hooks/firestore";
 
@@ -21,20 +20,18 @@ function Navbar() {
 
   const createUser = async (user) => {
     const userRef = doc(database, "users", user.email);
-    const currUser = await getDoc(userRef);
-    if (currUser.exists()) {
-      console.log("you exist");
-    } else {
-      return addDoc(userRef, {
+    return setDoc(
+      userRef,
+      {
         id: user.uid,
         name: user.displayName,
         email: user.email,
         photo: user.photoURL,
-        bio: "user's bio goes here!",
-      });
-    }
-
+      },
+      { merge: true }
+    );
   };
+
   const login = async () => {
     const result = await signInWithPopup(auth, googleAuth);
   };
