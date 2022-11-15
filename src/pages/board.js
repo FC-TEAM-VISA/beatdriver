@@ -2,7 +2,6 @@ import React, { useRef, useState } from "react";
 import * as Tone from "tone";
 import Looper from "../components/board/looper";
 import AudioPlayer from "../components/board/audioPlayer";
-import PlayButton from "../components/board/playButton";
 import { BsFillPlayFill, BsStopFill } from "react-icons/bs";
 
 const Board = () => {
