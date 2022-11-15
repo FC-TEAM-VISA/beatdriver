@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/router";
@@ -6,7 +6,14 @@ import { auth } from "../../../utils/firebase";
 import { signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 import { useAuthState } from "react-firebase-hooks/auth";
 // import { onUserCreate } from "../../../utils/firebase";
-import { collection, addDoc } from "firebase/firestore";
+import {
+  collection,
+  addDoc,
+  getDoc,
+  doc,
+  getDocs,
+  setDoc,
+} from "firebase/firestore";
 import { database } from "../../../utils/firebase";
 import { useCollectionData } from "react-firebase-hooks/firestore";
 
@@ -15,29 +22,28 @@ function Navbar() {
   const [user, setUser] = useAuthState(auth);
   const dbInstance = collection(database, "users");
   const [docs, loading, error] = useCollectionData(dbInstance);
+  const [userExists, setUserExists] = useState(false);
 
-  const createUser = (user) => {
-    return addDoc(dbInstance, {
-      id: user.uid,
-      name: user.displayName,
-      email: user.email,
-      photo: user.photoURL,
-    });
+  const createUser = async (user) => {
+    const userRef = doc(database, "users", user.email);
+    return setDoc(
+      userRef,
+      {
+        id: user.uid,
+        name: user.displayName,
+        email: user.email,
+        photo: user.photoURL,
+      },
+      { merge: true }
+    );
   };
-
   const login = async () => {
     const result = await signInWithPopup(auth, googleAuth);
   };
 
-  // onUserCreate(user);
-  //help
-
   useEffect(() => {
     if (user) {
-      let userExists = !docs?.filter((doc) => doc.email === user.email);
-      if (!userExists) {
-        createUser(user);
-      }
+      createUser(user);
     }
   }, [user]);
 
@@ -93,3 +99,5 @@ function Navbar() {
 }
 
 export default Navbar;
+
+//let's get it
