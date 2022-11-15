@@ -6,6 +6,7 @@ const AudioPlayer = ({ children, beat, bpm }) => {
   const [player, setPlayer] = useState(null);
 
   useEffect(() => {
+    // o: you notice a pattern here?
     const player = new Tone.Players(
       {
         1: beat,

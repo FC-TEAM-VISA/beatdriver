@@ -10,12 +10,17 @@ import { BsInstagram, BsTwitter } from "react-icons/bs";
 import { GrSoundcloud } from "react-icons/gr";
 
 function User() {
+  // o: you can ignore the second param here if not being used
   const [user, setUser] = useAuthState(auth);
   const dbInstance = collection(database, "users");
+
+  // o: you can ignore the second / third param here if not being used
   const [docs, loading, error] = useCollectionData(dbInstance);
   let currentUser;
 
   if (user) {
+    // o: you can use Array.prototype.find here instead of filter
+    // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/find
     currentUser = docs?.filter((doc) => doc.email === user.email)[0];
   }
 

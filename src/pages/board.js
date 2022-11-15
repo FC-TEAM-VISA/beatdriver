@@ -15,6 +15,7 @@ const Board = () => {
         {/* TOOLBAR */}
         <div className="flex flex-grow col-span-9 bg-teal-800">
           <div className="flex bg-teal-800 ml-3">
+            {/* o: remove */}
             {/* <PlayButton
                 playing={playing}
                 onClick={() => {

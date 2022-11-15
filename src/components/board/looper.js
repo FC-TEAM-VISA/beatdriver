@@ -4,6 +4,8 @@ import * as Tone from "tone";
 
 const steps = 8;
 const buttonState = { triggered: false, activated: false };
+
+// o: what are these numbers exactly? and why are they strings?
 const sounds = [
   ["1", "2", "3", "4", "5", "6", "7", "8"],
   ["9", "10", "11", "12", "13", "14", "15", "16"],
@@ -23,10 +25,14 @@ const initialGrid = [
 
 const Looper = ({ player, bpm, playing }) => {
   const [grid, setGrid] = useState(initialGrid);
+  // o: remove if not being used
   // const [playing, setPlaying] = useState(false);
+
+  // o: why not currentButton?
   const [currButton, setCurrButton] = useState(0);
 
   const toggleActivation = (row, col) => {
+    // o: why are you copyin the grid here?
     const gridCopy = [...grid];
     const { triggered, activated } = gridCopy[row][col];
     gridCopy[row][col] = { triggered, activated: !activated };

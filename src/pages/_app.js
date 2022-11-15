@@ -3,6 +3,7 @@ import Head from "next/head";
 import { SessionProvider } from "next-auth/react";
 import Navbar from "../components/navbar/Navbar";
 
+// o: let's talk about this
 function MyApp({ Component, pageProps: { session, ...pageProps } }) {
   return (
     <>

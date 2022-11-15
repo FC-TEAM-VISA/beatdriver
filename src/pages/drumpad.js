@@ -1,5 +1,6 @@
 import React, { useRef, useState } from "react";
 
+// o: this isn't being used
 const steps = 8;
 const buttonState = { triggered: false, activated: false };
 const grid = [
@@ -51,10 +52,12 @@ const Board = () => {
           <div className="min-h-screen flex items-center bg-black">
             <div className="flex-1 max-w-4xl mx-auto p-10">
               <ul className="grid grid-cols-8 grid-rows-4 gap-8">
+                {/* o: what are i and j? */}
                 {grid.map((line, i) =>
                   line.map((button, j) => {
                     return (
                       <>
+                      {/* o: remove if not being used */}
                         {/* <Button
                           key={i + j}
                           column={j + 1}
