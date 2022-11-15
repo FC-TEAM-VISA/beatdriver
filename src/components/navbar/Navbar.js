@@ -18,6 +18,7 @@ import { database } from "../../../utils/firebase";
 import { useCollectionData } from "react-firebase-hooks/firestore";
 
 function Navbar() {
+  const router = useRouter();
   const googleAuth = new GoogleAuthProvider();
   const [user, setUser] = useAuthState(auth);
   const dbInstance = collection(database, "users");
@@ -45,6 +46,11 @@ function Navbar() {
       createUser(user);
     }
   }, [user]);
+
+  const handleSignOut = () => {
+    auth.signOut();
+    router.push("/");
+  };
 
   return (
     <header>
@@ -85,7 +91,7 @@ function Navbar() {
               </Link>
 
               <div>
-                <p className="link text-md" onClick={() => auth.signOut()}>
+                <p className="link text-md" onClick={handleSignOut}>
                   Sign Out
                 </p>
               </div>
