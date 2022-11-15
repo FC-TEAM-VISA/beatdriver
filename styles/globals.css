@@ -36,6 +36,7 @@ a {
 body {
   background-color: black;
   color: white;
+  font-family: "Bebas Neue";
 }
 
 @media (prefers-color-scheme: dark) {

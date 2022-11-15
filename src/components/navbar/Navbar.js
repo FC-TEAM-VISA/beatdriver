@@ -49,15 +49,15 @@ function Navbar() {
 
   return (
     <header>
-      <div className="flex items-center space-x-3 p-2 pl-6 bg-blue-400 text-white text-sm ">
+      <div className="flex items-center space-x-3 p-2 pl-6 bg-blue-400 text-white  ">
         {/* LEFT NAV */}
-        <div className="mt-2 flex items-center flex-grow sm:flex-grow-0">
+        <div className="mt-2 flex items-center flex-grow sm:flex-grow-0 text-5xl">
           <Link href="/">
             <h3>BOMBBEATZ</h3>
           </Link>
         </div>
         {/* RIGHT NAV */}
-        <div className="text-white flex items-center text-xs space-x-6 mx-6 whitespace-nowrap pl-10">
+        <div className="text-white flex items-center space-x-6 mx-6 whitespace-nowrap pl-10 text-2xl">
           <Link href="/discover">
             <p className="link">Discover</p>
           </Link>
@@ -80,13 +80,13 @@ function Navbar() {
                   className="link rounded-full"
                 />
 
-                <p className="font-bold text-md md:text-sm ml-3 mt-3">
+                <p className="text-xl ml-2 pl-1 mt-1">
                   {`Hello, ${user.displayName}!`}
                 </p>
               </Link>
 
               <div>
-                <p className="link" onClick={() => auth.signOut()}>
+                <p className="link text-md" onClick={() => auth.signOut()}>
                   Sign Out
                 </p>
               </div>

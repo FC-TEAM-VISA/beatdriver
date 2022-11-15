@@ -8,8 +8,6 @@ function User() {
   const dbInstance = collection(database, "users");
   const [docs, loading, error] = useCollectionData(dbInstance);
 
-  console.log("docs", docs);
-
   return (
     <div className="bg-blue-500">
       {docs?.map((user, index) => {
