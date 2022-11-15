@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Grid from "./grid";
 import * as Tone from "tone";
-import PlayButton from "./playButton";
 
 const steps = 8;
 const buttonState = { triggered: false, activated: false };
