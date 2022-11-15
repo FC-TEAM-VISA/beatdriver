@@ -7,16 +7,8 @@ export default function Home() {
   return (
     <div>
       <main className={styles.main}>
-        <h1 className="bg-blue-300">
-          Welcome to <a href="https://nextjs.org">Next.js!</a>
-        </h1>
-
-        <div className="bg-blue-500">
-          <User />
-        </div>
+        <h1 className="text-5xl">Welcome to the beat maker!</h1>
       </main>
     </div>
   );
 }
-
-// npm i @chakra-ui/react @emotion/react@^11 @emotion/styled@^11 framer-motion@^6 react-icons nanoid
