@@ -1,9 +1,9 @@
-import React, { useState, useRef } from "react";
+import React from "react";
 
 const Button = ({ activated, triggered, toggleActivation }) => {
   const changeColor = (activated, triggered) => {
     if (activated == true && triggered == true) {
-      return "bg-purple-900 rounded-sm shadow-xl";
+      return "bg-purple-900 rounded-sm shadow-xl pulsed";
     } else if (activated == true && triggered == false) {
       return "bg-purple-400 rounded-sm shadow-xl";
     } else if (activated == false && triggered == true) {

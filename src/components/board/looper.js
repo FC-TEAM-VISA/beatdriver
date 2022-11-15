@@ -5,10 +5,17 @@ import PlayButton from "./playButton";
 
 const steps = 8;
 const buttonState = { triggered: false, activated: false };
-const sounds = ["boom", "metal", "clean", "cc", "col5", "col6"];
+const sounds = [
+  ["1", "2", "3", "4", "5", "6", "7", "8"],
+  ["9", "10", "11", "12", "13", "14", "15", "16"],
+  ["17", "18", "19", "20", "21", "22", "23", "24"],
+  ["25", "26", "27", "28", "29", "30", "31", "32"],
+  ["33", "34", "35", "36", "37", "38", "39", "40"],
+];
 
 //sets up how big the grid will be
 const initialGrid = [
+  new Array(8).fill(buttonState),
   new Array(8).fill(buttonState),
   new Array(8).fill(buttonState),
   new Array(8).fill(buttonState),
@@ -35,11 +42,10 @@ const Looper = ({ player, bpm }) => {
         const { activated } = grid[i][j];
         grid[i][j] = { activated, triggered: j === currButton };
 
-        console.log("GRID", grid[i][j]);
         if (grid[i][j].triggered && grid[i][j].activated) {
           // Tone.context.lookAhead = 0;
           //plays the sound associated with the button
-          player.player(sounds[i]).start();
+          player.player(sounds[i][j]).start();
         }
       }
     }

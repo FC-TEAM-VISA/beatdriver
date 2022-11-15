@@ -22,7 +22,6 @@ function Navbar() {
   const [user, setUser] = useAuthState(auth);
   const dbInstance = collection(database, "users");
   const [docs, loading, error] = useCollectionData(dbInstance);
-  const [userExists, setUserExists] = useState(false);
 
   const createUser = async (user) => {
     const userRef = doc(database, "users", user.email);
