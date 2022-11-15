@@ -6,6 +6,8 @@ const grid = [
   new Array(8).fill(buttonState),
   new Array(8).fill(buttonState),
   new Array(8).fill(buttonState),
+  new Array(8).fill(buttonState),
+  new Array(8).fill(buttonState),
 ];
 
 const Board = () => {

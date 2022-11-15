@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/router";
@@ -11,11 +11,11 @@ import { database } from "../../../utils/firebase";
 import { useCollectionData } from "react-firebase-hooks/firestore";
 
 function Navbar() {
+  const router = useRouter();
   const googleAuth = new GoogleAuthProvider();
   const [user, setUser] = useAuthState(auth);
   const dbInstance = collection(database, "users");
   const [docs, loading, error] = useCollectionData(dbInstance);
-  let userExists = false;
 
   const createUser = async (user) => {
     const userRef = doc(database, "users", user.email);
@@ -31,40 +31,34 @@ function Navbar() {
         bio: "user's bio goes here!",
       });
     }
-  };
 
+  };
   const login = async () => {
     const result = await signInWithPopup(auth, googleAuth);
   };
 
-  // onUserCreate(user);
-
   useEffect(() => {
     if (user) {
-      docs?.filter((currUser) => {
-        if (currUser.email === user.email) {
-          userExists = true;
-          console.log("you already exist");
-        }
-      });
-
-      if (!userExists) {
-        createUser(user);
-      }
+      createUser(user);
     }
   }, [user]);
 
+  const handleSignOut = () => {
+    auth.signOut();
+    router.push("/");
+  };
+
   return (
     <header>
-      <div className="flex items-center space-x-3 p-2 pl-6 bg-blue-400 text-white text-sm ">
+      <div className="flex items-center space-x-3 p-2 pl-6 bg-blue-400 text-white  ">
         {/* LEFT NAV */}
-        <div className="mt-2 flex items-center flex-grow sm:flex-grow-0">
+        <div className="mt-2 flex items-center flex-grow sm:flex-grow-0 text-5xl">
           <Link href="/">
             <h3>BOMBBEATZ</h3>
           </Link>
         </div>
         {/* RIGHT NAV */}
-        <div className="text-white flex items-center text-xs space-x-6 mx-6 whitespace-nowrap pl-10">
+        <div className="text-white flex items-center space-x-6 mx-6 whitespace-nowrap pl-10 text-2xl">
           <Link href="/discover">
             <p className="link">Discover</p>
           </Link>
@@ -87,13 +81,13 @@ function Navbar() {
                   className="link rounded-full"
                 />
 
-                <p className="font-bold text-md md:text-sm ml-3 mt-3">
+                <p className="text-xl ml-2 pl-1 mt-1">
                   {`Hello, ${user.displayName}!`}
                 </p>
               </Link>
 
               <div>
-                <p className="link" onClick={() => auth.signOut()}>
+                <p className="link text-md" onClick={handleSignOut}>
                   Sign Out
                 </p>
               </div>
@@ -106,3 +100,5 @@ function Navbar() {
 }
 
 export default Navbar;
+
+//let's get it

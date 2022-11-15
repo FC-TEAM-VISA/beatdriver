@@ -1,7 +1,8 @@
 import React from "react";
+import User from "../components/users/User";
 
 function user() {
-  return <div>user</div>;
+  return <User />;
 }
 
 export default user;
