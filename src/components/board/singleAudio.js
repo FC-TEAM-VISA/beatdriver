@@ -9,7 +9,7 @@ import { Player } from "tone";
 const SingleAudio = () => {
   const storage = getStorage();
   // console.log(storage);
-  const storageRef = ref(storage, "beats/aphex.mp3");
+  const storageRef = ref(storage, "built-in-instruments/drums/cowbell-808.wav");
 
   let audio;
   getDownloadURL(storageRef)
