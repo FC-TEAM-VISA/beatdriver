@@ -9,6 +9,18 @@ const Board = () => {
   const [beat, setBeat] = useState("./samples/drums/clap-808.wav");
   const [bpm, setBpm] = useState(120);
   const [playing, setPlaying] = useState(false);
+  const [objectSounds, setObjectSounds] = useState({
+    "./samples/drums/clap-808.wav": "./samples/drums/clap-808.wav",
+  });
+
+  const handleBeatChange = (e) => {
+    if (!objectSounds[e.target.value]) {
+      let copyObject = { ...objectSounds };
+      copyObject[e.target.value] = e.target.value;
+      setObjectSounds(copyObject);
+    }
+    setBeat(e.target.value);
+  };
 
   return (
     <>
@@ -43,7 +55,9 @@ const Board = () => {
             <select
               className="p-1"
               name="beat"
-              onChange={(e) => setBeat(e.target.value)}
+              onChange={(e) => {
+                handleBeatChange(e);
+              }}
             >
               <option value="./samples/drums/clap-808.wav">clap-808</option>
               <option value="./samples/drums/clap-analog.wav">
@@ -69,12 +83,20 @@ const Board = () => {
         </div>
 
         <div className="col-span-9">
-          <AudioPlayer beat={beat} bpm={bpm}>
+          <AudioPlayer objectSounds={objectSounds} bpm={bpm}>
             {({ player }) => {
               if (!player) {
                 return <p>loading....</p>;
               }
-              return <Looper player={player} bpm={bpm} playing={playing} />;
+              return (
+                <Looper
+                  player={player}
+                  bpm={bpm}
+                  playing={playing}
+                  beat={beat}
+                  objectSounds={objectSounds}
+                />
+              );
             }}
           </AudioPlayer>
         </div>
