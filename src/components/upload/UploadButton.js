@@ -1,12 +1,15 @@
 import React, { useState } from "react";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import { database, storage, beatsRef } from "../../../utils/firebase";
+import { auth } from "../../../utils/firebase";
+import { useAuthState } from "react-firebase-hooks/auth";
 
 const UploadButton = () => {
   // State to store uploaded file
   const [file, setFile] = useState("");
   // progress
   const [percent, setPercent] = useState(0);
+  const [user, setUser] = useAuthState(auth);
 
   // Handle file upload event and update state
   function handleChange(event) {
@@ -18,7 +21,7 @@ const UploadButton = () => {
 
     if (!file) return;
 
-    const storageRef = ref(storage, `beats/${file.name}`);
+    const storageRef = ref(storage, `users/${user.uid}/${file.name}`);
     const uploadTask = uploadBytesResumable(storageRef, file);
 
     uploadTask.on(
