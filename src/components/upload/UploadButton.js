@@ -21,7 +21,7 @@ const UploadButton = () => {
 
     if (!file) return;
 
-    const storageRef = ref(storage, `users/${user.uid}/${file.name}`);
+    const storageRef = ref(storage, `users/${user.email}/${file.name}`);
     const uploadTask = uploadBytesResumable(storageRef, file);
 
     uploadTask.on(
