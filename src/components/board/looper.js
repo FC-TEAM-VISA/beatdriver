@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
 import Grid from "./grid";
 import * as Tone from "tone";
+import { Player } from "tone";
 
 const steps = 8;
-const buttonState = { triggered: false, activated: false };
+const buttonState = { triggered: false, activated: false, audio: "" };
 const sounds = [
   ["1", "2", "3", "4", "5", "6", "7", "8"],
   ["9", "10", "11", "12", "13", "14", "15", "16"],
@@ -21,15 +22,17 @@ const initialGrid = [
   new Array(8).fill(buttonState),
 ];
 
-const Looper = ({ player, bpm, playing }) => {
+const Looper = ({ player, bpm, playing, beat, objectSounds }) => {
   const [grid, setGrid] = useState(initialGrid);
   // const [playing, setPlaying] = useState(false);
   const [currButton, setCurrButton] = useState(0);
 
+  // console.log(beat, "BEAT ");
+
   const toggleActivation = (row, col) => {
     const gridCopy = [...grid];
     const { triggered, activated } = gridCopy[row][col];
-    gridCopy[row][col] = { triggered, activated: !activated };
+    gridCopy[row][col] = { triggered, activated: !activated, audio: beat };
     setGrid(gridCopy);
   };
 
@@ -38,13 +41,15 @@ const Looper = ({ player, bpm, playing }) => {
   const nextButton = (currButton) => {
     for (let i = 0; i < grid.length; i++) {
       for (let j = 0; j < grid[i].length; j++) {
-        const { activated } = grid[i][j];
-        grid[i][j] = { activated, triggered: j === currButton };
+        const { activated, audio } = grid[i][j];
+        grid[i][j] = { activated, triggered: j === currButton, audio };
 
-        if (grid[i][j].triggered && grid[i][j].activated) {
+        if (grid[i][j].triggered && grid[i][j].activated && grid[i][j].audio) {
           // Tone.context.lookAhead = 0;
           //plays the sound associated with the button
-          player.player(sounds[i][j]).start();
+
+          player.player(objectSounds[grid[i][j].audio]).start();
+          // player.start();
         }
       }
     }
