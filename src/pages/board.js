@@ -5,6 +5,7 @@ import AudioPlayer from "../components/board/audioPlayer";
 import { BsFillPlayFill, BsStopFill } from "react-icons/bs";
 import { BiSave } from "react-icons/bi";
 import Sounds from "../components/soundmenu/Sounds";
+import LoadMenu from "../components/loadmenu/LoadMenu";
 
 //firebase imports
 import {
@@ -104,6 +105,7 @@ const Board = () => {
               onClick={() => handleSave()}
             />
           </div>
+          <LoadMenu />
           <div>
             <button className="mt-1 mx-2 border-2 p-1 bg-red-900 hover:bg-red-600 border-white">
               CLEAR BOARD
