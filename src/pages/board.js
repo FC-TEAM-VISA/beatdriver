@@ -4,6 +4,7 @@ import Looper from "../components/board/looper";
 import AudioPlayer from "../components/board/audioPlayer";
 import { BsFillPlayFill, BsStopFill } from "react-icons/bs";
 import { BiSave } from "react-icons/bi";
+import Sounds from "../components/soundmenu/Sounds";
 
 //firebase imports
 import {
@@ -41,7 +42,7 @@ const Board = () => {
   const [uniqueID, setUniqueID] = useState(null);
   const [playing, setPlaying] = useState(false);
   const [objectSounds, setObjectSounds] = useState({
-    "./samples/drums/clap-808.wav": "./samples/drums/clap-808.wav",
+    selected: "./samples/drums/clap-808.wav",
   });
   const [grid, setGrid] = useState(initialGrid);
 
@@ -98,7 +99,7 @@ const Board = () => {
             </button>
           </div>
           <div>
-            <BiSave className="mt-4 mr-3 ml-2" onClick={() => handleSave()} />
+            <BiSave className="mt-4 mr-3 ml-2 cursor-pointer" onClick={() => handleSave()} />
           </div>
           <div>
             <button className="mt-1 mx-2 border-2 p-1 bg-red-900 hover:bg-red-600 border-white">
@@ -123,6 +124,11 @@ const Board = () => {
                 clap-crushed
               </option>
             </select>
+          </div>
+
+          <div className="p-2 mx-4 mt-1">
+            <label className="pr-2">BEAT:</label>
+            <Sounds beat={beat} handleBeatChange={handleBeatChange} />
           </div>
 
           <div className="p-2">
