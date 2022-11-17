@@ -19,12 +19,7 @@ const Looper = ({
   uniqueID,
   handleSave,
 }) => {
-  // const [playing, setPlaying] = useState(false);
   const [currButton, setCurrButton] = useState(0);
-
-  // console.log(beat, "BEAT ");
-  const dbProject = doc(database, "project", `${uniqueID}`);
-  console.log("I am project: ", dbProject);
 
   const toggleActivation = (row, col) => {
     const gridCopy = [...grid];
@@ -66,12 +61,6 @@ const Looper = ({
       clearTimeout(timer);
     };
   }, [currButton, playing]);
-
-  useEffect(() => {
-    updateDoc(dbProject, {})
-      .then(() => console.log("grid updated on db"))
-      .catch((e) => console.log(e));
-  }, [grid]);
 
   return (
     <div className="">
