@@ -30,21 +30,17 @@ function Navbar() {
     if (user && currentUser) {
       return;
     } else {
-      const newUser = await setDoc(
-        userRef,
-        {
-          id: user.uid,
-          name: user.displayName,
-          email: user.email,
-          photo: user.photoURL,
-          location: "UPDATE YOUR LOCATION",
-          bio: "UPDATE YOUR BIO",
-          twitter: "ADD YOUR TWITTER",
-          instagram: "ADD YOUR INSTAGRAM",
-          soundcloud: "ADD YOUR SOUNDCLOUD",
-        },
-        { merge: true }
-      );
+      const newUser = await setDoc(userRef, {
+        id: user.uid,
+        name: user.displayName,
+        email: user.email,
+        photo: user.photoURL,
+        location: "UPDATE YOUR LOCATION",
+        bio: "UPDATE YOUR BIO",
+        twitter: "ADD YOUR TWITTER",
+        instagram: "ADD YOUR INSTAGRAM",
+        soundcloud: "ADD YOUR SOUNDCLOUD",
+      });
     }
   };
 
@@ -56,14 +52,12 @@ function Navbar() {
     if (user && !currentUser) {
       createUser(user);
     }
-  }, [user]);
+  }, [currentUser]);
 
   const handleSignOut = () => {
     auth.signOut();
     router.push("/");
   };
-
-  console.log("NAVBAR USER", currentUser);
 
   return (
     <header>
