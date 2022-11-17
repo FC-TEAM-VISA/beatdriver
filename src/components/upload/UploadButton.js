@@ -52,11 +52,18 @@ const UploadButton = () => {
   };
 
   return (
-    <div>
-      <input type="file" onChange={handleChange} accept="/image/*" />
-      <button onClick={handleUpload}>Upload to Firebase</button>
-      <p>
-        {percent} % done {percent === 100 ? "FILE UPLOADED!" : ""}
+    <div className="grid place-items-center p-2">
+      <input
+        type="file"
+        onChange={handleChange}
+        accept="/image/*"
+        className=" text-purple-500 pl-2 file:mr-4 file:py-2 file:px-4 file:border-0 file:text-sm file:font-semibold file:bg-violet-50 file:text-violet-700 hover:file:bg-violet-200 file:cursor-pointer file:rounded-md"
+      />
+      <button onClick={handleUpload} className="p-1 border-2 mt-5">
+        UPLOAD AUDIO
+      </button>
+      <p className="mt-2">
+        {percent} % done. {percent === 100 ? "FILE UPLOADED!" : ""}
       </p>
     </div>
   );
