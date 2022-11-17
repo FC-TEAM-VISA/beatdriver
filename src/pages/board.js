@@ -15,9 +15,13 @@ import {
   serverTimestamp,
   addDoc,
   setDoc,
+  where,
+  query,
 } from "firebase/firestore";
 import { database, auth } from "../../utils/firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
+import { getProjects } from "../../utils/projects";
+import { useCollectionData } from "react-firebase-hooks/firestore";
 
 /* THE BOARD*/
 const steps = 8;
@@ -50,8 +54,14 @@ const Board = () => {
   });
   const [grid, setGrid] = useState(initialGrid);
 
-  console.log("beat", beat);
-  console.log("objectSounds", objectSounds);
+  const dbInstance = query(
+    collection(database, "projects"),
+    where(`ownerId`, "==", `${user?.uid}`)
+  );
+  const [projects] = useCollectionData(dbInstance);
+
+  // console.log("beat", beat);
+  // console.log("objectSounds", objectSounds);
   console.log("grid", grid);
 
   const handleSave = async () => {
@@ -63,6 +73,7 @@ const Board = () => {
         grid: {},
         bpm: +bpm,
       });
+
       setUniqueID(newProject.id);
     } else {
       await updateDoc(doc(database, `projects/${uniqueID}`), {
@@ -98,6 +109,8 @@ const Board = () => {
   //     realTime();
   //   }
   // }, [grid, bpm]);
+
+  useEffect(() => {});
 
   const handleBeatChange = (e) => {
     if (!objectSounds[e.target.value]) {
@@ -137,7 +150,7 @@ const Board = () => {
               }
             />
           </div>
-          <LoadMenu />
+          <LoadMenu projects={projects} setGrid={setGrid} />
           <div>
             <button
               onClick={() => {
