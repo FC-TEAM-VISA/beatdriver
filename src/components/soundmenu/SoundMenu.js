@@ -20,6 +20,7 @@ function SoundMenu({ beat, handleBeatChange }) {
   const [selected, setSelected] = useState(null);
   const [directory, setDirectory] = useState([]);
   const [files, setFiles] = useState([]);
+  const [currentUrl, setCurrentUrl] = useState("");
 
   const storage = getStorage();
   const listRef = ref(storage, "built-in-instruments");
@@ -35,20 +36,28 @@ function SoundMenu({ beat, handleBeatChange }) {
     return directory;
   };
 
-  // console.log(directory);
-
   const getFiles = (folderName) => {
     const currentFolder = ref(storage, `built-in-instruments/${folderName}`);
     listAll(currentFolder).then((res) => {
       let allFiles = [];
       res.items.forEach((itemsRef) => {
         allFiles.push(itemsRef.name);
-        // console.log(itemsRef);
       });
       setFiles(allFiles);
-      // console.log(files, "files");
     });
     return files;
+  };
+
+  const getUrl = (folderName, fileName) => {
+    const currentFile = ref(
+      storage,
+      `built-in-instruments/${folderName}/${fileName}`
+    );
+    getDownloadURL(currentFile).then((url) => {
+      setCurrentUrl(url);
+    });
+    console.log("curr", currentUrl);
+    return currentUrl;
   };
 
   return (
@@ -68,9 +77,12 @@ function SoundMenu({ beat, handleBeatChange }) {
               onMouseOver={() => getFiles(folder)}
             >
               {files?.map((file) => {
-                console.log(file);
                 return (
-                  <MenuItem label={file} key={file}>
+                  <MenuItem
+                    label={file}
+                    key={file}
+                    onClick={() => getUrl(folder, file)}
+                  >
                     {file}
                   </MenuItem>
                 );
