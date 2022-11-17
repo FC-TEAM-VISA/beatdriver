@@ -54,21 +54,44 @@ const Board = () => {
   });
   const [grid, setGrid] = useState(initialGrid);
 
+  const dbRef = collection(database, "users");
+  const [docs] = useCollectionData(dbRef);
+
+  let currentUser;
+  if (user) {
+    currentUser = docs?.find((doc) => doc.email === user.email);
+  }
+  console.log("USER", currentUser);
+
   const dbInstance = query(
     collection(database, "projects"),
-    where(`ownerId`, "==", `${user?.uid}`)
+    where(`ownerId`, "==", `${currentUser?.id}`)
   );
+
+  // const dbInstance = collection(database, "projects");
+
   const [projects] = useCollectionData(dbInstance);
+
+  // let currentProject = projects?.find(
+  //   (project) => user.email === project.ownerId
+  // );
+  // console.log("current", currentProject);
 
   // console.log("beat", beat);
   // console.log("objectSounds", objectSounds);
-  console.log("grid", grid);
+  // console.log("grid", grid);
+
+  console.log("I AM A PROJECT: ", projects);
+  console.log(
+    "tracking",
+    projects?.filter((project) => project.ownerId === user.uid)
+  );
 
   const handleSave = async () => {
     if (!uniqueID) {
       const newProject = await addDoc(collection(database, `projects`), {
         createdAt: serverTimestamp(),
-        ownerId: user.uid,
+        ownerId: currentUser.id,
         name: "Untitled",
         grid: {
           r1: grid[0],
