@@ -2,11 +2,12 @@ import React, { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/router";
+
+//firebase imports
 import { auth } from "../../../utils/firebase";
 import { signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 import { useAuthState } from "react-firebase-hooks/auth";
 // import { onUserCreate } from "../../../utils/firebase";
-
 import { collection, addDoc, doc, getDoc, setDoc } from "firebase/firestore";
 import { database } from "../../../utils/firebase";
 import { useCollectionData } from "react-firebase-hooks/firestore";
@@ -14,22 +15,47 @@ import { useCollectionData } from "react-firebase-hooks/firestore";
 function Navbar() {
   const router = useRouter();
   const googleAuth = new GoogleAuthProvider();
-  const [user, setUser] = useAuthState(auth);
+  const [user] = useAuthState(auth);
   const dbInstance = collection(database, "users");
-  const [docs, loading, error] = useCollectionData(dbInstance);
+  const [docs] = useCollectionData(dbInstance);
+  let currentUser;
 
-  const createUser = async (user) => {
+  if (user) {
+    currentUser = docs?.find((doc) => doc.email === user.email);
+  }
+
+  const createUser = async (newUser) => {
     const userRef = doc(database, "users", user.email);
-    return setDoc(
-      userRef,
-      {
-        id: user.uid,
-        name: user.displayName,
-        email: user.email,
-        photo: user.photoURL,
-      },
-      { merge: true }
-    );
+
+    if (user && currentUser) {
+      return;
+      // return setDoc(
+      //   userRef,
+      //   {
+      //     id: currentUser.id,
+      //     name: currentUser.name,
+      //     email: currentUser.email,
+      //     photo: currentUser.photo,
+      //   },
+      //   { merge: true }
+      // );
+    } else {
+      const newUser = await setDoc(
+        userRef,
+        {
+          id: user.uid,
+          name: user.displayName,
+          email: user.email,
+          photo: user.photoURL,
+          location: "UPDATE YOUR LOCATION",
+          bio: "UPDATE YOUR BIO",
+          twitter: "ADD YOUR TWITTER",
+          instagram: "ADD YOUR INSTAGRAM",
+          soundcloud: "ADD YOUR SOUNDCLOUD",
+        },
+        { merge: true }
+      );
+    }
   };
 
   const login = async () => {
@@ -37,7 +63,7 @@ function Navbar() {
   };
 
   useEffect(() => {
-    if (user) {
+    if (user && !currentUser) {
       createUser(user);
     }
   }, [user]);
@@ -46,6 +72,8 @@ function Navbar() {
     auth.signOut();
     router.push("/");
   };
+
+  console.log("NAVBAR USER", currentUser);
 
   return (
     <header>
@@ -81,7 +109,7 @@ function Navbar() {
                 />
 
                 <p className="text-xl ml-2 pl-1 mt-1">
-                  {`Hello, ${user.displayName}!`}
+                  {`Hello, ${currentUser?.name}!`}
                 </p>
               </Link>
 

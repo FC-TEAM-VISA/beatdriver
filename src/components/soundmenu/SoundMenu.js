@@ -3,7 +3,7 @@ import { Menu, MenuItem, MenuButton, SubMenu } from "@szhsin/react-menu";
 import "@szhsin/react-menu/dist/index.css";
 import "@szhsin/react-menu/dist/transitions/slide.css";
 
-function Sounds({ beat, handleBeatChange }) {
+function SoundMenu({ beat, handleBeatChange }) {
   const [display, setDisplay] = useState("arrow");
   const [align, setAlign] = useState("center");
   const [position, setPosition] = useState("anchor");
@@ -57,4 +57,4 @@ function Sounds({ beat, handleBeatChange }) {
   );
 }
 
-export default Sounds;
+export default SoundMenu;
