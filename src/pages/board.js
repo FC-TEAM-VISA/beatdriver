@@ -42,7 +42,7 @@ const Board = () => {
   const [uniqueID, setUniqueID] = useState(null);
   const [playing, setPlaying] = useState(false);
   const [objectSounds, setObjectSounds] = useState({
-    selected: "./samples/drums/clap-808.wav",
+    "./samples/drums/clap-808.wav": "./samples/drums/clap-808.wav",
   });
   const [grid, setGrid] = useState(initialGrid);
 
@@ -99,7 +99,10 @@ const Board = () => {
             </button>
           </div>
           <div>
-            <BiSave className="mt-4 mr-3 ml-2 cursor-pointer" onClick={() => handleSave()} />
+            <BiSave
+              className="mt-4 mr-3 ml-2 cursor-pointer"
+              onClick={() => handleSave()}
+            />
           </div>
           <div>
             <button className="mt-1 mx-2 border-2 p-1 bg-red-900 hover:bg-red-600 border-white">
