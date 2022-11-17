@@ -15,7 +15,8 @@ import {
   serverTimestamp,
   addDoc,
 } from "firebase/firestore";
-import { database } from "../../utils/firebase";
+import { database, auth } from "../../utils/firebase";
+import { useAuthState } from "react-firebase-hooks/auth";
 
 /* THE BOARD*/
 const steps = 8;
@@ -46,6 +47,9 @@ const Board = () => {
     "./samples/drums/clap-808.wav": "./samples/drums/clap-808.wav",
   });
   const [grid, setGrid] = useState(initialGrid);
+  const [user] = useAuthState(auth);
+
+  console.log(user);
 
   const handleSave = async () => {
     if (!uniqueID) {

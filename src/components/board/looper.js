@@ -67,14 +67,6 @@ const Looper = ({
     };
   }, [currButton, playing]);
 
-  useEffect(() => {
-    updateDoc(dbProject, {
-     
-    })
-      .then(() => console.log("grid updated on db"))
-      .catch((e) => console.log(e));
-  }, [grid]);
-
   return (
     <>
       <div className="">
