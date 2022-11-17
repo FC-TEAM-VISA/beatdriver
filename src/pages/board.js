@@ -15,9 +15,13 @@ import {
   serverTimestamp,
   addDoc,
   setDoc,
+  where,
+  query,
 } from "firebase/firestore";
 import { database, auth } from "../../utils/firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
+import { getProjects } from "../../utils/projects";
+import { useCollectionData } from "react-firebase-hooks/firestore";
 
 /* THE BOARD*/
 const steps = 8;
@@ -50,19 +54,55 @@ const Board = () => {
   });
   const [grid, setGrid] = useState(initialGrid);
 
-  console.log("beat", beat);
-  console.log("objectSounds", objectSounds);
-  console.log("grid", grid);
+  const dbRef = collection(database, "users");
+  const [docs] = useCollectionData(dbRef);
+
+  let currentUser;
+  if (user) {
+    currentUser = docs?.find((doc) => doc.email === user.email);
+  }
+  console.log("USER", currentUser);
+
+  const dbInstance = query(
+    collection(database, "projects"),
+    where(`ownerId`, "==", `${currentUser?.id}`)
+  );
+
+  // const dbInstance = collection(database, "projects");
+
+  const [projects] = useCollectionData(dbInstance);
+
+  // let currentProject = projects?.find(
+  //   (project) => user.email === project.ownerId
+  // );
+  // console.log("current", currentProject);
+
+  // console.log("beat", beat);
+  // console.log("objectSounds", objectSounds);
+  // console.log("grid", grid);
+
+  console.log("I AM A PROJECT: ", projects);
+  console.log(
+    "tracking",
+    projects?.filter((project) => project.ownerId === user.uid)
+  );
 
   const handleSave = async () => {
     if (!uniqueID) {
       const newProject = await addDoc(collection(database, `projects`), {
         createdAt: serverTimestamp(),
-        ownerId: user.uid,
+        ownerId: currentUser.id,
         name: "Untitled",
-        grid: {},
+        grid: {
+          r1: grid[0],
+          r2: grid[1],
+          r3: grid[2],
+          r4: grid[3],
+          r5: grid[4],
+        },
         bpm: +bpm,
       });
+
       setUniqueID(newProject.id);
     } else {
       await updateDoc(doc(database, `projects/${uniqueID}`), {
@@ -98,6 +138,8 @@ const Board = () => {
   //     realTime();
   //   }
   // }, [grid, bpm]);
+
+  useEffect(() => {});
 
   const handleBeatChange = (e) => {
     if (!objectSounds[e.target.value]) {
@@ -137,7 +179,7 @@ const Board = () => {
               }
             />
           </div>
-          <LoadMenu />
+          <LoadMenu projects={projects} setGrid={setGrid} />
           <div>
             <button
               onClick={() => {
