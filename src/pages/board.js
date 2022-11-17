@@ -108,9 +108,7 @@ const Board = () => {
             <BiSave
               className="mt-4 mr-3 ml-2 cursor-pointer"
               onClick={() =>
-                user
-                  ? handleSave()
-                  : window.alert("LOG IN OR SIGN UP TO SAVE PROJECT")
+                user ? handleSave() : alert("LOG IN OR SIGN UP TO SAVE PROJECT")
               }
             />
           </div>
