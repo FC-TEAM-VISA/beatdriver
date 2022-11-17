@@ -70,7 +70,13 @@ const Board = () => {
         createdAt: serverTimestamp(),
         ownerId: user.uid,
         name: "Untitled",
-        grid: {},
+        grid: {
+          r1: grid[0],
+          r2: grid[1],
+          r3: grid[2],
+          r4: grid[3],
+          r5: grid[4],
+        },
         bpm: +bpm,
       });
 

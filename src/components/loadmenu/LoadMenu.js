@@ -5,11 +5,13 @@ import "@szhsin/react-menu/dist/transitions/slide.css";
 
 function LoadMenu({ projects, setGrid }) {
   // console.log(projects[0].grid);
-  const handleLoad = async (project) => {
+  const handleLoad = async ({ project }) => {
     console.log("📓", project);
-    const objGrid = project?.grid;
+    const objGrid = project.grid;
     console.log(objGrid);
+    // const loadGrid = [];
     const loadGrid = Object.values(objGrid).map((row) => row);
+    // Object.values(objGrid).forEach((row) => loadGrid.push(row));
     console.log(loadGrid);
     setGrid(loadGrid);
   };
@@ -22,7 +24,12 @@ function LoadMenu({ projects, setGrid }) {
     >
       {projects?.map((project) => (
         <>
-          <MenuItem onClick={() => handleLoad(project)}>
+          <MenuItem
+            onClick={() => {
+              handleLoad({ project });
+              console.log(project.grid);
+            }}
+          >
             {project.name}
           </MenuItem>
         </>

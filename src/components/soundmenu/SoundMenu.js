@@ -9,7 +9,7 @@ function SoundMenu({ beat, handleBeatChange }) {
   const [position, setPosition] = useState("anchor");
   const [viewScroll, setViewScroll] = useState("auto");
 
-  console.log(beat);
+  // console.log(beat);
   return (
     <Menu
       menuButton={({ open }) => (
