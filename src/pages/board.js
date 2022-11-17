@@ -14,10 +14,10 @@ import {
   updateDoc,
   serverTimestamp,
   addDoc,
+  setDoc,
 } from "firebase/firestore";
-import { auth } from "../../utils/firebase";
+import { database, auth } from "../../utils/firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { database } from "../../utils/firebase";
 
 /* THE BOARD*/
 const steps = 8;
@@ -49,6 +49,8 @@ const Board = () => {
     "./samples/drums/clap-808.wav": "./samples/drums/clap-808.wav",
   });
   const [grid, setGrid] = useState(initialGrid);
+
+  console.log(user);
 
   const handleSave = async () => {
     if (!uniqueID) {
