@@ -29,16 +29,6 @@ function Navbar() {
 
     if (user && currentUser) {
       return;
-      // return setDoc(
-      //   userRef,
-      //   {
-      //     id: currentUser.id,
-      //     name: currentUser.name,
-      //     email: currentUser.email,
-      //     photo: currentUser.photo,
-      //   },
-      //   { merge: true }
-      // );
     } else {
       const newUser = await setDoc(
         userRef,
