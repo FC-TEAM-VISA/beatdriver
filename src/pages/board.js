@@ -56,31 +56,25 @@ const Board = () => {
 
   const handleSave = async () => {
     if (!uniqueID) {
-      const newProject = await addDoc(
-        collection(database, `users/${user.email}/projects`),
-        {
-          timestamp: serverTimestamp(),
-          name: "Untitled",
-          grid: {},
-          bpm: +bpm,
-        }
-      );
+      const newProject = await addDoc(collection(database, `projects`), {
+        timestamp: serverTimestamp(),
+        name: "Untitled",
+        grid: {},
+        bpm: +bpm,
+      });
       setUniqueID(newProject.id);
     } else {
-      await updateDoc(
-        doc(database, `users/${user.email}/projects/${uniqueID}`),
-        {
-          timestamp: serverTimestamp(),
-          grid: {
-            r1: grid[0],
-            r2: grid[1],
-            r3: grid[2],
-            r4: grid[3],
-            r5: grid[4],
-          },
-          bpm: +bpm,
-        }
-      );
+      await updateDoc(doc(database, `projects/${uniqueID}`), {
+        timestamp: serverTimestamp(),
+        grid: {
+          r1: grid[0],
+          r2: grid[1],
+          r3: grid[2],
+          r4: grid[3],
+          r5: grid[4],
+        },
+        bpm: +bpm,
+      });
     }
   };
 
