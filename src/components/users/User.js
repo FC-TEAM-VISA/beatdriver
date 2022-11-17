@@ -15,6 +15,9 @@ function User() {
   const [docs] = useCollectionData(dbInstance);
   let currentUser;
 
+  console.log("iamuser", user);
+  console.log(currentUser);
+
   if (user) {
     currentUser = docs?.find((doc) => doc.email === user.email);
   }
@@ -74,9 +77,9 @@ function User() {
         <div className="col-span-4  border-2">
           <h1 className="text-3xl p-2 font-extrabold">UPLOADED SOUNDS:</h1>
           {user &&
-            currentUser?.sounds?.map((sound, index) => (
+            currentUser?.sounds?.map(({ name }, index) => (
               <div key={index} className="p-2">
-                <p>{sound}</p>
+                <p>{name}</p>
               </div>
             ))}
         </div>
@@ -84,9 +87,9 @@ function User() {
         <div className="col-span-4 border-2">
           <h1 className="text-3xl p-2 font-extrabold">PUBLISHED TRACKS:</h1>
           {user &&
-            currentUser?.sounds?.map((sound, index) => (
+            currentUser?.sounds?.map(({ name, url }, index) => (
               <div key={index} className="p-2">
-                <p>{sound}</p>
+                <p>{url}</p>
               </div>
             ))}
         </div>

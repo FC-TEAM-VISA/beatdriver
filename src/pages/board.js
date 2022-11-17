@@ -14,10 +14,10 @@ import {
   updateDoc,
   serverTimestamp,
   addDoc,
+  setDoc,
 } from "firebase/firestore";
-import { auth } from "../../utils/firebase";
+import { database, auth } from "../../utils/firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { database } from "../../utils/firebase";
 
 /* THE BOARD*/
 const steps = 8;
