@@ -56,10 +56,30 @@ function UpdateInfo({ currentUser, user }) {
       .catch((e) => console.log(e.message));
   };
 
+  //   const updateProfile = (
+  //     newName,
+  //     newBio,
+  //     newSound,
+  //     newLoc,
+  //     newInsta,
+  //     newTwitter
+  //   ) => {
+  //     updateDoc(dbRef, {
+  //       name: newName,
+  //       bio: newBio,
+  //       location: newLoc,
+  //       instagram: newInsta,
+  //       twitter: newTwitter,
+  //       soundcloud: newSound,
+  //     })
+  //       .then(() => console.log("profile updated"))
+  //       .catch((e) => console.log(e.message));
+  //   };
+
   return (
     <>
       {/* NAME */}
-      <div className="grid place-items-center mt-10">
+      <div className="grid place-items-center m-10">
         <input
           type="text"
           placeholder="edit name..."

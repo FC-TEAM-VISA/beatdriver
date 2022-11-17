@@ -10,18 +10,40 @@ import { BsInstagram, BsTwitter } from "react-icons/bs";
 import { GrSoundcloud } from "react-icons/gr";
 import UploadButton from "../upload/UploadButton";
 import { Input } from "postcss";
+import Modal from "react-modal";
 import UpdateInfo from "./UpdateInfo";
+import UploadPhoto from "./UploadPhoto";
 
 function User() {
   const [user] = useAuthState(auth);
   const dbInstance = collection(database, "users");
-  const dbRef = doc(database, "users", `${user?.email}`);
   const [docs] = useCollectionData(dbInstance);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [photoModalOpen, setPhotoModalOpen] = useState(false);
   let currentUser;
+  let subtitle;
 
   if (user) {
     currentUser = docs?.find((doc) => doc.email === user.email);
   }
+
+  const openModal = () => setModalOpen(true);
+  const closeModal = () => setModalOpen(false);
+
+  const openPhotoModal = () => setPhotoModalOpen(true);
+  const closePhotoModal = () => setPhotoModalOpen(false);
+
+  const customStyles = {
+    content: {
+      top: "50%",
+      left: "50%",
+      right: "auto",
+      bottom: "auto",
+      marginRight: "-50%",
+      transform: "translate(-50%, -50%)",
+      background: "black",
+    },
+  };
 
   return (
     <>
@@ -34,6 +56,45 @@ function User() {
             className="p-5"
             alt=""
           />
+          <div className="flex space-x-10 ml-10">
+            <div>
+              <button className="mt-5 border-2 p-2" onClick={openModal}>
+                EDIT PROFILE
+              </button>
+              <Modal
+                isOpen={modalOpen}
+                onRequestClose={closeModal}
+                style={customStyles}
+              >
+                <button
+                  onClick={closeModal}
+                  className="bg-black text-red-600 text-2xl"
+                >
+                  CANCEL
+                </button>
+
+                <UpdateInfo currentUser={currentUser} user={user} />
+              </Modal>
+            </div>
+            <div>
+              <button className="mt-5 border-2 p-2" onClick={openPhotoModal}>
+                UPDATE PHOTO
+              </button>
+              <Modal
+                isOpen={photoModalOpen}
+                onRequestClose={closePhotoModal}
+                style={customStyles}
+              >
+                <UploadPhoto />
+                <button
+                  onClick={closePhotoModal}
+                  className="bg-black text-red-600 text-2xl ml-20"
+                >
+                  CANCEL
+                </button>
+              </Modal>
+            </div>
+          </div>
         </div>
         <div className="col-span-3">
           <div className="flex space-x-4">
@@ -114,8 +175,6 @@ function User() {
           )}
         </div>
       </div>
-
-      <UpdateInfo currentUser={currentUser} user={user} />
     </>
   );
 }
