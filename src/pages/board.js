@@ -4,7 +4,7 @@ import Looper from "../components/board/looper";
 import AudioPlayer from "../components/board/audioPlayer";
 import { BsFillPlayFill, BsStopFill } from "react-icons/bs";
 import { BiSave } from "react-icons/bi";
-import Sounds from "../components/soundmenu/Sounds";
+import SoundMenu from "../components/soundmenu/SoundMenu";
 import LoadMenu from "../components/loadmenu/LoadMenu";
 
 //firebase imports
@@ -50,7 +50,9 @@ const Board = () => {
   });
   const [grid, setGrid] = useState(initialGrid);
 
-  console.log(user);
+  console.log("beat", beat);
+  console.log("objectSounds", objectSounds);
+  console.log("grid", grid);
 
   const handleSave = async () => {
     if (!uniqueID) {
@@ -110,13 +112,22 @@ const Board = () => {
               onClick={() =>
                 user
                   ? handleSave()
-                  : window.alert("LOG IN OR SIGN UP TO SAVE PROJECT")
+                  : window.alert("LOG IN OR SIGN UP TO SAVE A PROJECT")
               }
             />
           </div>
           <LoadMenu />
           <div>
-            <button className="mt-1 mx-2 border-2 p-1 bg-red-900 hover:bg-red-600 border-white">
+            <button
+              onClick={() => {
+                setGrid(initialGrid);
+                setObjectSounds({
+                  "./samples/drums/clap-808.wav":
+                    "./samples/drums/clap-808.wav",
+                });
+              }}
+              className="mt-1 mx-2 border-2 p-1 bg-red-900 hover:bg-red-600 border-white"
+            >
               CLEAR BOARD
             </button>
           </div>
@@ -141,8 +152,8 @@ const Board = () => {
           </div>
 
           <div className="p-2 mx-4 mt-1">
-            <label className="pr-2">BEAT:</label>
-            <Sounds beat={beat} handleBeatChange={handleBeatChange} />
+            <label className="pr-2">SOUNDS:</label>
+            <SoundMenu beat={beat} handleBeatChange={handleBeatChange} />
           </div>
 
           <div className="p-2">
@@ -162,7 +173,11 @@ const Board = () => {
           <AudioPlayer objectSounds={objectSounds} bpm={bpm}>
             {({ player }) => {
               if (!player) {
-                return <p>loading....</p>;
+                return (
+                  <p className="flex items-center justify-center animate-bounce">
+                    LOADING....
+                  </p>
+                );
               }
               return (
                 <Looper
