@@ -15,6 +15,8 @@ import {
   serverTimestamp,
   addDoc,
 } from "firebase/firestore";
+import { auth } from "../../utils/firebase";
+import { useAuthState } from "react-firebase-hooks/auth";
 import { database } from "../../utils/firebase";
 
 /* THE BOARD*/
@@ -38,6 +40,7 @@ const initialGrid = [
 ];
 
 const Board = () => {
+  const [user] = useAuthState(auth);
   const [beat, setBeat] = useState("./samples/drums/clap-808.wav");
   const [bpm, setBpm] = useState(120);
   const [uniqueID, setUniqueID] = useState(null);
@@ -102,7 +105,11 @@ const Board = () => {
           <div>
             <BiSave
               className="mt-4 mr-3 ml-2 cursor-pointer"
-              onClick={() => handleSave()}
+              onClick={() =>
+                user
+                  ? handleSave()
+                  : window.alert("LOG IN OR SIGN UP TO SAVE PROJECT")
+              }
             />
           </div>
           <LoadMenu />

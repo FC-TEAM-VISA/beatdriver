@@ -19,8 +19,6 @@ function User() {
     currentUser = docs?.find((doc) => doc.email === user.email);
   }
 
-  console.log(currentUser);
-
   return (
     <>
       <div className="grid grid-cols-10 mt-2">
