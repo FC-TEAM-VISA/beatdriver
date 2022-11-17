@@ -68,11 +68,9 @@ const Looper = ({
   }, [currButton, playing]);
 
   return (
-    <>
-      <div className="">
-        <Grid grid={grid} toggleActivation={toggleActivation} />
-      </div>
-    </>
+    <div className="">
+      <Grid grid={grid} toggleActivation={toggleActivation} />
+    </div>
   );
 };
 

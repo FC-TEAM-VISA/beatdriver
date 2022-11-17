@@ -14,6 +14,7 @@ import {
   updateDoc,
   serverTimestamp,
   addDoc,
+  setDoc,
 } from "firebase/firestore";
 import { database, auth } from "../../utils/firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
@@ -48,7 +49,6 @@ const Board = () => {
     "./samples/drums/clap-808.wav": "./samples/drums/clap-808.wav",
   });
   const [grid, setGrid] = useState(initialGrid);
-  const [user] = useAuthState(auth);
 
   console.log(user);
 

@@ -2,13 +2,7 @@ import React, { useState } from "react";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import { database, storage, beatsRef } from "../../../utils/firebase";
 import { auth } from "../../../utils/firebase";
-import {
-  collection,
-  setDoc,
-  doc,
-  arrayUnion,
-  updateDoc,
-} from "firebase/firestore";
+import { doc, arrayUnion, updateDoc } from "firebase/firestore";
 import { useAuthState } from "react-firebase-hooks/auth";
 
 const UploadButton = () => {
@@ -16,7 +10,7 @@ const UploadButton = () => {
   const [file, setFile] = useState("");
   // progress
   const [percent, setPercent] = useState(0);
-  const [user, setUser] = useAuthState(auth);
+  const [user] = useAuthState(auth);
 
   const dbRef = doc(database, "users", `${user?.email}`);
 
@@ -47,10 +41,11 @@ const UploadButton = () => {
       () => {
         // download url
         getDownloadURL(uploadTask.snapshot.ref).then((url) => {
-          updateDoc(dbRef, { sounds: arrayUnion(url) })
+          updateDoc(dbRef, {
+            sounds: arrayUnion({ name: file.name, url }),
+          })
             .then(() => console.log("url loaded to collection"))
             .catch((e) => console.log(e));
-          console.log(url);
         });
       }
     );
