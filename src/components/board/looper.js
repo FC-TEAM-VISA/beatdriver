@@ -68,9 +68,7 @@ const Looper = ({
   }, [currButton, playing]);
 
   useEffect(() => {
-    updateDoc(dbProject, {
-     
-    })
+    updateDoc(dbProject, {})
       .then(() => console.log("grid updated on db"))
       .catch((e) => console.log(e));
   }, [grid]);
