@@ -10,9 +10,9 @@ import { BsInstagram, BsTwitter } from "react-icons/bs";
 import { GrSoundcloud } from "react-icons/gr";
 
 function User() {
-  const [user, setUser] = useAuthState(auth);
+  const [user] = useAuthState(auth);
   const dbInstance = collection(database, "users");
-  const [docs, loading, error] = useCollectionData(dbInstance);
+  const [docs] = useCollectionData(dbInstance);
   let currentUser;
 
   if (user) {

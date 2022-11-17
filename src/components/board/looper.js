@@ -3,31 +3,28 @@ import Grid from "./grid";
 import * as Tone from "tone";
 import { Player } from "tone";
 
-const steps = 8;
-const buttonState = { triggered: false, activated: false, audio: "" };
-const sounds = [
-  ["1", "2", "3", "4", "5", "6", "7", "8"],
-  ["9", "10", "11", "12", "13", "14", "15", "16"],
-  ["17", "18", "19", "20", "21", "22", "23", "24"],
-  ["25", "26", "27", "28", "29", "30", "31", "32"],
-  ["33", "34", "35", "36", "37", "38", "39", "40"],
-];
+import { doc, updateDoc, serverTimestamp } from "firebase/firestore";
+import { database } from "../../../utils/firebase";
 
-//sets up how big the grid will be
-const initialGrid = [
-  new Array(8).fill(buttonState),
-  new Array(8).fill(buttonState),
-  new Array(8).fill(buttonState),
-  new Array(8).fill(buttonState),
-  new Array(8).fill(buttonState),
-];
-
-const Looper = ({ player, bpm, playing, beat, objectSounds }) => {
-  const [grid, setGrid] = useState(initialGrid);
+const Looper = ({
+  player,
+  bpm,
+  playing,
+  beat,
+  objectSounds,
+  grid,
+  setGrid,
+  sounds,
+  steps,
+  uniqueID,
+  handleSave,
+}) => {
   // const [playing, setPlaying] = useState(false);
   const [currButton, setCurrButton] = useState(0);
 
   // console.log(beat, "BEAT ");
+  const dbProject = doc(database, "project", `${uniqueID}`);
+  console.log("I am project: ", dbProject);
 
   const toggleActivation = (row, col) => {
     const gridCopy = [...grid];
@@ -69,6 +66,14 @@ const Looper = ({ player, bpm, playing, beat, objectSounds }) => {
       clearTimeout(timer);
     };
   }, [currButton, playing]);
+
+  useEffect(() => {
+    updateDoc(dbProject, {
+     
+    })
+      .then(() => console.log("grid updated on db"))
+      .catch((e) => console.log(e));
+  }, [grid]);
 
   return (
     <>
