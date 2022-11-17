@@ -24,13 +24,16 @@ function SoundMenu({ beat, handleBeatChange }) {
   const storage = getStorage();
   const listRef = ref(storage, "built-in-instruments");
 
-  listAll(listRef).then((res) => {
-    let folders = [];
-    res.prefixes.forEach((folderRef) => {
-      folders.push(folderRef.name);
+  const getFolders = () => {
+    listAll(listRef).then((res) => {
+      let folders = [];
+      res.prefixes.forEach((folderRef) => {
+        folders.push(folderRef.name);
+      });
+      setDirectory(folders);
     });
-    setDirectory(folders);
-  });
+    return directory;
+  };
 
   // console.log(directory);
 
@@ -48,14 +51,12 @@ function SoundMenu({ beat, handleBeatChange }) {
     return files;
   };
 
-  // console.log(getFiles("bass"));
-
-  // getFiles("bass");
-
   return (
     <Menu
       menuButton={({ open }) => (
-        <MenuButton>{open ? "CLOSE PANEL" : "SELECT"}</MenuButton>
+        <MenuButton onClick={getFolders}>
+          {open ? "CLOSE PANEL" : "SELECT"}
+        </MenuButton>
       )}
     >
       <SubMenu label="INSTRUMENTS">
@@ -67,7 +68,12 @@ function SoundMenu({ beat, handleBeatChange }) {
               onMouseOver={() => getFiles(folder)}
             >
               {files?.map((file) => {
-                return <SubMenu label={file} key={file} />;
+                console.log(file);
+                return (
+                  <MenuItem label={file} key={file}>
+                    {file}
+                  </MenuItem>
+                );
               })}
             </SubMenu>
           );
