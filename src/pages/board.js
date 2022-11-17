@@ -56,9 +56,17 @@ const Board = () => {
 
   const dbInstance = query(
     collection(database, "projects"),
-    where(`ownerId`, "==", `${user?.uid}`)
+    where(`ownerId`, "==", `${user?.email}`)
   );
+
+  // const dbInstance = collection(database, "projects");
+
   const [projects] = useCollectionData(dbInstance);
+
+  // let currentProject = projects?.find(
+  //   (project) => user.email === project.ownerId
+  // );
+  // console.log("current", currentProject);
 
   // console.log("beat", beat);
   // console.log("objectSounds", objectSounds);
@@ -68,7 +76,7 @@ const Board = () => {
     if (!uniqueID) {
       const newProject = await addDoc(collection(database, `projects`), {
         createdAt: serverTimestamp(),
-        ownerId: user.uid,
+        ownerId: user.email,
         name: "Untitled",
         grid: {
           r1: grid[0],
