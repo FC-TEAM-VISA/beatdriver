@@ -17,6 +17,8 @@ import {
   setDoc,
   where,
   query,
+  limit,
+  orderBy,
 } from "firebase/firestore";
 import { database, auth } from "../../utils/firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
@@ -70,10 +72,17 @@ const Board = () => {
     where(`ownerId`, "==", `${userGoogleInfo?.uid}`)
   );
 
+  const previousInstance = query(
+    collection(database, "projects"),
+    where(`ownerId`, "==", `${userGoogleInfo?.uid}`)
+  );
+
   console.log("IWORK: ", dbInstance);
   // const dbInstance = collection(database, "projects");
 
   const [projects] = useCollectionData(dbInstance);
+  const [lastProject] = useCollectionData(previousInstance);
+  console.log("last project to load: ", lastProject);
 
   // let currentProject = projects?.find(
   //   (project) => user.email === project.ownerId
@@ -243,6 +252,7 @@ const Board = () => {
             <input
               type="range"
               min="50"
+              defaultValue="120"
               max="300"
               onChange={(e) => setBpm(e.target.value)}
             />
