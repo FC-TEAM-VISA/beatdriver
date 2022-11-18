@@ -2,7 +2,13 @@ import React, { useState } from "react";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import { database, storage, beatsRef } from "../../utils/firebase";
 import { auth } from "../../utils/firebase";
-import { collection, arrayUnion, updateDoc, addDoc } from "firebase/firestore";
+import {
+  collection,
+  arrayUnion,
+  updateDoc,
+  addDoc,
+  doc,
+} from "firebase/firestore";
 import { useAuthState } from "react-firebase-hooks/auth";
 
 const Admin = () => {
@@ -12,7 +18,8 @@ const Admin = () => {
   const [percent, setPercent] = useState(0);
   const [user] = useAuthState(auth);
 
-  const dbRef = collection(database, "starter_instruments");
+  const dbInstance = collection(database, "built_in_vocals");
+  const dbRef = doc(database, "built_in_vocals", `vox`);
 
   // Handle file upload event and update state
   function handleChange(event) {
@@ -24,7 +31,7 @@ const Admin = () => {
 
     if (!file) return;
 
-    const storageRef = ref(storage, `built-in-instruments`);
+    const storageRef = ref(storage, `built-in-instruments/vocals/${file.name}`);
     const uploadTask = uploadBytesResumable(storageRef, file);
 
     uploadTask.on(
@@ -41,7 +48,7 @@ const Admin = () => {
       () => {
         // download url
         getDownloadURL(uploadTask.snapshot.ref).then((url) => {
-          addDoc(dbRef, {
+          updateDoc(dbRef, {
             sounds: arrayUnion({ name: file.name, url }),
           })
             .then(() => console.log("url loaded to collection"))
