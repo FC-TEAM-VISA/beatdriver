@@ -64,7 +64,6 @@ const Board = () => {
   if (user) {
     currentUser = docs?.find((doc) => doc.email === user.email);
   }
-  console.log("USER", currentUser);
 
   const dbInstance = query(
     collection(database, "projects"),
@@ -221,25 +220,6 @@ const Board = () => {
             >
               CLEAR BOARD
             </button>
-          </div>
-          <div className="p-2">
-            {/* DROPDOWN */}
-            <label className="p-2">BEAT:</label>
-            <select
-              className="p-1"
-              name="beat"
-              onChange={(e) => {
-                handleBeatChange(e);
-              }}
-            >
-              <option value="./samples/drums/clap-808.wav">clap-808</option>
-              <option value="./samples/drums/clap-analog.wav">
-                clap-analog
-              </option>
-              <option value="./samples/drums/clap-crushed.wav">
-                clap-crushed
-              </option>
-            </select>
           </div>
 
           <div className="p-2 mx-4 mt-1">
