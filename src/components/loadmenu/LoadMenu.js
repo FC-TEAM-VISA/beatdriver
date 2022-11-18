@@ -3,13 +3,15 @@ import { Menu, MenuItem, MenuButton, SubMenu } from "@szhsin/react-menu";
 import "@szhsin/react-menu/dist/index.css";
 import "@szhsin/react-menu/dist/transitions/slide.css";
 
-function LoadMenu({ projects, setGrid }) {
+function LoadMenu({ projects, setGrid, setUniqueID, uniqueID }) {
   // console.log(projects[0].grid);
   const handleLoad = (project) => {
+    console.log(project);
     const objGrid = project.grid;
     const orderedKeys = Object.keys(objGrid).sort();
     const loadGrid = orderedKeys.map((row) => objGrid[row]);
 
+    setUniqueID(project.projectId);
     setGrid(loadGrid);
   };
 
