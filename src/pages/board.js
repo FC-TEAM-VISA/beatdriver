@@ -45,6 +45,7 @@ const initialGrid = [
 
 const Board = () => {
   const [user] = useAuthState(auth);
+  const [isPublic, setIsPublic] = useState(true);
   const [beat, setBeat] = useState("./samples/drums/clap-808.wav");
   const [bpm, setBpm] = useState(120);
   const [uniqueID, setUniqueID] = useState(null);
@@ -105,6 +106,7 @@ const Board = () => {
           r5: grid[4],
         },
         bpm: +bpm,
+        isPublic: true,
       });
       setUniqueID(newProject.id);
 
@@ -126,6 +128,7 @@ const Board = () => {
           r5: grid[4],
         },
         bpm: +bpm,
+        isPublic,
       });
 
       setUniqueID(uniqueID);
