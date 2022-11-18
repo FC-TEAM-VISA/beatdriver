@@ -5,54 +5,91 @@ import { useRouter } from "next/router";
 
 //firebase imports
 import { auth } from "../../../utils/firebase";
-import { signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+import {
+  signInWithPopup,
+  GoogleAuthProvider,
+  getAdditionalUserInfo,
+} from "firebase/auth";
 import { useAuthState } from "react-firebase-hooks/auth";
 // import { onUserCreate } from "../../../utils/firebase";
-import { collection, addDoc, doc, getDoc, setDoc } from "firebase/firestore";
+import {
+  collection,
+  addDoc,
+  doc,
+  getDoc,
+  setDoc,
+  serverTimestamp,
+} from "firebase/firestore";
 import { database } from "../../../utils/firebase";
 import { useCollectionData } from "react-firebase-hooks/firestore";
 
 function Navbar() {
   const router = useRouter();
   const googleAuth = new GoogleAuthProvider();
-  const [user] = useAuthState(auth);
+  const [userGoogleInfo] = useAuthState(auth);
   const dbInstance = collection(database, "users");
   const [docs] = useCollectionData(dbInstance);
-  let currentUser;
+  // let currentUser;
 
-  if (user) {
-    currentUser = docs?.find((doc) => doc.email === user.email);
-  }
+  // if (user) {
+  //   currentUser = docs?.find((doc) => doc.email === user.email);
+  // }
 
-  const createUser = async (newUser) => {
-    const userRef = doc(database, "users", user.email);
+  // const createUser = async (newUser) => {
+  //   const userRef = doc(database, "users", user.email);
 
-    if (user && currentUser) {
-      return;
-    } else {
-      const newUser = await setDoc(userRef, {
-        id: user.uid,
-        name: user.displayName,
-        email: user.email,
-        photo: user.photoURL,
-        location: "UPDATE YOUR LOCATION",
-        bio: "UPDATE YOUR BIO",
-        twitter: "ADD YOUR TWITTER",
-        instagram: "ADD YOUR INSTAGRAM",
-        soundcloud: "ADD YOUR SOUNDCLOUD",
-      });
-    }
-  };
+  //   if (user && currentUser) {
+  //     return;
+  //   } else {
+  //     const newUser = await setDoc(userRef, {
+  // id: user.uid,
+  // name: user.displayName,
+  // email: user.email,
+  // photo: user.photoURL,
+  // location: "UPDATE YOUR LOCATION",
+  // bio: "UPDATE YOUR BIO",
+  // twitter: "ADD YOUR TWITTER",
+  // instagram: "ADD YOUR INSTAGRAM",
+  // soundcloud: "ADD YOUR SOUNDCLOUD",
+  //     });
+  //   }
+  // };
 
   const login = async () => {
-    const result = await signInWithPopup(auth, googleAuth);
+    await signInWithPopup(auth, googleAuth).then(async (result) => {
+      const user = result.user;
+      // console.log(user, "results");
+      // console.log(getAdditionalUserInfo(result));
+      const { isNewUser } = getAdditionalUserInfo(result);
+      console.log("isNewUser", isNewUser);
+      if (isNewUser) {
+        await addUser(user.uid, user.displayName, user.email, user.photoURL);
+      } else {
+        console.log("User already exists");
+      }
+    });
   };
 
-  useEffect(() => {
-    if (user && !currentUser) {
-      createUser(user);
-    }
-  }, [currentUser]);
+  const addUser = async (userId, displayName, email, photoURL) => {
+    const userRef = doc(database, "users", userId);
+    return await setDoc(userRef, {
+      createdAt: serverTimestamp(),
+      name: displayName,
+      email: email,
+      photo: photoURL,
+      location: "UPDATE YOUR LOCATION",
+      bio: "UPDATE YOUR BIO",
+      twitter: "ADD YOUR TWITTER",
+      instagram: "ADD YOUR INSTAGRAM",
+      soundcloud: "ADD YOUR SOUNDCLOUD",
+    });
+  };
+
+  // useEffect(() => {
+  //   if (user && !currentUser) {
+  //     createUser(user);
+  //   }
+  // }, [currentUser]);
 
   const handleSignOut = () => {
     auth.signOut();
@@ -76,16 +113,16 @@ function Navbar() {
           <Link href="/board">
             <p className="link">New Project</p>
           </Link>
-          {!user && (
+          {!userGoogleInfo && (
             <div onClick={login} className="link">
               <p>Sign In</p>
             </div>
           )}
-          {user && (
+          {userGoogleInfo && (
             <>
               <Link href="/user" className="flex p-2">
                 <Image
-                  src={user.photoURL}
+                  src={userGoogleInfo.photoURL}
                   alt=""
                   width={40}
                   height={40}
@@ -93,7 +130,7 @@ function Navbar() {
                 />
 
                 <p className="text-xl ml-2 pl-1 mt-1">
-                  {`Hello, ${currentUser?.name}!`}
+                  {`Hello, ${userGoogleInfo.displayName}!`}
                 </p>
               </Link>
 
