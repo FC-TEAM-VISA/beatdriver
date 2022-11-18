@@ -53,6 +53,8 @@ const Board = () => {
     "./samples/drums/clap-808.wav": "./samples/drums/clap-808.wav",
   });
   const [grid, setGrid] = useState(initialGrid);
+  const [userGoogleInfo] = useAuthState(auth);
+  console.log("GoogleInfo: ", userGoogleInfo);
 
   const dbRef = collection(database, "users");
   const [docs] = useCollectionData(dbRef);
@@ -65,9 +67,10 @@ const Board = () => {
 
   const dbInstance = query(
     collection(database, "projects"),
-    where(`ownerId`, "==", `${currentUser?.id}`)
+    where(`ownerId`, "==", `${userGoogleInfo?.uid}`)
   );
 
+  console.log("IWORK: ", dbInstance);
   // const dbInstance = collection(database, "projects");
 
   const [projects] = useCollectionData(dbInstance);
@@ -82,16 +85,17 @@ const Board = () => {
   // console.log("grid", grid);
 
   console.log("I AM A PROJECT: ", projects);
-  console.log(
-    "tracking",
-    projects?.filter((project) => project.ownerId === user.uid)
-  );
+  console.log(uniqueID);
+  // console.log(
+  //   "tracking",
+  //   projects?.filter((project) => project.ownerId === user.uid)
+  // );
 
   const handleSave = async () => {
     if (!uniqueID) {
       const newProject = await addDoc(collection(database, `projects`), {
         createdAt: serverTimestamp(),
-        ownerId: currentUser.id,
+        ownerId: user.uid,
         name: "Untitled",
         grid: {
           r1: grid[0],
@@ -102,11 +106,19 @@ const Board = () => {
         },
         bpm: +bpm,
       });
-
       setUniqueID(newProject.id);
+
+      await setDoc(
+        doc(database, `projects/${newProject.id}`),
+        {
+          projectId: newProject.id,
+        },
+        { merge: true }
+      );
     } else {
       await updateDoc(doc(database, `projects/${uniqueID}`), {
         updatedAt: serverTimestamp(),
+        projectId: uniqueID,
         grid: {
           r1: grid[0],
           r2: grid[1],
@@ -116,6 +128,8 @@ const Board = () => {
         },
         bpm: +bpm,
       });
+
+      setUniqueID(uniqueID);
     }
   };
 
@@ -179,7 +193,12 @@ const Board = () => {
               }
             />
           </div>
-          <LoadMenu projects={projects} setGrid={setGrid} />
+          <LoadMenu
+            projects={projects}
+            setGrid={setGrid}
+            setUniqueID={setUniqueID}
+            uniqueID={uniqueID}
+          />
           <div>
             <button
               onClick={() => {
