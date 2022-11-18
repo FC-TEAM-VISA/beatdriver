@@ -58,12 +58,11 @@ function Navbar() {
   const login = async () => {
     await signInWithPopup(auth, googleAuth).then(async (result) => {
       const user = result.user;
-      console.log(user, "results");
-
-      console.log(getAdditionalUserInfo(result));
+      // console.log(user, "results");
+      // console.log(getAdditionalUserInfo(result));
       const { isNewUser } = getAdditionalUserInfo(result);
       console.log("isNewUser", isNewUser);
-      if (!isNewUser) {
+      if (isNewUser) {
         await addUser(user.uid, user.displayName, user.email, user.photoURL);
       } else {
         console.log("User already exists");

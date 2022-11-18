@@ -4,7 +4,7 @@ import { doc, updateDoc } from "firebase/firestore";
 
 function UpdateInfo({ currentUser, user }) {
   const dbRef = doc(database, "users", `${user?.uid}`);
-  console.log("refref", dbRef);
+  console.log("refref", user?.uid);
   const [name, setName] = useState(`${currentUser?.name}`);
   const [bio, setBio] = useState(`${currentUser?.bio}`);
   const [image, setImage] = useState(`${currentUser?.image}`);
