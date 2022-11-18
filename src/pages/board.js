@@ -118,7 +118,6 @@ const Board = () => {
     } else {
       await updateDoc(doc(database, `projects/${uniqueID}`), {
         updatedAt: serverTimestamp(),
-        projectId: uniqueID,
         grid: {
           r1: grid[0],
           r2: grid[1],
