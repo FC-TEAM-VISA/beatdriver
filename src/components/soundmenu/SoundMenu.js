@@ -3,14 +3,9 @@ import { Menu, MenuItem, MenuButton, SubMenu } from "@szhsin/react-menu";
 import "@szhsin/react-menu/dist/index.css";
 import "@szhsin/react-menu/dist/transitions/slide.css";
 import { getStorage, ref, getDownloadURL, listAll } from "firebase/storage";
-import {
-  collection,
-  doc,
-  updateDoc,
-  serverTimestamp,
-  addDoc,
-  setDoc,
-} from "firebase/firestore";
+import { collection } from "firebase/firestore";
+import { database } from "../../../utils/firebase";
+import { useCollectionData } from "react-firebase-hooks/firestore";
 
 function SoundMenu({ beat, handleBeatChange }) {
   const [display, setDisplay] = useState("arrow");
@@ -25,7 +20,12 @@ function SoundMenu({ beat, handleBeatChange }) {
   const storage = getStorage();
   const listRef = ref(storage, "built-in-instruments");
 
-  const getFolders = () => {
+  const dbInstance = collection(database, "starter_instruments");
+  const [docs] = useCollectionData(dbInstance);
+
+  console.log(docs);
+
+  const getFolders = async () => {
     listAll(listRef).then((res) => {
       let folders = [];
       res.prefixes.forEach((folderRef) => {
