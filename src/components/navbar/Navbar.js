@@ -29,40 +29,17 @@ function Navbar() {
   const [userGoogleInfo] = useAuthState(auth);
   const dbInstance = collection(database, "users");
   const [docs] = useCollectionData(dbInstance);
-  // let currentUser;
+  let currentUser;
 
-  // if (user) {
-  //   currentUser = docs?.find((doc) => doc.email === user.email);
-  // }
-
-  // const createUser = async (newUser) => {
-  //   const userRef = doc(database, "users", user.email);
-
-  //   if (user && currentUser) {
-  //     return;
-  //   } else {
-  //     const newUser = await setDoc(userRef, {
-  // id: user.uid,
-  // name: user.displayName,
-  // email: user.email,
-  // photo: user.photoURL,
-  // location: "UPDATE YOUR LOCATION",
-  // bio: "UPDATE YOUR BIO",
-  // twitter: "ADD YOUR TWITTER",
-  // instagram: "ADD YOUR INSTAGRAM",
-  // soundcloud: "ADD YOUR SOUNDCLOUD",
-  //     });
-  //   }
-  // };
+  if (userGoogleInfo) {
+    currentUser = docs?.find((doc) => doc.email === userGoogleInfo.email);
+  }
 
   const login = async () => {
     await signInWithPopup(auth, googleAuth).then(async (result) => {
       const user = result.user;
-      // console.log(user, "results");
-      // console.log(getAdditionalUserInfo(result));
       const { isNewUser } = getAdditionalUserInfo(result);
-      console.log("isNewUser", isNewUser);
-      if (isNewUser) {
+      if (!isNewUser) {
         await addUser(user.uid, user.displayName, user.email, user.photoURL);
       } else {
         console.log("User already exists");
@@ -74,6 +51,7 @@ function Navbar() {
     const userRef = doc(database, "users", userId);
     return await setDoc(userRef, {
       createdAt: serverTimestamp(),
+      id: userId,
       name: displayName,
       email: email,
       photo: photoURL,
@@ -84,12 +62,6 @@ function Navbar() {
       soundcloud: "ADD YOUR SOUNDCLOUD",
     });
   };
-
-  // useEffect(() => {
-  //   if (user && !currentUser) {
-  //     createUser(user);
-  //   }
-  // }, [currentUser]);
 
   const handleSignOut = () => {
     auth.signOut();
@@ -122,7 +94,9 @@ function Navbar() {
             <>
               <Link href="/user" className="flex p-2">
                 <Image
-                  src={userGoogleInfo.photoURL}
+                  src={
+                    currentUser ? currentUser.photo : userGoogleInfo.photoURL
+                  }
                   alt=""
                   width={40}
                   height={40}
@@ -130,7 +104,9 @@ function Navbar() {
                 />
 
                 <p className="text-xl ml-2 pl-1 mt-1">
-                  {`Hello, ${userGoogleInfo.displayName}!`}
+                  {`Hello, ${
+                    currentUser ? currentUser.name : userGoogleInfo.displayName
+                  }!`}
                 </p>
               </Link>
 

@@ -8,11 +8,12 @@ import { doc, collection } from "firebase/firestore";
 import { useCollectionData } from "react-firebase-hooks/firestore";
 import { BsInstagram, BsTwitter } from "react-icons/bs";
 import { GrSoundcloud } from "react-icons/gr";
-import UploadButton from "../upload/UploadButton";
+import UploadButton from "./UploadButton";
 import { Input } from "postcss";
 import Modal from "react-modal";
 import UpdateInfo from "./UpdateInfo";
 import UploadPhoto from "./UploadPhoto";
+import Uploadbutton from "./UploadButton";
 
 function User() {
   const [user] = useAuthState(auth);
@@ -21,11 +22,12 @@ function User() {
   const [modalOpen, setModalOpen] = useState(false);
   const [photoModalOpen, setPhotoModalOpen] = useState(false);
   let currentUser;
-  let subtitle;
 
   if (user) {
     currentUser = docs?.find((doc) => doc.email === user.email);
   }
+
+  console.log(user, currentUser);
 
   const openModal = () => setModalOpen(true);
   const closeModal = () => setModalOpen(false);

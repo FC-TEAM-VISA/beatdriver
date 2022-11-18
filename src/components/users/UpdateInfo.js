@@ -3,11 +3,9 @@ import { database } from "../../../utils/firebase";
 import { doc, updateDoc } from "firebase/firestore";
 
 function UpdateInfo({ currentUser, user }) {
-  const dbRef = doc(database, "users", `${user?.uid}`);
-  console.log("refref", user?.uid);
+  const dbRef = doc(database, "users", `${user.uid}`);
   const [name, setName] = useState(`${currentUser?.name}`);
   const [bio, setBio] = useState(`${currentUser?.bio}`);
-  const [image, setImage] = useState(`${currentUser?.image}`);
   const [location, setLocation] = useState(`${currentUser?.location}`);
   const [twitter, setTwitter] = useState(`${currentUser?.twitter}`);
   const [instagram, setInstagram] = useState(`${currentUser?.instagram}`);
