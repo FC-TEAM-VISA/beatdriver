@@ -3,7 +3,7 @@ import { Menu, MenuItem, MenuButton, SubMenu } from "@szhsin/react-menu";
 import "@szhsin/react-menu/dist/index.css";
 import "@szhsin/react-menu/dist/transitions/slide.css";
 import { getStorage, ref, getDownloadURL, listAll } from "firebase/storage";
-import { collection } from "firebase/firestore";
+import { collection, doc } from "firebase/firestore";
 import { database } from "../../../utils/firebase";
 import { useCollectionData } from "react-firebase-hooks/firestore";
 
@@ -20,10 +20,12 @@ function SoundMenu({ beat, handleBeatChange }) {
   const storage = getStorage();
   const listRef = ref(storage, "built-in-instruments");
 
-  const dbInstance = collection(database, "starter_instruments");
-  const [docs] = useCollectionData(dbInstance);
+  const drumsRef = collection(database, "built_in_drums");
+  const bassRef = collection(database, "built_in_bass");
+  const [drums] = useCollectionData(drumsRef);
+  const [bass] = useCollectionData(bassRef);
 
-  console.log(docs);
+  console.log(drums, bass);
 
   const getFolders = async () => {
     listAll(listRef).then((res) => {
