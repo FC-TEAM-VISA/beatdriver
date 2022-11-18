@@ -154,13 +154,15 @@ const Board = () => {
 
   useEffect(() => {});
 
-  const handleBeatChange = (e) => {
-    if (!objectSounds[e.target.value]) {
+  const handleBeatChange = (value) => {
+    if (!objectSounds[value]) {
       let copyObject = { ...objectSounds };
-      copyObject[e.target.value] = e.target.value;
+      copyObject[value] = value;
       setObjectSounds(copyObject);
     }
-    setBeat(e.target.value);
+
+    console.log("URL!!", value);
+    setBeat(value);
   };
 
   return (
@@ -234,7 +236,11 @@ const Board = () => {
 
           <div className="p-2 mx-4 mt-1">
             <label className="pr-2">SOUNDS:</label>
-            <SoundMenu beat={beat} handleBeatChange={handleBeatChange} />
+            <SoundMenu
+              beat={beat}
+              handleBeatChange={handleBeatChange}
+              setBeat={setBeat}
+            />
           </div>
 
           <div className="p-2">
