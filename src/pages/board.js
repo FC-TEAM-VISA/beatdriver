@@ -20,7 +20,6 @@ import {
 } from "firebase/firestore";
 import { database, auth } from "../../utils/firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { getProjects } from "../../utils/projects";
 import { useCollectionData } from "react-firebase-hooks/firestore";
 
 /* THE BOARD*/
@@ -97,6 +96,7 @@ const Board = () => {
       const newProject = await addDoc(collection(database, `projects`), {
         createdAt: serverTimestamp(),
         ownerId: user.uid,
+        ownerName: user.name,
         name: "Untitled",
         grid: {
           r1: grid[0],
@@ -154,8 +154,6 @@ const Board = () => {
   //     realTime();
   //   }
   // }, [grid, bpm]);
-
-  useEffect(() => {});
 
   const handleBeatChange = (e) => {
     if (!objectSounds[e.target.value]) {

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import Link from "next/link";
 import Navbar from "../components/navbar/Navbar";
 import {
 	collection,
@@ -21,10 +22,9 @@ const Discover = () => {
 		collection(database, "projects"),
 		where("isPublic", "==", true)
 	);
-  console.log("isPublicQuery", isPublicQuery);
 
 	const [projects] = useCollectionData(isPublicQuery);
-  console.log('projects', projects)
+	console.log("projects", projects);
 
 	// useEffect(() => {
 	// 	// collection(database, "projects").onSnapshot((snapshot) => {
@@ -43,10 +43,12 @@ const Discover = () => {
 
 	return (
 		<>
-			{projects?.map(({ name }, index) => (
-				<a src="" key={index} className="p-2">
-					<p>{name}</p>
-				</a>
+			{projects?.map(({ name, ownerName, grid }, index) => (
+				<Link href="/board" key={index} className="p-2">
+					<p>
+						{name} by {ownerName}
+					</p>
+				</Link>
 			))}
 		</>
 	);
