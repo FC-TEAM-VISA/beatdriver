@@ -54,33 +54,23 @@ const Board = () => {
     "./samples/drums/clap-808.wav": "./samples/drums/clap-808.wav",
   });
   const [grid, setGrid] = useState(initialGrid);
-  const [userGoogleInfo] = useAuthState(auth);
-  console.log("GoogleInfo: ", userGoogleInfo);
-
   const dbRef = collection(database, "users");
   const [docs] = useCollectionData(dbRef);
+  const dbInstance = query(
+    collection(database, "projects"),
+    where(`ownerId`, "==", `${user?.uid}`)
+  );
+  const [projects] = useCollectionData(dbInstance);
 
   let currentUser;
   if (user) {
     currentUser = docs?.find((doc) => doc.email === user.email);
   }
 
-  const dbInstance = query(
-    collection(database, "projects"),
-    where(`ownerId`, "==", `${userGoogleInfo?.uid}`)
-  );
-
-  const previousInstance = query(
-    collection(database, "projects"),
-    where(`ownerId`, "==", `${userGoogleInfo?.uid}`)
-  );
-
-  console.log("IWORK: ", dbInstance);
+  // console.log("IWORK: ", dbInstance);
   // const dbInstance = collection(database, "projects");
 
-  const [projects] = useCollectionData(dbInstance);
-  const [lastProject] = useCollectionData(previousInstance);
-  console.log("last project to load: ", lastProject);
+ 
 
   // let currentProject = projects?.find(
   //   (project) => user.email === project.ownerId
@@ -91,8 +81,8 @@ const Board = () => {
   // console.log("objectSounds", objectSounds);
   // console.log("grid", grid);
 
-  console.log("I AM A PROJECT: ", projects);
-  console.log(uniqueID);
+  // console.log("I AM A PROJECT: ", projects);
+  // console.log(uniqueID);
   // console.log(
   //   "tracking",
   //   projects?.filter((project) => project.ownerId === user.uid)
@@ -222,12 +212,13 @@ const Board = () => {
             </button>
           </div>
 
-          <div className="p-2 mx-4 mt-1">
+          <div className="p-2 mx-4 mt-1 col-span-1">
             <label className="pr-2">SOUNDS:</label>
             <SoundMenu
               beat={beat}
               handleBeatChange={handleBeatChange}
               setBeat={setBeat}
+              currentUser={currentUser}
             />
           </div>
 

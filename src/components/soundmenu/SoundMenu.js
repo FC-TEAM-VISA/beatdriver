@@ -5,8 +5,9 @@ import "@szhsin/react-menu/dist/transitions/slide.css";
 import { collection } from "firebase/firestore";
 import { database } from "../../../utils/firebase";
 import { useCollectionData } from "react-firebase-hooks/firestore";
+import { immediate } from "tone";
 
-function SoundMenu({ beat, handleBeatChange, setBeat }) {
+function SoundMenu({ handleBeatChange, currentUser }) {
   const [selected, setSelected] = useState("SELECTED");
   const drumsRef = collection(database, "built_in_drums");
   const bassRef = collection(database, "built_in_bass");
@@ -16,6 +17,8 @@ function SoundMenu({ beat, handleBeatChange, setBeat }) {
   const [bass] = useCollectionData(bassRef);
   const [vocals] = useCollectionData(vocalsRef);
   const [guitar] = useCollectionData(guitarRef);
+
+  console.log("CURR USER", currentUser);
 
   console.log("NAMMMMEEEE💯💯💯💯💯", selected);
 
@@ -107,6 +110,20 @@ function SoundMenu({ beat, handleBeatChange, setBeat }) {
               </SubMenu>
             );
           })}
+        </SubMenu>
+        <SubMenu label="Your Sounds :)">
+          {currentUser?.sounds.map((sound, i) => (
+            <MenuItem
+              label={sound.name}
+              key={i}
+              onClick={() => {
+                handleBeatChange(sound.url);
+                setSelected(`${sound.id}-${sound.name}`);
+              }}
+            >
+              {sound.name}
+            </MenuItem>
+          ))}
         </SubMenu>
       </SubMenu>
     </Menu>
