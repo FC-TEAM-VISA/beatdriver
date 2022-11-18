@@ -22,7 +22,6 @@ import {
 } from "firebase/firestore";
 import { database, auth } from "../../utils/firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { getProjects } from "../../utils/projects";
 import { useCollectionData } from "react-firebase-hooks/firestore";
 
 /* THE BOARD*/
