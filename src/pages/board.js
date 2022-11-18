@@ -53,12 +53,11 @@ const Board = () => {
     "./samples/drums/clap-808.wav": "./samples/drums/clap-808.wav",
   });
   const [grid, setGrid] = useState(initialGrid);
-  const [userGoogleInfo] = useAuthState(auth);
   const dbRef = collection(database, "users");
   const [docs] = useCollectionData(dbRef);
   const dbInstance = query(
     collection(database, "projects"),
-    where(`ownerId`, "==", `${userGoogleInfo?.uid}`)
+    where(`ownerId`, "==", `${user?.uid}`)
   );
   const [projects] = useCollectionData(dbInstance);
 
@@ -69,7 +68,6 @@ const Board = () => {
 
   // console.log("IWORK: ", dbInstance);
   // const dbInstance = collection(database, "projects");
-  // console.log("GoogleInfo: ", userGoogleInfo);
 
   // let currentProject = projects?.find(
   //   (project) => user.email === project.ownerId
