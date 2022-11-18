@@ -220,6 +220,7 @@ const Board = () => {
               beat={beat}
               handleBeatChange={handleBeatChange}
               setBeat={setBeat}
+              currentUser={currentUser}
             />
           </div>
 
