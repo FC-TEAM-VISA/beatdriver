@@ -1,5 +1,5 @@
 import { database } from "./firebase";
-import { collection, getDocs } from "firebase/firestore";
+import { collection, getDocs, getDoc } from "firebase/firestore";
 
 const dbInstance = collection(database, "projects");
 
@@ -15,7 +15,7 @@ export const getProjects = async () => {
 // import path from "path";
 // import matter from "gray-matter";
 
-// const postsDirectory = path.join(process.cwd(), "testBoard");
+// const postsDirectory = path.join(process.cwd(), "board");
 
 // export function getSortedPostsData() {
 // 	// Get file names under /posts
@@ -47,27 +47,22 @@ export const getProjects = async () => {
 // 	});
 // }
 
-// export function getAllPostIds() {
-// 	const fileNames = fs.readdirSync(postsDirectory);
-// 	return fileNames.map((fileName) => {
-// 		return {
-// 			params: {
-// 				id: fileName.replace(/\.md$/, ""),
-// 			},
-// 		};
-// 	});
-// }
+export function getAllPostIds() {
+    // const projectsRef = collection(database, "projects");
+	const data = getDocs(dbInstance).then((data) => {
+		return data.docs.map((item) => item.id);
+	});
+    console.log('THIS IS THE DATA!!', data)
+    return data;
+}
 
-// export function getPostData(id) {
-// 	const fullPath = path.join(postsDirectory, `${id}.md`);
-// 	const fileContents = fs.readFileSync(fullPath, "utf8");
+console.log('getAllPostIds', getAllPostIds())
 
-// 	// Use gray-matter to parse the post metadata section
-// 	const matterResult = matter(fileContents);
+export function getPostData(id) {
+	const data = getDocs(dbInstance).then((data) => {
+		return data.docs.find((item) => (item.id === id));
+	});
+    return data;
+}
 
-// 	// Combine the data with the id
-// 	return {
-// 		id,
-// 		...matterResult.data,
-// 	};
-// }
+console.log("getPostData", getPostData());

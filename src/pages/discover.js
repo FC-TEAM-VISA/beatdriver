@@ -25,14 +25,14 @@ const isPublicQuery = query(
 
 const getProjects = async () => {
 	const querySnapshot = await getDocs(isPublicQuery);
-	console.log("querys", querySnapshot);
+	// console.log("querys", querySnapshot);
 
 	querySnapshot.forEach((doc) => {
 		console.log(doc.id, " => ", doc.data()); // doc.data() is never undefined for query doc snapshots
 	});
 
 	const docs = querySnapshot.docs.map((doc) => doc.data());
-	console.log("docs", docs);
+	// console.log("docs", docs);
 	return docs;
 };
 
@@ -60,7 +60,7 @@ const Discover = () => {
 	return (
 		<>
 			{projects?.map(({ projectId, name, ownerName, grid }, index) => (
-				<Link href={`/testBoard/${projectId}`} key={index} className="p-2">
+				<Link href={`/board/${projectId}`} key={index} className="p-2">
 					<p>
 						{name} by {ownerName}
 					</p>
@@ -71,27 +71,3 @@ const Discover = () => {
 };
 
 export default Discover;
-
-// export async function getStaticPaths() {
-// 	const paths = getAllProjectIds();
-// 	console.log("PATHS", paths);
-// 	return {
-// 		paths,
-// 		fallback: false,
-// 	};
-// }
-
-// export async function getStaticProps({ params }) {
-// 	const projectData = getProjectData(params.id);
-// 	return {
-// 		props: {
-// 			projectData,
-// 		},
-// 	};
-// }
-
-// export async function getServerSideProps({ params }) {
-// 	return {
-// 		props: { projectArr },
-// 	};
-// }

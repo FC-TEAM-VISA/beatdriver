@@ -21,32 +21,6 @@ import {
 import { database, auth } from "../../utils/firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useCollectionData } from "react-firebase-hooks/firestore";
-import { getAllProjectIds, getPostData } from "../../utils/projects";
-import { GetServerSideProps } from "next";
-import { getDatabase } from "firebase-admin/database";
-
-// export const getServerSideProps = async () => {
-//   const isPublicQuery = query(
-//     collection(database, "projects"),
-//     where("isPublic", "==", true)
-//   );
-//   const querySnapshot = await getDocs(isPublicQuery);
-// 	const data = querySnapshot.docs.map((doc) => doc.data());
-//   if (!data) return { notFound: true };
-//   return { props: { data } };
-// };
-
-export async function getServerSideProps(context) {
-  const isPublicQuery = query(
-    collection(database, "projects"),
-    where("isPublic", "==", true)
-  );
-  const querySnapshot = await getDocs(isPublicQuery);
-	const docsData = querySnapshot.docs.map((doc) => ({id: doc.id, data: doc.data()}));
-  return {
-    props: { data: JSON.parse(JSON.stringify(docsData)) },
-  }
-}
 
 /* THE BOARD*/
 const steps = 8;
@@ -68,8 +42,7 @@ const initialGrid = [
 	new Array(8).fill(buttonState),
 ];
 
-const Board = ({ data }) => {
-  console.log('THIS IS DATAAAAAAAA', data);
+const Board = () => {
 	const [user] = useAuthState(auth);
 	const [isPublic, setIsPublic] = useState(true);
 	const [beat, setBeat] = useState("./samples/drums/clap-808.wav");
@@ -145,10 +118,6 @@ const Board = ({ data }) => {
 				{ merge: true }
 			);
 		} else {
-			setBpm(data.bpm);
-			setGrid(data.grid);
-			// setIsPublic(postData.isPublic);
-
 			await updateDoc(doc(database, `projects/${uniqueID}`), {
 				updatedAt: serverTimestamp(),
 				grid: {
@@ -322,29 +291,3 @@ const Board = ({ data }) => {
 };
 
 export default Board;
-
-export async function getStaticPaths() {
-	const paths = getAllPostIds();
-	console.log("PATHS", paths);
-	return {
-		paths,
-		fallback: false,
-	};
-}
-
-// export async function getStaticProps({ params }) {
-// 	const postData = getPostData(params.id);
-// 	return {
-// 		props: {
-// 			postData,
-// 		},
-// 	};
-// }
-
-export async function getServerSideProps({ params, res }) {
-  const {id} = params;
-  const result =
-	return {
-		props: { postData },
-	};
-}
