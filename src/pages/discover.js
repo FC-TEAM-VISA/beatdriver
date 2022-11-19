@@ -59,10 +59,10 @@ const Discover = () => {
 
 	return (
 		<>
-			{projects?.map(({ projectId, name, ownerName, grid }, index) => (
+			{projects?.map(({ projectId, name, ownerId, grid }, index) => (
 				<Link href={`/board/${projectId}`} key={index} className="p-2">
 					<p>
-						{name} by {ownerName}
+						{name} by {ownerId}
 					</p>
 				</Link>
 			))}

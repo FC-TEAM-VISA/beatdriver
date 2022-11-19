@@ -5,12 +5,12 @@ const nextConfig = {
 	images: {
 		domains: ["lh3.googleusercontent.com", "firebasestorage.googleapis.com"],
 	},
-	webpack: (config, { buildId, dev, isServer, defaultLoaders, webpack }) => {
-		config.node = {
-			fs: "empty",
-		};
-		return config;
-	},
+	// webpack: (config, { buildId, dev, isServer, defaultLoaders, webpack }) => {
+	// 	config.node = {
+	// 		fs: "empty",
+	// 	};
+	// 	return config;
+	// },
 };
 
 module.exports = nextConfig;

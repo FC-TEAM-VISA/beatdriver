@@ -25,7 +25,6 @@ import { getAllPostIds, getPostData } from "../../../utils/projects";
 // import { GetServerSideProps } from "next";
 
 export async function getStaticPaths() {
-	console.log("this is getStaticPaths");
 	let paths = await getAllPostIds();
 	console.log("paths", paths);
 
@@ -39,7 +38,6 @@ export async function getStaticPaths() {
 	paths.forEach((path) => {
 		newPaths.push({ params: { id: path.toString() } });
 	});
-	// const pathsWithParams = slugs.map((slug) => ({ params: { postSlug: slug } }));
 	console.log("newPaths", newPaths);
 
 	return {
@@ -49,9 +47,11 @@ export async function getStaticPaths() {
 }
 
 export async function getStaticProps({ params }) {
-	console.log("this is getStaticProps");
-	const data = JSON.stringify(await getPostData(params.id));
-	console.log("THIS IS DATA IN PROPS", data);
+	let data = await getPostData(params.id);
+	data = JSON.stringify(data);
+	// console.log("THIS IS DATA.", data.data);
+	// const testData = await getPostData(params.id);
+	// const test = JSON.stringify(testData.grid);
 
 	return {
 		props: {
@@ -144,8 +144,17 @@ const initialGrid = [
 ];
 
 const Board = ({ data }) => {
-	console.log("THIS IS DATAAAAAAAA", data);
+	data = JSON.parse(data);
+	console.log(
+		"THIS IS DATAAAAAAAA",
+		data._document.data.value.mapValue.fields.bpm.integerValue
+	);
 
+	const getDataValue = (field) => {
+		return data._document.data.value.mapValue.fields[field];
+	}
+
+	//._document.data.value.mapValue.fields.bpm.integerValue
 	const [user] = useAuthState(auth);
 	const [isPublic, setIsPublic] = useState(true);
 	const [beat, setBeat] = useState("./samples/drums/clap-808.wav");
@@ -166,14 +175,14 @@ const Board = ({ data }) => {
 	if (user) {
 		currentUser = docs?.find((doc) => doc.email === user.email);
 	}
-	console.log("USER", currentUser);
+	// console.log("USER", currentUser);
 
 	const dbInstance = query(
 		collection(database, "projects"),
 		where(`ownerId`, "==", `${userGoogleInfo?.uid}`)
 	);
 
-	console.log("IWORK: ", dbInstance);
+	// console.log("IWORK: ", dbInstance);
 	// const dbInstance = collection(database, "projects");
 
 	const [projects] = useCollectionData(dbInstance);
@@ -191,7 +200,6 @@ const Board = ({ data }) => {
 			const newProject = await addDoc(collection(database, `projects`), {
 				createdAt: serverTimestamp(),
 				ownerId: user.uid,
-				ownerName: user.name,
 				name: "Untitled",
 				grid: {
 					r1: grid[0],
@@ -213,9 +221,8 @@ const Board = ({ data }) => {
 				{ merge: true }
 			);
 		} else {
-			// setBpm(data.bpm);
-			// setGrid(data.grid);
-			// setIsPublic(postData.isPublic);
+			setBpm(getDataValue(bpm).integerValue);
+			// setGrid(getDataValue(grid));
 
 			await updateDoc(doc(database, `projects/${uniqueID}`), {
 				updatedAt: serverTimestamp(),

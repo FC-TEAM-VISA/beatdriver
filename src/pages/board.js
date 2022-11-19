@@ -96,7 +96,7 @@ const Board = () => {
 			const newProject = await addDoc(collection(database, `projects`), {
 				createdAt: serverTimestamp(),
 				ownerId: user.uid,
-				ownerName: user.name,
+				// ownerName: user.name,
 				name: "Untitled",
 				grid: {
 					r1: grid[0],
