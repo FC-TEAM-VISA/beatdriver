@@ -17,6 +17,8 @@ import {
 	setDoc,
 	where,
 	query,
+	getDocs,
+	getDoc,
 } from "firebase/firestore";
 import { database, auth } from "../../../utils/firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
@@ -24,64 +26,52 @@ import { useCollectionData } from "react-firebase-hooks/firestore";
 import { getAllPostIds, getPostData } from "../../../utils/projects";
 // import { GetServerSideProps } from "next";
 
-export async function getStaticPaths() {
-	let paths = await getAllPostIds();
-	console.log("paths", paths);
+// export async function getStaticPaths() {
+// 	let paths = await getAllPostIds();
+// 	console.log("paths", paths);
 
-	// const newPaths = paths.map((path) => {
-	// 	params: {
-	// 		id: path.toString();
-	// 	}
-	// });
+// 	// const newPaths = paths.map((path) => {
+// 	// 	params: {
+// 	// 		id: path.toString();
+// 	// 	}
+// 	// });
 
-	let newPaths = [];
-	paths.forEach((path) => {
-		newPaths.push({ params: { id: path.toString() } });
-	});
-	console.log("newPaths", newPaths);
+// 	let newPaths = [];
+// 	paths.forEach((path) => {
+// 		newPaths.push({ params: { id: path.toString() } });
+// 	});
+// 	console.log("newPaths", newPaths);
 
-	return {
-		paths: newPaths,
-		fallback: false,
-	};
-}
+// 	return {
+// 		paths: newPaths,
+// 		fallback: false,
+// 	};
+// }
 
-export async function getStaticProps({ params }) {
-	let data = await getPostData(params.id);
-	data = JSON.stringify(data);
-	// console.log("THIS IS DATA.", data.data);
-	// const testData = await getPostData(params.id);
-	// const test = JSON.stringify(testData.grid);
+// export async function getStaticProps({ params }) {
+// 	let data = await getPostData(params.id);
+// 	data = JSON.stringify(data);
+// 	// console.log("THIS IS DATA.", data.data);
+// 	// const testData = await getPostData(params.id);
+// 	// const test = JSON.stringify(testData.grid);
 
+// 	return {
+// 		props: {
+// 			data,
+// 		},
+// 	};
+// }
+
+export const getServerSideProps = async (context) => {
+	const projectRef = doc(database, "projects", context.query.id);
+	const project = await getDoc(projectRef);
+	const projectData = { id: project.id, ...project.data() };
 	return {
 		props: {
-			data,
+			data: JSON.parse(JSON.stringify(projectData)),
 		},
 	};
-}
-
-// export const getServerSideProps = async () => {
-//   const isPublicQuery = query(
-//     collection(database, "projects"),
-//     where("isPublic", "==", true)
-//   );
-//   const querySnapshot = await getDocs(isPublicQuery);
-// 	const data = querySnapshot.docs.map((doc) => doc.data());
-//   if (!data) return { notFound: true };
-//   return { props: { data } };
-// };
-
-// export async function getServerSideProps(context) {
-//   const isPublicQuery = query(
-//     collection(database, "projects"),
-//     where("isPublic", "==", true)
-//   );
-//   const querySnapshot = await getDocs(isPublicQuery);
-// 	const docsData = querySnapshot.docs.map((doc) => ({id: doc.id, data: doc.data()}));
-//   return {
-//     props: { data: JSON.parse(JSON.stringify(docsData)) },
-//   }
-// }
+};
 
 // export async function getServerSideProps(context) {
 // 	try {
@@ -142,29 +132,24 @@ const initialGrid = [
 	new Array(8).fill(buttonState),
 	new Array(8).fill(buttonState),
 ];
+console.log("THIS IS INITIAL GRID!!!!!", initialGrid);
 
 const Board = ({ data }) => {
-	data = JSON.parse(data);
-	console.log(
-		"THIS IS DATAAAAAAAA",
-		data._document.data.value.mapValue.fields.bpm.integerValue
-	);
+	const orderedKeys = Object.keys(data.grid).sort();
+	const dataGrid = orderedKeys.map((row) => data.grid[row]);
 
-	const getDataValue = (field) => {
-		return data._document.data.value.mapValue.fields[field];
-	}
-
-	//._document.data.value.mapValue.fields.bpm.integerValue
 	const [user] = useAuthState(auth);
 	const [isPublic, setIsPublic] = useState(true);
 	const [beat, setBeat] = useState("./samples/drums/clap-808.wav");
-	const [bpm, setBpm] = useState(120);
+	const [bpm, setBpm] = useState(data.bpm || 120);
 	const [uniqueID, setUniqueID] = useState(null);
 	const [playing, setPlaying] = useState(false);
-	const [objectSounds, setObjectSounds] = useState({
-		"./samples/drums/clap-808.wav": "./samples/drums/clap-808.wav",
-	});
-	const [grid, setGrid] = useState(initialGrid);
+	const [objectSounds, setObjectSounds] = useState(
+		data.objectSounds || {
+			"../samples/drums/clap-808.wav": "../samples/drums/clap-808.wav",
+		}
+	);
+	const [grid, setGrid] = useState(dataGrid || initialGrid);
 	const [userGoogleInfo] = useAuthState(auth);
 	// console.log("GoogleInfo: ", userGoogleInfo);
 
@@ -221,9 +206,6 @@ const Board = ({ data }) => {
 				{ merge: true }
 			);
 		} else {
-			setBpm(getDataValue(bpm).integerValue);
-			// setGrid(getDataValue(grid));
-
 			await updateDoc(doc(database, `projects/${uniqueID}`), {
 				updatedAt: serverTimestamp(),
 				grid: {
@@ -310,8 +292,8 @@ const Board = ({ data }) => {
 							onClick={() => {
 								setGrid(initialGrid);
 								setObjectSounds({
-									"./samples/drums/clap-808.wav":
-										"./samples/drums/clap-808.wav",
+									"../samples/drums/clap-808.wav":
+										"../samples/drums/clap-808.wav",
 								});
 							}}
 							className="mt-1 mx-2 border-2 p-1 bg-red-900 hover:bg-red-600 border-white"
