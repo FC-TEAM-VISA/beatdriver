@@ -24,43 +24,6 @@ import { database, auth } from "../../../utils/firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useCollectionData } from "react-firebase-hooks/firestore";
 import { getAllPostIds, getPostData } from "../../../utils/projects";
-// import { GetServerSideProps } from "next";
-
-// export async function getStaticPaths() {
-// 	let paths = await getAllPostIds();
-// 	console.log("paths", paths);
-
-// 	// const newPaths = paths.map((path) => {
-// 	// 	params: {
-// 	// 		id: path.toString();
-// 	// 	}
-// 	// });
-
-// 	let newPaths = [];
-// 	paths.forEach((path) => {
-// 		newPaths.push({ params: { id: path.toString() } });
-// 	});
-// 	console.log("newPaths", newPaths);
-
-// 	return {
-// 		paths: newPaths,
-// 		fallback: false,
-// 	};
-// }
-
-// export async function getStaticProps({ params }) {
-// 	let data = await getPostData(params.id);
-// 	data = JSON.stringify(data);
-// 	// console.log("THIS IS DATA.", data.data);
-// 	// const testData = await getPostData(params.id);
-// 	// const test = JSON.stringify(testData.grid);
-
-// 	return {
-// 		props: {
-// 			data,
-// 		},
-// 	};
-// }
 
 export const getServerSideProps = async (context) => {
 	const projectRef = doc(database, "projects", context.query.id);
@@ -72,46 +35,6 @@ export const getServerSideProps = async (context) => {
 		},
 	};
 };
-
-// export async function getServerSideProps(context) {
-// 	try {
-// 		// const cookies = nookies.get(context);
-// 		// const token = await verifyIdToken(cookies.token);
-// 		// const { email } = token;
-// 		// const fs = require("fs/promises");
-
-// 		const q = query(
-// 			collection(database, "projects"),
-// 			where("isPublic", "==", true),
-// 			orderBy("updatedAt")
-// 		);
-// 		const querySnapshot = await collection(
-// 			database,
-// 			"projects",
-// 			context.query.projectId
-// 		).get();
-
-// 		let todos = [];
-// 		querySnapshot.forEach((doc) => {
-// 			todos.push({
-// 				...doc.data(),
-// 				id: doc.id,
-// 				updatedAt: doc.data().updatedAt.toDate().getTime(),
-// 			});
-// 		});
-
-// 		console.log("THIS IS TODOSSS", todos);
-
-// 		return {
-// 			props: {
-// 				data: JSON.stringify(todos) || [],
-// 			},
-// 			// props: { session: `Your email is ${email} and your UID is ${uid}.` },
-// 		};
-// 	} catch (error) {
-// 		return { props: {} };
-// 	}
-// }
 
 /* THE BOARD*/
 const steps = 8;

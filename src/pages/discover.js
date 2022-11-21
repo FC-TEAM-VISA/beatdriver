@@ -25,14 +25,12 @@ const isPublicQuery = query(
 
 const getProjects = async () => {
 	const querySnapshot = await getDocs(isPublicQuery);
-	// console.log("querys", querySnapshot);
 
 	querySnapshot.forEach((doc) => {
 		console.log(doc.id, " => ", doc.data()); // doc.data() is never undefined for query doc snapshots
 	});
 
 	const docs = querySnapshot.docs.map((doc) => doc.data());
-	// console.log("docs", docs);
 	return docs;
 };
 
@@ -40,22 +38,6 @@ const projectArr = getProjects();
 
 const Discover = () => {
 	const [projects] = useCollectionData(isPublicQuery);
-	// console.log("projects", projects);
-
-	// useEffect(() => {
-	// 	// collection(database, "projects").onSnapshot((snapshot) => {
-	// 	// 	console.log(snapshot.docs);
-	// 	// 	setTweets(tweetArray);
-	// 	// });
-	// 	const getProjects = async () => {
-	// 		const querySnapshot = await getDocs(isPublicQuery);
-	// 		console.log("querySnapshot", querySnapshot);
-
-	// 		querySnapshot.forEach((doc) => {
-	// 			console.log(doc.id, " => ", doc.data()); // doc.data() is never undefined for query doc snapshots
-	// 		});
-	// 	};
-	// }, []);
 
 	return (
 		<>
