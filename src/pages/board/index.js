@@ -1,8 +1,8 @@
 import React, { useEffect, useRef, useState, useCallback } from "react";
-import Looper from "../components/board/looper";
-import AudioPlayer from "../components/board/audioPlayer";
-import Recorder from "../components/recorder/recorder";
-import TopToolbar from "../components/toolbar/TopToolbar";
+import Looper from "../../components/board/looper";
+import AudioPlayer from "../../components/board/audioPlayer";
+import Recorder from "../../components/recorder/recorder";
+import TopToolbar from "../../components/toolbar/TopToolbar";
 
 //firebase imports
 import {
@@ -14,10 +14,8 @@ import {
   setDoc,
   where,
   query,
-  limit,
-  orderBy,
 } from "firebase/firestore";
-import { database, auth, db } from "../../utils/firebase";
+import { database, auth, db } from "../../../utils/firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useCollectionData } from "react-firebase-hooks/firestore";
 import { child, onValue, push, ref, set, update } from "firebase/database";

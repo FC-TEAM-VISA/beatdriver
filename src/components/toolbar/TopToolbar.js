@@ -4,6 +4,7 @@ import { BsFillPlayFill, BsStopFill } from "react-icons/bs";
 import { BiSave } from "react-icons/bi";
 import SoundMenu from "../soundmenu/SoundMenu";
 import LoadMenu from "../loadmenu/LoadMenu";
+// import { Dial } from "react-nexusui";
 
 function TopToolbar({
   beat,
@@ -24,6 +25,16 @@ function TopToolbar({
   user,
   handleSave,
 }) {
+  // let dial = new Nexus.Dial("#bpm", {
+  //   size: [75, 75],
+  //   interaction: "radial", // "radial", "vertical", or "horizontal"
+  //   mode: "relative", // "absolute" or "relative"
+  //   min: 0,
+  //   max: 1,
+  //   step: 0,
+  //   value: 0,
+  // });
+
   return (
     <div className="flex">
       <div className=" bg-teal-800 ml-3">
