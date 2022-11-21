@@ -78,6 +78,7 @@ function TopToolbar({
         setGrid={setGrid}
         setUniqueID={setUniqueID}
         uniqueID={uniqueID}
+        setName={setName}
       />
       <div>
         <button
