@@ -188,7 +188,7 @@ const Board = () => {
     <div>
       <div className="grid grid-cols-12 text-xl">
         {/* TOOLBAR */}
-        <div className="col-span-9 bg-teal-800">
+        <div className="col-span-12 bg-teal-800">
           <TopToolbar
             beat={beat}
             setBeat={setBeat}
@@ -207,6 +207,8 @@ const Board = () => {
             setSelected={setSelected}
             user={user}
             handleSave={handleSave}
+            name={name}
+            setName={setName}
           />
         </div>
 
@@ -232,7 +234,6 @@ const Board = () => {
         </div> */}
 
         <div className="col-span-9">
-          {name}
           <AudioPlayer
             objectSounds={objectSounds}
             bpm={bpm}
