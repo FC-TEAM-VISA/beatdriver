@@ -18,11 +18,14 @@ import {
   setDoc,
   where,
   query,
+  limit,
+  orderBy,
 } from "firebase/firestore";
-import { database, auth } from "../../utils/firebase";
+import { database, auth, db } from "../../utils/firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { getProjects } from "../../utils/projects";
 import { useCollectionData } from "react-firebase-hooks/firestore";
+import { child, onValue, push, ref, set, update } from "firebase/database";
+import { uploadBytes } from "firebase/storage";
 
 /* THE BOARD*/
 const steps = 8;
@@ -46,8 +49,11 @@ const initialGrid = [
 
 const Board = () => {
   const [user] = useAuthState(auth);
+  const [name, setName] = useState("Untitled");
   const [beat, setBeat] = useState("./samples/drums/clap-808.wav");
   const [bpm, setBpm] = useState(120);
+  const [mute, setMute] = useState(false);
+  const [masterVolume, setMasterVolume] = useState(0);
   const [uniqueID, setUniqueID] = useState(null);
   const [playing, setPlaying] = useState(false);
   const [isRecording, setIsRecording] = useState(false);
@@ -87,12 +93,16 @@ const Board = () => {
   //   projects?.filter((project) => project.ownerId === user.uid)
   // );
 
+  const handleMasterVolume = ({ player }, e) => {
+    player.Master.volume = e.target.value;
+  };
+
   const handleSave = async () => {
     if (!uniqueID) {
       const newProject = await addDoc(collection(database, `projects`), {
         createdAt: serverTimestamp(),
         ownerId: user.uid,
-        name: "Untitled",
+        name: name,
         grid: {
           r1: grid[0],
           r2: grid[1],
@@ -111,9 +121,23 @@ const Board = () => {
         },
         { merge: true }
       );
+
+      // set(ref(db, `projects/${newProject.id}`), {
+      //   ownerId: user.uid,
+      //   name: name,
+      //   grid: {
+      //     r1: grid[0],
+      //     r2: grid[1],
+      //     r3: grid[2],
+      //     r4: grid[3],
+      //     r5: grid[4],
+      //   },
+      //   bpm: +bpm,
+      // });
     } else {
       await updateDoc(doc(database, `projects/${uniqueID}`), {
         updatedAt: serverTimestamp(),
+        name: name,
         grid: {
           r1: grid[0],
           r2: grid[1],
@@ -125,8 +149,28 @@ const Board = () => {
       });
 
       setUniqueID(uniqueID);
+      // const newKey = push(child(ref(db), "projects")).key;
+
+      // update(ref(db, `projects/${uniqueID}`), {
+      //   updatedAt: serverTimestamp(),
+      //   grid: {
+      //     r1: grid[0],
+      //     r2: grid[1],
+      //     r3: grid[2],
+      //     r4: grid[3],
+      //     r5: grid[4],
+      //   },
+      //   bpm: +bpm,
+      // });
     }
   };
+
+  // const updateDateProject = () => {};
+
+  // onValue(ref(db, `projects/${uniqueID}`), (snapshot) => {
+  //   const data = snapshot.val();
+  //   updateDateProject(projectElement, data);
+  // });
 
   // KEEP THIS FOR TESTING COLLABORATION
   // useEffect(() => {
@@ -148,8 +192,6 @@ const Board = () => {
   //   }
   // }, [grid, bpm]);
 
-  useEffect(() => {});
-
   const handleBeatChange = (value) => {
     if (!objectSounds[value]) {
       let copyObject = { ...objectSounds };
@@ -162,7 +204,7 @@ const Board = () => {
   };
 
   return (
-    <>
+    <div>
       <div className="grid grid-cols-12 text-xl">
         {/* TOOLBAR */}
         <div className="flex flex-grow col-span-9 bg-teal-800">
@@ -227,15 +269,45 @@ const Board = () => {
             <input
               type="range"
               min="50"
+              defaultValue="120"
               max="300"
               onChange={(e) => setBpm(e.target.value)}
             />
             <output className="p-1">{bpm}</output>
           </div>
+
+          <div className="p-2">
+            {/* MASTER VOLUME */}
+            <label className="p-2">MASTER VOLUME:</label>
+            <input
+              type="range"
+              min="0"
+              defaultValue="0"
+              max="100"
+              onChange={(e) => setMasterVolume(e.target.value)}
+            />
+            <output className="p-1">{masterVolume}</output>
+          </div>
+
+          <div className="p-2">
+            {/* NAME */}
+            <label className="p-2">NAME:</label>
+            <input
+              type="text"
+              placeholder="Untitled"
+              onChange={(e) => setName(e.target.value)}
+            />
+          </div>
         </div>
 
         <div className="col-span-9">
-          <AudioPlayer objectSounds={objectSounds} bpm={bpm}>
+          {name}
+          <AudioPlayer
+            objectSounds={objectSounds}
+            bpm={bpm}
+            mute={mute}
+            masterVolume={masterVolume}
+          >
             {({ player }) => {
               if (!player) {
                 return (
@@ -272,7 +344,7 @@ const Board = () => {
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 

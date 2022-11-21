@@ -12,7 +12,7 @@ const UploadButton = () => {
   const [percent, setPercent] = useState(0);
   const [user] = useAuthState(auth);
 
-  const dbRef = doc(database, "users", `${user?.uid}`);
+  const dbRef = doc(database, "users", `${user.uid}`);
 
   // Handle file upload event and update state
   function handleChange(event) {
@@ -24,7 +24,7 @@ const UploadButton = () => {
 
     if (!file) return;
 
-    const storageRef = ref(storage, `users/${user.email}/${file.name}`);
+    const storageRef = ref(storage, `users/${user.uid}/${file.name}`);
     const uploadTask = uploadBytesResumable(storageRef, file);
 
     uploadTask.on(

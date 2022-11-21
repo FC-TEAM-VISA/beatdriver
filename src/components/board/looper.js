@@ -38,8 +38,8 @@ const Looper = ({
 
         if (grid[i][j].triggered && grid[i][j].activated && grid[i][j].audio) {
           // Tone.context.lookAhead = 0;
-          //plays the sound associated with the button
 
+          //plays the sound associated with the button
           player.player(objectSounds[grid[i][j].audio]).start();
           // player.start();
         }
