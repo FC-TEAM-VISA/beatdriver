@@ -18,6 +18,7 @@ const Looper = ({
   steps,
   uniqueID,
   handleSave,
+  selectedInstrument,
 }) => {
   const [currButton, setCurrButton] = useState(0);
 
@@ -64,7 +65,11 @@ const Looper = ({
 
   return (
     <div className="">
-      <Grid grid={grid} toggleActivation={toggleActivation} />
+      <Grid
+        grid={grid}
+        toggleActivation={toggleActivation}
+        selectedInstrument={selectedInstrument}
+      />
     </div>
   );
 };
