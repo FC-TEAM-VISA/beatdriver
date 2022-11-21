@@ -1,3 +1,4 @@
+import * as Tone from "tone";
 import React, { useEffect, useRef, useState, useCallback } from "react";
 import Looper from "../../components/board/looper";
 import AudioPlayer from "../../components/board/audioPlayer";
@@ -48,16 +49,21 @@ const Board = () => {
   const [user] = useAuthState(auth);
   const dbRef = collection(database, "users");
   const [docs] = useCollectionData(dbRef);
+  let currentUser;
+  if (user) {
+    currentUser = docs?.find((doc) => doc.email === user.email);
+  }
   //instruments
   const [selectedInstrument, setSelectedInstrument] = useState("selected");
   const [selected, setSelected] = useState("SELECTED");
   const [objectSounds, setObjectSounds] = useState({
-    "./samples/drums/clap-808.wav": "./samples/drums/clap-808.wav",
+    "https://firebasestorage.googleapis.com/v0/b/music-collaboration-app.appspot.com/o/built-in-instruments%2Fdrums%2Fclap%2Fclap-808.wav?alt=media&token=1e2bd7d8-dad2-49b6-a6db-9959a06f1520":
+      "https://firebasestorage.googleapis.com/v0/b/music-collaboration-app.appspot.com/o/built-in-instruments%2Fdrums%2Fclap%2Fclap-808.wav?alt=media&token=1e2bd7d8-dad2-49b6-a6db-9959a06f1520",
   });
-  //
+  const [beat, setBeat] = useState(null);
+  //project info
   const [name, setName] = useState("Untitled");
   const [isPublic, setIsPublic] = useState(true);
-  const [beat, setBeat] = useState(null);
   const [bpm, setBpm] = useState(120);
   const [mute, setMute] = useState(false);
   const [masterVolume, setMasterVolume] = useState(0);
@@ -71,21 +77,13 @@ const Board = () => {
   );
   const [projects] = useCollectionData(dbInstance);
 
-  let currentUser;
-  if (user) {
-    currentUser = docs?.find((doc) => doc.email === user.email);
-  }
-
-  const handleMasterVolume = ({ player }, e) => {
-    player.Master.volume = e.target.value;
-  };
-
   const handleSave = async () => {
     if (!uniqueID) {
       const newProject = await addDoc(collection(database, `projects`), {
         createdAt: serverTimestamp(),
         ownerId: user.uid,
         name: name,
+        objectSounds: objectSounds,
         grid: {
           r1: grid[0],
           r2: grid[1],
@@ -150,6 +148,11 @@ const Board = () => {
     setBeat(value);
   };
 
+  const togglePlaying = () => {
+    setPlaying((prev) => !prev);
+    Tone.start();
+  };
+
   return (
     <div>
       <div className="grid grid-cols-12 text-xl">
@@ -159,6 +162,7 @@ const Board = () => {
             beat={beat}
             setBeat={setBeat}
             projects={projects}
+            grid={grid}
             setGrid={setGrid}
             setUniqueID={setUniqueID}
             uniqueID={uniqueID}
@@ -175,6 +179,7 @@ const Board = () => {
             handleSave={handleSave}
             name={name}
             setName={setName}
+            togglePlaying={togglePlaying}
           />
         </div>
 
@@ -231,7 +236,7 @@ const Board = () => {
                     selectedInstrument={selectedInstrument}
                     selected={selected}
                   />
-                  <Recorder player={player} />
+                  <Recorder player={player} togglePlaying={togglePlaying} />
                 </>
               );
             }}
