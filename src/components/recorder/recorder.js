@@ -34,7 +34,7 @@ const Recorder = ({ player }) => {
     // anchor.href = url;
     // anchor.click();
     anchor.href = url;
-    anchor.download = "beat.webm";
+    anchor.download = "beat";
     anchor.click();
   }
 
