@@ -3,6 +3,7 @@ import Looper from "../components/board/looper";
 import AudioPlayer from "../components/board/audioPlayer";
 import Recorder from "../components/recorder/recorder";
 import TopToolbar from "../components/toolbar/TopToolbar";
+import * as Tone from "tone";
 
 //firebase imports
 import {
@@ -186,6 +187,11 @@ const Board = () => {
     setBeat(value);
   };
 
+  const togglePlaying = () => {
+    setPlaying((prev) => !prev);
+    Tone.start();
+  };
+
   return (
     <div>
       <div className="grid grid-cols-12 text-xl">
@@ -209,6 +215,7 @@ const Board = () => {
             setSelected={setSelected}
             user={user}
             handleSave={handleSave}
+            togglePlaying={togglePlaying}
           />
         </div>
 
@@ -265,8 +272,9 @@ const Board = () => {
                     handleSave={handleSave}
                     selectedInstrument={selectedInstrument}
                     selected={selected}
+                    togglePlaying={togglePlaying}
                   />
-                  <Recorder player={player} />
+                  <Recorder player={player} togglePlaying={togglePlaying} />
                 </>
               );
             }}
