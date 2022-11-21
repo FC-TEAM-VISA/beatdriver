@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import * as Tone from "tone";
 
-const Recorder = ({ player }) => {
+const Recorder = ({ togglePlaying }) => {
   const [isRec, setIsRec] = useState(false);
   const [recorder, setRecorder] = useState(null);
 
@@ -13,6 +13,7 @@ const Recorder = ({ player }) => {
 
   const toggleRec = () => {
     setIsRec((prev) => !prev);
+    togglePlaying();
   };
 
   useEffect(() => {
