@@ -6,6 +6,7 @@ import { BsFillPlayFill, BsStopFill } from "react-icons/bs";
 import { BiSave } from "react-icons/bi";
 import SoundMenu from "../components/soundmenu/SoundMenu";
 import LoadMenu from "../components/loadmenu/LoadMenu";
+import Recorder from "../components/recorder/recorder";
 
 //firebase imports
 import {
@@ -49,6 +50,7 @@ const Board = () => {
   const [bpm, setBpm] = useState(120);
   const [uniqueID, setUniqueID] = useState(null);
   const [playing, setPlaying] = useState(false);
+  const [isRecording, setIsRecording] = useState(false);
   const [objectSounds, setObjectSounds] = useState({
     "./samples/drums/clap-808.wav": "./samples/drums/clap-808.wav",
   });
@@ -243,19 +245,22 @@ const Board = () => {
                 );
               }
               return (
-                <Looper
-                  player={player}
-                  bpm={bpm}
-                  playing={playing}
-                  beat={beat}
-                  objectSounds={objectSounds}
-                  steps={steps}
-                  sounds={sounds}
-                  grid={grid}
-                  setGrid={setGrid}
-                  uniqueID={uniqueID}
-                  handleSave={handleSave}
-                />
+                <>
+                  <Looper
+                    player={player}
+                    bpm={bpm}
+                    playing={playing}
+                    beat={beat}
+                    objectSounds={objectSounds}
+                    steps={steps}
+                    sounds={sounds}
+                    grid={grid}
+                    setGrid={setGrid}
+                    uniqueID={uniqueID}
+                    handleSave={handleSave}
+                  />
+                  <Recorder player={player} />
+                </>
               );
             }}
           </AudioPlayer>
