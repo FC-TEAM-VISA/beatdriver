@@ -75,9 +75,11 @@ const Board = ({ data }) => {
 	const [uniqueID, setUniqueID] = useState(null);
 	const [playing, setPlaying] = useState(false);
 	const [isRecording, setIsRecording] = useState(false);
-	const [objectSounds, setObjectSounds] = useState({
-		"./samples/drums/clap-808.wav": "./samples/drums/clap-808.wav",
-	});
+	const [objectSounds, setObjectSounds] = useState(
+		data.objectSounds || {
+			"../samples/drums/clap-808.wav": "../samples/drums/clap-808.wav",
+		}
+	);
 	const [grid, setGrid] = useState(dataGrid || initialGrid);
 	const dbRef = collection(database, "users");
 	const [docs] = useCollectionData(dbRef);
