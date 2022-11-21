@@ -18,14 +18,20 @@ const Looper = ({
   steps,
   uniqueID,
   handleSave,
+  selectedInstrument,
+  selected,
 }) => {
   const [currButton, setCurrButton] = useState(0);
 
   const toggleActivation = (row, col) => {
-    const gridCopy = [...grid];
-    const { triggered, activated } = gridCopy[row][col];
-    gridCopy[row][col] = { triggered, activated: !activated, audio: beat };
-    setGrid(gridCopy);
+    if (selected === "SELECTED") {
+      window.alert("PLEASE SELECT A SOUND");
+    } else {
+      const gridCopy = [...grid];
+      const { triggered, activated } = gridCopy[row][col];
+      gridCopy[row][col] = { triggered, activated: !activated, audio: beat };
+      setGrid(gridCopy);
+    }
   };
 
   //this is what goes through the loop and triggers each row
@@ -64,7 +70,11 @@ const Looper = ({
 
   return (
     <div className="">
-      <Grid grid={grid} toggleActivation={toggleActivation} />
+      <Grid
+        grid={grid}
+        toggleActivation={toggleActivation}
+        selectedInstrument={selectedInstrument}
+      />
     </div>
   );
 };
