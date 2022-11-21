@@ -74,7 +74,6 @@ const Board = ({ data }) => {
 	);
 	const [grid, setGrid] = useState(dataGrid || initialGrid);
 	const [userGoogleInfo] = useAuthState(auth);
-	// console.log("GoogleInfo: ", userGoogleInfo);
 
 	const dbRef = collection(database, "users");
 	const [docs] = useCollectionData(dbRef);
@@ -83,7 +82,6 @@ const Board = ({ data }) => {
 	if (user) {
 		currentUser = docs?.find((doc) => doc.email === user.email);
 	}
-	// console.log("USER", currentUser);
 
 	const dbInstance = query(
 		collection(database, "projects"),

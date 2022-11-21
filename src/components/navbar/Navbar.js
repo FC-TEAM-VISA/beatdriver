@@ -39,7 +39,7 @@ function Navbar() {
     await signInWithPopup(auth, googleAuth).then(async (result) => {
       const user = result.user;
       const { isNewUser } = getAdditionalUserInfo(result);
-      if (!isNewUser) {
+      if (isNewUser) {
         await addUser(user.uid, user.displayName, user.email, user.photoURL);
       } else {
         console.log("User already exists");
@@ -103,7 +103,10 @@ function Navbar() {
                   className="link rounded-full"
                 />
 
-                <p className="text-xl ml-2 pl-1 mt-1">
+                <p
+                  className="text-xl ml-2 pl-1 mt-1"
+                  style={{ marginTop: "5.6%" }}
+                >
                   {`Hello, ${
                     currentUser ? currentUser.name : userGoogleInfo.displayName
                   }!`}

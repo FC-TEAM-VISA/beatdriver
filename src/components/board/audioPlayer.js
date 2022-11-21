@@ -2,7 +2,14 @@ import React, { useState, useEffect } from "react";
 import * as Tone from "tone";
 
 //this is where the sources of the audio come from
-const AudioPlayer = ({ children, objectSounds, bpm }) => {
+const AudioPlayer = ({
+  children,
+  objectSounds,
+  bpm,
+  mute,
+
+  masterVolume,
+}) => {
   const [player, setPlayer] = useState(null);
   useEffect(() => {
     const player = new Tone.Players(
@@ -49,7 +56,7 @@ const AudioPlayer = ({ children, objectSounds, bpm }) => {
       () => {
         setPlayer(player);
       }
-    ).toDestination();
+    ).connect(Tone.Destination);
   }, [objectSounds, bpm]);
 
   return children({ player });

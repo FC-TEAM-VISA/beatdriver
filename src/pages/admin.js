@@ -1,18 +1,25 @@
 import React, { useState } from "react";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
-import { database, storage, beatsRef } from "../../../utils/firebase";
-import { auth } from "../../../utils/firebase";
-import { doc, arrayUnion, updateDoc } from "firebase/firestore";
+import { database, storage, beatsRef } from "../../utils/firebase";
+import { auth } from "../../utils/firebase";
+import {
+  collection,
+  arrayUnion,
+  updateDoc,
+  addDoc,
+  doc,
+} from "firebase/firestore";
 import { useAuthState } from "react-firebase-hooks/auth";
 
-const UploadButton = () => {
+const Admin = () => {
   // State to store uploaded file
   const [file, setFile] = useState("");
   // progress
   const [percent, setPercent] = useState(0);
   const [user] = useAuthState(auth);
 
-  const dbRef = doc(database, "users", `${user.uid}`);
+  const dbInstance = collection(database, "built_in_vocals");
+  const dbRef = doc(database, "built_in_vocals", `vox`);
 
   // Handle file upload event and update state
   function handleChange(event) {
@@ -24,7 +31,7 @@ const UploadButton = () => {
 
     if (!file) return;
 
-    const storageRef = ref(storage, `users/${user.uid}/${file.name}`);
+    const storageRef = ref(storage, `built-in-instruments/vocals/${file.name}`);
     const uploadTask = uploadBytesResumable(storageRef, file);
 
     uploadTask.on(
@@ -69,4 +76,4 @@ const UploadButton = () => {
   );
 };
 
-export default UploadButton;
+export default Admin;
