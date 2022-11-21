@@ -49,7 +49,7 @@ const AudioPlayer = ({ children, objectSounds, bpm }) => {
       () => {
         setPlayer(player);
       }
-    ).toDestination();
+    ).connect(Tone.Destination);
   }, [objectSounds, bpm]);
 
   return children({ player });
