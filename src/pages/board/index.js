@@ -20,6 +20,7 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { useCollectionData } from "react-firebase-hooks/firestore";
 import { child, onValue, push, ref, set, update } from "firebase/database";
 import { uploadBytes } from "firebase/storage";
+import { useRouter } from "next/router";
 
 /* THE BOARD*/
 const steps = 8;
@@ -42,6 +43,7 @@ const initialGrid = [
 ];
 
 const Board = () => {
+  const router = useRouter();
   //authentication + user info
   const [user] = useAuthState(auth);
   const dbRef = collection(database, "users");
@@ -94,6 +96,7 @@ const Board = () => {
         bpm: +bpm,
         isPublic: true,
       });
+
       setUniqueID(newProject.id);
 
       await setDoc(
@@ -104,47 +107,10 @@ const Board = () => {
         { merge: true }
       );
 
-      // set(ref(db, `projects/${newProject.id}`), {
-      //   ownerId: user.uid,
-      //   name: name,
-      //   grid: {
-      //     r1: grid[0],
-      //     r2: grid[1],
-      //     r3: grid[2],
-      //     r4: grid[3],
-      //     r5: grid[4],
-      //   },
-      //   bpm: +bpm,
-      // });
-    } else {
-      await updateDoc(doc(database, `projects/${uniqueID}`), {
-        updatedAt: serverTimestamp(),
-        name: name,
-        grid: {
-          r1: grid[0],
-          r2: grid[1],
-          r3: grid[2],
-          r4: grid[3],
-          r5: grid[4],
-        },
-        bpm: +bpm,
-        isPublic,
+      router.push({
+        pathname: `/board/[id]`,
+        query: { id: newProject.id },
       });
-
-      setUniqueID(uniqueID);
-      // const newKey = push(child(ref(db), "projects")).key;
-
-      // update(ref(db, `projects/${uniqueID}`), {
-      //   updatedAt: serverTimestamp(),
-      //   grid: {
-      //     r1: grid[0],
-      //     r2: grid[1],
-      //     r3: grid[2],
-      //     r4: grid[3],
-      //     r5: grid[4],
-      //   },
-      //   bpm: +bpm,
-      // });
     }
   };
 

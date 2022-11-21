@@ -2,9 +2,11 @@ import React, { useState } from "react";
 import { Menu, MenuItem, MenuButton, SubMenu } from "@szhsin/react-menu";
 import "@szhsin/react-menu/dist/index.css";
 import "@szhsin/react-menu/dist/transitions/slide.css";
+import { useRouter } from "next/router";
 
 function LoadMenu({ projects, setGrid, setUniqueID, uniqueID }) {
   // console.log(projects[0].grid);
+  const router = useRouter();
   const handleLoad = (project) => {
     console.log(project);
     const objGrid = project.grid;
@@ -12,7 +14,12 @@ function LoadMenu({ projects, setGrid, setUniqueID, uniqueID }) {
     const loadGrid = orderedKeys.map((row) => objGrid[row]);
 
     setUniqueID(project.projectId);
+    setName(project.name);
     setGrid(loadGrid);
+    router.push({
+      pathname: `/board/[id]`,
+      query: { id: project.projectId },
+    });
   };
 
   return (
