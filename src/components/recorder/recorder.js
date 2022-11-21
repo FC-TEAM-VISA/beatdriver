@@ -26,15 +26,15 @@ const Recorder = ({ player }) => {
   async function stopRecording() {
     if (!recorder) return;
     const recording = await recorder.stop();
-    let blob = new Blob([recording], { type: "audio/wav" });
-    const url = URL.createObjectURL(blob);
+    // let blob = new Blob([recording], { type: "audio/wav" });
+    const url = URL.createObjectURL(recording);
     console.log(url, "URL");
     const anchor = document.createElement("a");
     // anchor.download = "beat.webm";
     // anchor.href = url;
     // anchor.click();
     anchor.href = url;
-    anchor.download = "KICK";
+    anchor.download = "beat.webm";
     anchor.click();
   }
 

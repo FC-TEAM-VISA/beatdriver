@@ -6,6 +6,7 @@ import { BsFillPlayFill, BsStopFill } from "react-icons/bs";
 import { BiSave } from "react-icons/bi";
 import SoundMenu from "../../components/soundmenu/SoundMenu";
 import LoadMenu from "../../components/loadmenu/LoadMenu";
+import Recorder from "../../components/recorder/recorder";
 
 //firebase imports
 import {
@@ -17,13 +18,16 @@ import {
 	setDoc,
 	where,
 	query,
+	limit,
+	orderBy,
 	getDocs,
 	getDoc,
 } from "firebase/firestore";
-import { database, auth } from "../../../utils/firebase";
+import { database, auth, db } from "../../../utils/firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useCollectionData } from "react-firebase-hooks/firestore";
-import { getAllPostIds, getPostData } from "../../../utils/projects";
+import { child, onValue, push, ref, set, update } from "firebase/database";
+import { uploadBytes } from "firebase/storage";
 
 export const getServerSideProps = async (context) => {
 	const projectRef = doc(database, "projects", context.query.id);
@@ -55,58 +59,57 @@ const initialGrid = [
 	new Array(8).fill(buttonState),
 	new Array(8).fill(buttonState),
 ];
-console.log("THIS IS INITIAL GRID!!!!!", initialGrid);
 
 const Board = ({ data }) => {
 	const orderedKeys = Object.keys(data.grid).sort();
 	const dataGrid = orderedKeys.map((row) => data.grid[row]);
+	console.log('dataGrid', dataGrid);
 
 	const [user] = useAuthState(auth);
+	const [name, setName] = useState("Untitled");
 	const [isPublic, setIsPublic] = useState(true);
 	const [beat, setBeat] = useState("./samples/drums/clap-808.wav");
 	const [bpm, setBpm] = useState(data.bpm || 120);
+	const [mute, setMute] = useState(false);
+	const [masterVolume, setMasterVolume] = useState(0);
 	const [uniqueID, setUniqueID] = useState(null);
 	const [playing, setPlaying] = useState(false);
-	const [objectSounds, setObjectSounds] = useState(
-		data.objectSounds || {
-			"../samples/drums/clap-808.wav": "../samples/drums/clap-808.wav",
-		}
-	);
+	const [isRecording, setIsRecording] = useState(false);
+	const [objectSounds, setObjectSounds] = useState({
+		"./samples/drums/clap-808.wav": "./samples/drums/clap-808.wav",
+	});
 	const [grid, setGrid] = useState(dataGrid || initialGrid);
-	const [userGoogleInfo] = useAuthState(auth);
-
 	const dbRef = collection(database, "users");
 	const [docs] = useCollectionData(dbRef);
+
+	const dbInstance = query(
+		collection(database, "projects"),
+		where(`ownerId`, "==", `${user?.uid}`)
+	);
+	const [projects] = useCollectionData(dbInstance);
 
 	let currentUser;
 	if (user) {
 		currentUser = docs?.find((doc) => doc.email === user.email);
 	}
 
-	const dbInstance = query(
-		collection(database, "projects"),
-		where(`ownerId`, "==", `${userGoogleInfo?.uid}`)
-	);
-
-	// console.log("IWORK: ", dbInstance);
-	// const dbInstance = collection(database, "projects");
-
-	const [projects] = useCollectionData(dbInstance);
-
-	// let currentProject = projects?.find(
-	//   (project) => user.email === project.ownerId
+	// console.log("I AM A PROJECT: ", projects);
+	// console.log(uniqueID);
+	// console.log(
+	//   "tracking",
+	//   projects?.filter((project) => project.ownerId === user.uid)
 	// );
-	// console.log("current", currentProject);
 
-	console.log("I AM A PROJECT: ", projects);
-	console.log(uniqueID);
+	const handleMasterVolume = ({ player }, e) => {
+		player.Master.volume = e.target.value;
+	};
 
 	const handleSave = async () => {
 		if (!uniqueID) {
 			const newProject = await addDoc(collection(database, `projects`), {
 				createdAt: serverTimestamp(),
 				ownerId: user.uid,
-				name: "Untitled",
+				name: name,
 				grid: {
 					r1: grid[0],
 					r2: grid[1],
@@ -126,9 +129,23 @@ const Board = ({ data }) => {
 				},
 				{ merge: true }
 			);
+
+			// set(ref(db, `projects/${newProject.id}`), {
+			//   ownerId: user.uid,
+			//   name: name,
+			//   grid: {
+			//     r1: grid[0],
+			//     r2: grid[1],
+			//     r3: grid[2],
+			//     r4: grid[3],
+			//     r5: grid[4],
+			//   },
+			//   bpm: +bpm,
+			// });
 		} else {
 			await updateDoc(doc(database, `projects/${uniqueID}`), {
 				updatedAt: serverTimestamp(),
+				name: name,
 				grid: {
 					r1: grid[0],
 					r2: grid[1],
@@ -141,8 +158,28 @@ const Board = ({ data }) => {
 			});
 
 			setUniqueID(uniqueID);
+			// const newKey = push(child(ref(db), "projects")).key;
+
+			// update(ref(db, `projects/${uniqueID}`), {
+			//   updatedAt: serverTimestamp(),
+			//   grid: {
+			//     r1: grid[0],
+			//     r2: grid[1],
+			//     r3: grid[2],
+			//     r4: grid[3],
+			//     r5: grid[4],
+			//   },
+			//   bpm: +bpm,
+			// });
 		}
 	};
+
+	// const updateDateProject = () => {};
+
+	// onValue(ref(db, `projects/${uniqueID}`), (snapshot) => {
+	//   const data = snapshot.val();
+	//   updateDateProject(projectElement, data);
+	// });
 
 	// KEEP THIS FOR TESTING COLLABORATION
 	// useEffect(() => {
@@ -164,17 +201,19 @@ const Board = ({ data }) => {
 	//   }
 	// }, [grid, bpm]);
 
-	const handleBeatChange = (e) => {
-		if (!objectSounds[e.target.value]) {
+	const handleBeatChange = (value) => {
+		if (!objectSounds[value]) {
 			let copyObject = { ...objectSounds };
-			copyObject[e.target.value] = e.target.value;
+			copyObject[value] = value;
 			setObjectSounds(copyObject);
 		}
-		setBeat(e.target.value);
+
+		console.log("URL!!", value);
+		setBeat(value);
 	};
 
 	return (
-		<>
+		<div>
 			<div className="grid grid-cols-12 text-xl">
 				{/* TOOLBAR */}
 				<div className="flex flex-grow col-span-9 bg-teal-800">
@@ -213,8 +252,8 @@ const Board = ({ data }) => {
 							onClick={() => {
 								setGrid(initialGrid);
 								setObjectSounds({
-									"../samples/drums/clap-808.wav":
-										"../samples/drums/clap-808.wav",
+									"./samples/drums/clap-808.wav":
+										"./samples/drums/clap-808.wav",
 								});
 							}}
 							className="mt-1 mx-2 border-2 p-1 bg-red-900 hover:bg-red-600 border-white"
@@ -222,29 +261,15 @@ const Board = ({ data }) => {
 							CLEAR BOARD
 						</button>
 					</div>
-					<div className="p-2">
-						{/* DROPDOWN */}
-						<label className="p-2">BEAT:</label>
-						<select
-							className="p-1"
-							name="beat"
-							onChange={(e) => {
-								handleBeatChange(e);
-							}}
-						>
-							<option value="./samples/drums/clap-808.wav">clap-808</option>
-							<option value="./samples/drums/clap-analog.wav">
-								clap-analog
-							</option>
-							<option value="./samples/drums/clap-crushed.wav">
-								clap-crushed
-							</option>
-						</select>
-					</div>
 
-					<div className="p-2 mx-4 mt-1">
+					<div className="p-2 mx-4 mt-1 col-span-1">
 						<label className="pr-2">SOUNDS:</label>
-						<SoundMenu beat={beat} handleBeatChange={handleBeatChange} />
+						<SoundMenu
+							beat={beat}
+							handleBeatChange={handleBeatChange}
+							setBeat={setBeat}
+							currentUser={currentUser}
+						/>
 					</div>
 
 					<div className="p-2">
@@ -253,15 +278,45 @@ const Board = ({ data }) => {
 						<input
 							type="range"
 							min="50"
+							defaultValue="120"
 							max="300"
 							onChange={(e) => setBpm(e.target.value)}
 						/>
 						<output className="p-1">{bpm}</output>
 					</div>
+
+					<div className="p-2">
+						{/* MASTER VOLUME */}
+						<label className="p-2">MASTER VOLUME:</label>
+						<input
+							type="range"
+							min="0"
+							defaultValue="0"
+							max="100"
+							onChange={(e) => setMasterVolume(e.target.value)}
+						/>
+						<output className="p-1">{masterVolume}</output>
+					</div>
+
+					<div className="p-2">
+						{/* NAME */}
+						<label className="p-2">NAME:</label>
+						<input
+							type="text"
+							placeholder="Untitled"
+							onChange={(e) => setName(e.target.value)}
+						/>
+					</div>
 				</div>
 
 				<div className="col-span-9">
-					<AudioPlayer objectSounds={objectSounds} bpm={bpm}>
+					{name}
+					<AudioPlayer
+						objectSounds={objectSounds}
+						bpm={bpm}
+						mute={mute}
+						masterVolume={masterVolume}
+					>
 						{({ player }) => {
 							if (!player) {
 								return (
@@ -271,19 +326,22 @@ const Board = ({ data }) => {
 								);
 							}
 							return (
-								<Looper
-									player={player}
-									bpm={bpm}
-									playing={playing}
-									beat={beat}
-									objectSounds={objectSounds}
-									steps={steps}
-									sounds={sounds}
-									grid={grid}
-									setGrid={setGrid}
-									uniqueID={uniqueID}
-									handleSave={handleSave}
-								/>
+								<>
+									<Looper
+										player={player}
+										bpm={bpm}
+										playing={playing}
+										beat={beat}
+										objectSounds={objectSounds}
+										steps={steps}
+										sounds={sounds}
+										grid={grid}
+										setGrid={setGrid}
+										uniqueID={uniqueID}
+										handleSave={handleSave}
+									/>
+									<Recorder player={player} />
+								</>
 							);
 						}}
 					</AudioPlayer>
@@ -295,7 +353,7 @@ const Board = ({ data }) => {
 					</div>
 				</div>
 			</div>
-		</>
+		</div>
 	);
 };
 
