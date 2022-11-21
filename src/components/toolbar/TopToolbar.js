@@ -1,4 +1,3 @@
-import * as Tone from "tone";
 import React, { useState } from "react";
 import { BsFillPlayFill, BsStopFill } from "react-icons/bs";
 import { BiSave } from "react-icons/bi";
@@ -10,6 +9,7 @@ import ElementMaker from "./ElementMaker";
 function TopToolbar({
   beat,
   projects,
+  grid,
   setGrid,
   setUniqueID,
   uniqueID,
@@ -29,7 +29,6 @@ function TopToolbar({
   name,
   setName,
 }) {
-  const [fullName, setFullName] = useState("Joe Abraham");
   const [showInputEle, setShowInputEle] = useState(false);
   // let dial = new Nexus.Dial("#bpm", {
   //   size: [75, 75],
@@ -40,6 +39,20 @@ function TopToolbar({
   //   step: 0,
   //   value: 0,
   // });
+
+  const handleClear = () => {
+    const gridCopy = [...grid];
+    for (let i = 0; i < grid.length; i++) {
+      for (let j = 0; j < grid[i].length; j++) {
+        gridCopy[i][j] = {
+          triggered: false,
+          activated: false,
+          audio: "",
+        };
+      }
+    }
+    setGrid(gridCopy);
+  };
 
   return (
     <div className="flex">
@@ -82,12 +95,7 @@ function TopToolbar({
       />
       <div>
         <button
-          onClick={() => {
-            setGrid(initialGrid);
-            setObjectSounds({
-              "./samples/drums/clap-808.wav": "./samples/drums/clap-808.wav",
-            });
-          }}
+          onClick={handleClear}
           className="mt-1 mx-2 border-2 p-1 bg-red-900 hover:bg-red-600 border-white"
         >
           CLEAR BOARD
