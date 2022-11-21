@@ -1,9 +1,10 @@
 import * as Tone from "tone";
-import React from "react";
+import React, { useState } from "react";
 import { BsFillPlayFill, BsStopFill } from "react-icons/bs";
 import { BiSave } from "react-icons/bi";
 import SoundMenu from "../soundmenu/SoundMenu";
 import LoadMenu from "../loadmenu/LoadMenu";
+import ElementMaker from "./ElementMaker";
 // import { Dial } from "react-nexusui";
 
 function TopToolbar({
@@ -25,7 +26,11 @@ function TopToolbar({
   user,
   handleSave,
   togglePlaying,
+  name,
+  setName,
 }) {
+  const [fullName, setFullName] = useState("Joe Abraham");
+  const [showInputEle, setShowInputEle] = useState(false);
   // let dial = new Nexus.Dial("#bpm", {
   //   size: [75, 75],
   //   interaction: "radial", // "radial", "vertical", or "horizontal"
@@ -38,6 +43,17 @@ function TopToolbar({
 
   return (
     <div className="flex">
+      <div className="mt-3">
+        {/* Invoke the ElementMaker component with some attributes */}
+        <ElementMaker
+          value={name}
+          handleChange={(e) => setName(e.target.value)}
+          handleDoubleClick={() => setShowInputEle(true)}
+          handleBlur={() => setShowInputEle(false)}
+          showInputEle={showInputEle}
+        />
+      </div>
+
       <div className=" bg-teal-800 ml-3">
         <button onClick={togglePlaying}>
           {playing ? (
