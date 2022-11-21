@@ -23,16 +23,12 @@ function TopToolbar({
   setSelected,
   user,
   handleSave,
+  togglePlaying,
 }) {
   return (
     <div className="flex">
       <div className=" bg-teal-800 ml-3">
-        <button
-          onClick={() => {
-            setPlaying(!playing);
-            Tone.start();
-          }}
-        >
+        <button onClick={togglePlaying}>
           {playing ? (
             <BsStopFill className="text-white bg-teal-800 h-12 w-12 p-2" />
           ) : (
