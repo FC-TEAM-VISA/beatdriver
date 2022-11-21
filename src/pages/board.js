@@ -120,18 +120,18 @@ const Board = () => {
         { merge: true }
       );
 
-      set(ref(db, `projects/${newProject.id}`), {
-        ownerId: user.uid,
-        name: name,
-        grid: {
-          r1: grid[0],
-          r2: grid[1],
-          r3: grid[2],
-          r4: grid[3],
-          r5: grid[4],
-        },
-        bpm: +bpm,
-      });
+      // set(ref(db, `projects/${newProject.id}`), {
+      //   ownerId: user.uid,
+      //   name: name,
+      //   grid: {
+      //     r1: grid[0],
+      //     r2: grid[1],
+      //     r3: grid[2],
+      //     r4: grid[3],
+      //     r5: grid[4],
+      //   },
+      //   bpm: +bpm,
+      // });
     } else {
       await updateDoc(doc(database, `projects/${uniqueID}`), {
         updatedAt: serverTimestamp(),
