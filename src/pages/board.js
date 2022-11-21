@@ -31,20 +31,20 @@ import { uploadBytes } from "firebase/storage";
 const steps = 8;
 const buttonState = { triggered: false, activated: false, audio: "" };
 const sounds = [
-	["1", "2", "3", "4", "5", "6", "7", "8"],
-	["9", "10", "11", "12", "13", "14", "15", "16"],
-	["17", "18", "19", "20", "21", "22", "23", "24"],
-	["25", "26", "27", "28", "29", "30", "31", "32"],
-	["33", "34", "35", "36", "37", "38", "39", "40"],
+  ["1", "2", "3", "4", "5", "6", "7", "8"],
+  ["9", "10", "11", "12", "13", "14", "15", "16"],
+  ["17", "18", "19", "20", "21", "22", "23", "24"],
+  ["25", "26", "27", "28", "29", "30", "31", "32"],
+  ["33", "34", "35", "36", "37", "38", "39", "40"],
 ];
 
 //sets up how big the grid will be
 const initialGrid = [
-	new Array(8).fill(buttonState),
-	new Array(8).fill(buttonState),
-	new Array(8).fill(buttonState),
-	new Array(8).fill(buttonState),
-	new Array(8).fill(buttonState),
+  new Array(8).fill(buttonState),
+  new Array(8).fill(buttonState),
+  new Array(8).fill(buttonState),
+  new Array(8).fill(buttonState),
+  new Array(8).fill(buttonState),
 ];
 
 const Board = () => {
@@ -58,6 +58,7 @@ const Board = () => {
   const [uniqueID, setUniqueID] = useState(null);
   const [playing, setPlaying] = useState(false);
   const [isRecording, setIsRecording] = useState(false);
+  const [selectedInstrument, setSelectedInstrument] = useState("selected");
   const [objectSounds, setObjectSounds] = useState({
     "./samples/drums/clap-808.wav": "./samples/drums/clap-808.wav",
   });
@@ -251,6 +252,7 @@ const Board = () => {
               handleBeatChange={handleBeatChange}
               setBeat={setBeat}
               currentUser={currentUser}
+              setSelectedInstrument={setSelectedInstrument}
             />
           </div>
 
@@ -321,6 +323,7 @@ const Board = () => {
                     setGrid={setGrid}
                     uniqueID={uniqueID}
                     handleSave={handleSave}
+                    selectedInstrument={selectedInstrument}
                   />
                   <Recorder player={player} />
                 </>
