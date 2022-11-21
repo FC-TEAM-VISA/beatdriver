@@ -21,6 +21,8 @@ function TopToolbar({
   setBpm,
   selected,
   setSelected,
+  user,
+  handleSave,
 }) {
   return (
     <div className="flex">

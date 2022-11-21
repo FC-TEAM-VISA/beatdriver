@@ -13,7 +13,6 @@ function SoundMenu({
   selected,
   setSelected,
 }) {
-  // const [selected, setSelected] = useState("SELECTED");
   const drumsRef = collection(database, "built_in_drums");
   const bassRef = collection(database, "built_in_bass");
   const guitarRef = collection(database, "built_in_guitar");
@@ -23,7 +22,7 @@ function SoundMenu({
   const [vocals] = useCollectionData(vocalsRef);
   const [guitar] = useCollectionData(guitarRef);
 
-  const customSoundsExist = currentUser && currentUser.sounds.length;
+  const customSoundsExist = currentUser && currentUser.sounds;
 
   // console.log("NAMMMMEEEE💯💯💯💯💯", selected);
 

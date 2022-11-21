@@ -207,6 +207,8 @@ const Board = () => {
             setBpm={setBpm}
             selected={selected}
             setSelected={setSelected}
+            user={user}
+            handleSave={handleSave}
           />
         </div>
 
