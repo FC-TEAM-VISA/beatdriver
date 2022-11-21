@@ -31,25 +31,26 @@ import { uploadBytes } from "firebase/storage";
 const steps = 8;
 const buttonState = { triggered: false, activated: false, audio: "" };
 const sounds = [
-  ["1", "2", "3", "4", "5", "6", "7", "8"],
-  ["9", "10", "11", "12", "13", "14", "15", "16"],
-  ["17", "18", "19", "20", "21", "22", "23", "24"],
-  ["25", "26", "27", "28", "29", "30", "31", "32"],
-  ["33", "34", "35", "36", "37", "38", "39", "40"],
+	["1", "2", "3", "4", "5", "6", "7", "8"],
+	["9", "10", "11", "12", "13", "14", "15", "16"],
+	["17", "18", "19", "20", "21", "22", "23", "24"],
+	["25", "26", "27", "28", "29", "30", "31", "32"],
+	["33", "34", "35", "36", "37", "38", "39", "40"],
 ];
 
 //sets up how big the grid will be
 const initialGrid = [
-  new Array(8).fill(buttonState),
-  new Array(8).fill(buttonState),
-  new Array(8).fill(buttonState),
-  new Array(8).fill(buttonState),
-  new Array(8).fill(buttonState),
+	new Array(8).fill(buttonState),
+	new Array(8).fill(buttonState),
+	new Array(8).fill(buttonState),
+	new Array(8).fill(buttonState),
+	new Array(8).fill(buttonState),
 ];
 
 const Board = () => {
   const [user] = useAuthState(auth);
   const [name, setName] = useState("Untitled");
+  const [isPublic, setIsPublic] = useState(true);
   const [beat, setBeat] = useState("./samples/drums/clap-808.wav");
   const [bpm, setBpm] = useState(120);
   const [mute, setMute] = useState(false);
@@ -73,18 +74,6 @@ const Board = () => {
   if (user) {
     currentUser = docs?.find((doc) => doc.email === user.email);
   }
-
-  // console.log("IWORK: ", dbInstance);
-  // const dbInstance = collection(database, "projects");
-
-  // let currentProject = projects?.find(
-  //   (project) => user.email === project.ownerId
-  // );
-  // console.log("current", currentProject);
-
-  // console.log("beat", beat);
-  // console.log("objectSounds", objectSounds);
-  // console.log("grid", grid);
 
   // console.log("I AM A PROJECT: ", projects);
   // console.log(uniqueID);
@@ -111,6 +100,7 @@ const Board = () => {
           r5: grid[4],
         },
         bpm: +bpm,
+        isPublic: true,
       });
       setUniqueID(newProject.id);
 
@@ -146,6 +136,7 @@ const Board = () => {
           r5: grid[4],
         },
         bpm: +bpm,
+        isPublic,
       });
 
       setUniqueID(uniqueID);
