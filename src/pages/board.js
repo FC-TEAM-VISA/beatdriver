@@ -1,12 +1,8 @@
 import React, { useEffect, useRef, useState, useCallback } from "react";
-import * as Tone from "tone";
 import Looper from "../components/board/looper";
 import AudioPlayer from "../components/board/audioPlayer";
-import { BsFillPlayFill, BsStopFill } from "react-icons/bs";
-import { BiSave } from "react-icons/bi";
-import SoundMenu from "../components/soundmenu/SoundMenu";
-import LoadMenu from "../components/loadmenu/LoadMenu";
 import Recorder from "../components/recorder/recorder";
+import TopToolbar from "../components/toolbar/TopToolbar";
 
 //firebase imports
 import {
@@ -48,23 +44,27 @@ const initialGrid = [
 ];
 
 const Board = () => {
+  //authentication + user info
   const [user] = useAuthState(auth);
+  const dbRef = collection(database, "users");
+  const [docs] = useCollectionData(dbRef);
+  //instruments
+  const [selectedInstrument, setSelectedInstrument] = useState("selected");
+  const [selected, setSelected] = useState("SELECTED");
+  const [objectSounds, setObjectSounds] = useState({
+    "./samples/drums/clap-808.wav": "./samples/drums/clap-808.wav",
+  });
+  //
   const [name, setName] = useState("Untitled");
   const [isPublic, setIsPublic] = useState(true);
-  const [beat, setBeat] = useState("./samples/drums/clap-808.wav");
+  const [beat, setBeat] = useState(null);
   const [bpm, setBpm] = useState(120);
   const [mute, setMute] = useState(false);
   const [masterVolume, setMasterVolume] = useState(0);
   const [uniqueID, setUniqueID] = useState(null);
   const [playing, setPlaying] = useState(false);
-  const [isRecording, setIsRecording] = useState(false);
-  const [selectedInstrument, setSelectedInstrument] = useState("selected");
-  const [objectSounds, setObjectSounds] = useState({
-    "./samples/drums/clap-808.wav": "./samples/drums/clap-808.wav",
-  });
   const [grid, setGrid] = useState(initialGrid);
-  const dbRef = collection(database, "users");
-  const [docs] = useCollectionData(dbRef);
+
   const dbInstance = query(
     collection(database, "projects"),
     where(`ownerId`, "==", `${user?.uid}`)
@@ -75,13 +75,6 @@ const Board = () => {
   if (user) {
     currentUser = docs?.find((doc) => doc.email === user.email);
   }
-
-  // console.log("I AM A PROJECT: ", projects);
-  // console.log(uniqueID);
-  // console.log(
-  //   "tracking",
-  //   projects?.filter((project) => project.ownerId === user.uid)
-  // );
 
   const handleMasterVolume = ({ player }, e) => {
     player.Master.volume = e.target.value;
@@ -190,8 +183,6 @@ const Board = () => {
       copyObject[value] = value;
       setObjectSounds(copyObject);
     }
-
-    console.log("URL!!", value);
     setBeat(value);
   };
 
@@ -199,99 +190,46 @@ const Board = () => {
     <div>
       <div className="grid grid-cols-12 text-xl">
         {/* TOOLBAR */}
-        <div className="flex flex-grow col-span-9 bg-teal-800">
-          <div className="flex bg-teal-800 ml-3">
-            <button
-              onClick={() => {
-                setPlaying(!playing);
-                Tone.start();
-              }}
-            >
-              {playing ? (
-                <BsStopFill className="text-white bg-teal-800 h-12 w-12 p-2" />
-              ) : (
-                <BsFillPlayFill className="text-white bg-teal-800 h-12 w-12 p-2" />
-              )}
-            </button>
-          </div>
-          <div>
-            <BiSave
-              className="mt-4 mr-3 ml-2 cursor-pointer"
-              onClick={() =>
-                user
-                  ? handleSave()
-                  : window.alert("LOG IN OR SIGN UP TO SAVE A PROJECT")
-              }
-            />
-          </div>
-          <LoadMenu
+        <div className="col-span-9 bg-teal-800">
+          <TopToolbar
+            beat={beat}
+            setBeat={setBeat}
             projects={projects}
             setGrid={setGrid}
             setUniqueID={setUniqueID}
             uniqueID={uniqueID}
+            handleBeatChange={handleBeatChange}
+            currentUser={currentUser}
+            setSelectedInstrument={setSelectedInstrument}
+            playing={playing}
+            setPlaying={setPlaying}
+            bpm={bpm}
+            setBpm={setBpm}
+            selected={selected}
+            setSelected={setSelected}
           />
-          <div>
-            <button
-              onClick={() => {
-                setGrid(initialGrid);
-                setObjectSounds({
-                  "./samples/drums/clap-808.wav":
-                    "./samples/drums/clap-808.wav",
-                });
-              }}
-              className="mt-1 mx-2 border-2 p-1 bg-red-900 hover:bg-red-600 border-white"
-            >
-              CLEAR BOARD
-            </button>
-          </div>
-
-          <div className="p-2 mx-4 mt-1 col-span-1">
-            <label className="pr-2">SOUNDS:</label>
-            <SoundMenu
-              beat={beat}
-              handleBeatChange={handleBeatChange}
-              setBeat={setBeat}
-              currentUser={currentUser}
-              setSelectedInstrument={setSelectedInstrument}
-            />
-          </div>
-
-          <div className="p-2">
-            {/* BPM */}
-            <label className="p-2">BPM:</label>
-            <input
-              type="range"
-              min="50"
-              defaultValue="120"
-              max="300"
-              onChange={(e) => setBpm(e.target.value)}
-            />
-            <output className="p-1">{bpm}</output>
-          </div>
-
-          <div className="p-2">
-            {/* MASTER VOLUME */}
-            <label className="p-2">MASTER VOLUME:</label>
-            <input
-              type="range"
-              min="0"
-              defaultValue="0"
-              max="100"
-              onChange={(e) => setMasterVolume(e.target.value)}
-            />
-            <output className="p-1">{masterVolume}</output>
-          </div>
-
-          <div className="p-2">
-            {/* NAME */}
-            <label className="p-2">NAME:</label>
-            <input
-              type="text"
-              placeholder="Untitled"
-              onChange={(e) => setName(e.target.value)}
-            />
-          </div>
         </div>
+
+        {/* <div className="p-2">
+          <label className="p-2">MASTER VOLUME:</label>
+          <input
+            type="range"
+            min="0"
+            defaultValue="0"
+            max="100"
+            onChange={(e) => setMasterVolume(e.target.value)}
+          />
+          <output className="p-1">{masterVolume}</output>
+        </div>
+
+        <div className="p-2">
+          <label className="p-2">NAME:</label>
+          <input
+            type="text"
+            placeholder="Untitled"
+            onChange={(e) => setName(e.target.value)}
+          />
+        </div> */}
 
         <div className="col-span-9">
           {name}
@@ -324,6 +262,7 @@ const Board = () => {
                     uniqueID={uniqueID}
                     handleSave={handleSave}
                     selectedInstrument={selectedInstrument}
+                    selected={selected}
                   />
                   <Recorder player={player} />
                 </>

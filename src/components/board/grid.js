@@ -1,7 +1,7 @@
 import React from "react";
 import Button from "./button";
 
-const Grid = ({ grid, toggleActivation }) => {
+const Grid = ({ grid, toggleActivation, selectedInstrument }) => {
   return (
     <div className="flex items-center bg-black my-10">
       <div className="flex-1 max-w-4xl mx-auto p-10">
@@ -16,6 +16,7 @@ const Grid = ({ grid, toggleActivation }) => {
                   activated={grid[row][col]["activated"]}
                   triggered={grid[row][col]["triggered"]}
                   toggleActivation={() => toggleActivation(row, col)}
+                  selectedInstrument={selectedInstrument}
                 />
               );
             })
