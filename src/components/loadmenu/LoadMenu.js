@@ -4,7 +4,7 @@ import "@szhsin/react-menu/dist/index.css";
 import "@szhsin/react-menu/dist/transitions/slide.css";
 import { useRouter } from "next/router";
 
-function LoadMenu({ projects, setGrid, setUniqueID, uniqueID }) {
+function LoadMenu({ projects, setGrid, setUniqueID, uniqueID, setName }) {
   // console.log(projects[0].grid);
   const router = useRouter();
   const handleLoad = (project) => {
