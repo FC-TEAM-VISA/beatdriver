@@ -192,7 +192,7 @@ const Board = ({ data }) => {
 			  />
 			  <output className="p-1">{masterVolume}</output>
 			</div>
-	
+
 			<div className="p-2">
 			  <label className="p-2">NAME:</label>
 			  <input
@@ -234,7 +234,11 @@ const Board = ({ data }) => {
                     selectedInstrument={selectedInstrument}
                     selected={selected}
                   />
-                  <Recorder player={player} togglePlaying={togglePlaying} />
+                  <Recorder
+                    player={player}
+                    togglePlaying={togglePlaying}
+                    name={name}
+                  />
                 </>
               );
             }}

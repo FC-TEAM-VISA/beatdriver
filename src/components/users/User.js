@@ -169,9 +169,9 @@ function User() {
               NO PUBLISHED TRACKS
             </h1>
           ) : (
-            currentUser?.sounds?.map(({ name, url }, index) => (
+            currentUser?.tracks?.map(({ name, url }, index) => (
               <div key={index} className="p-2">
-                <p>{url}</p>
+                <a href={url}>{name}</a>
               </div>
             ))
           )}
