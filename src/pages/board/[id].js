@@ -66,10 +66,13 @@ const Board = ({ data }) => {
   if (user) {
     currentUser = docs?.find((doc) => doc.email === user.email);
   }
+  console.log("currentUser: ", currentUser);
   //instruments
-  const [selectedInstrument, setSelectedInstrument] = useState("selected");
-  const [selected, setSelected] = useState("SELECTED");
-  const [beat, setBeat] = useState(null);
+  const [selectedInstrument, setSelectedInstrument] = useState(
+    data.selectedInstrument
+  );
+  const [selected, setSelected] = useState(data.selected);
+  const [beat, setBeat] = useState(data.beat);
   const [objectSounds, setObjectSounds] = useState(
     data.objectSounds || {
       "https://firebasestorage.googleapis.com/v0/b/music-collaboration-app.appspot.com/o/built-in-instruments%2Fdrums%2Fclap%2Fclap-808.wav?alt=media&token=1e2bd7d8-dad2-49b6-a6db-9959a06f1520":
@@ -87,35 +90,86 @@ const Board = ({ data }) => {
   const [uniqueID, setUniqueID] = useState(data.id);
   const [playing, setPlaying] = useState(false);
   const [grid, setGrid] = useState(dataGrid || initialGrid);
+
   const dbInstance = query(
     collection(database, "projects"),
     where(`ownerId`, "==", `${user?.uid}`)
   );
+
   const [projects] = useCollectionData(dbInstance);
+  let currentProject;
+
+  if (projects) {
+    currentProject = projects?.find(
+      (project) => uniqueID === project.projectId
+    );
+  }
+
+  console.log(projects);
+  console.log("truth: ", currentProject);
+
+  console.log("1", objectSounds);
+  console.log("2", beat);
+  console.log("3", selected);
+  console.log("4", selectedInstrument);
 
   const handleSave = async () => {
-    await updateDoc(doc(database, `projects/${uniqueID}`), {
-      updatedAt: serverTimestamp(),
-      name: name,
-      grid: {
-        r1: grid[0],
-        r2: grid[1],
-        r3: grid[2],
-        r4: grid[3],
-        r5: grid[4],
-      },
-      bpm: +bpm,
-      isPublic,
-    });
-    setUniqueID(uniqueID);
+    if (currentProject) {
+      await updateDoc(doc(database, `projects/${uniqueID}`), {
+        updatedAt: serverTimestamp(),
+        name: name,
+        beat,
+        selected,
+        selectedInstrument,
+        grid: {
+          r1: grid[0],
+          r2: grid[1],
+          r3: grid[2],
+          r4: grid[3],
+          r5: grid[4],
+        },
+        bpm: +bpm,
+        isPublic,
+      });
+      setUniqueID(uniqueID);
+    } else {
+      window.alert(
+        "Are you sure you want to save this to your projects? You will be redirected to your own copy."
+      );
+      const newProject = await addDoc(collection(database, `projects`), {
+        createdAt: serverTimestamp(),
+        ownerId: user.uid,
+        name: `${name}.copy` || "Untitled",
+        objectSounds: objectSounds,
+        beat,
+        selected,
+        selectedInstrument,
+        grid: {
+          r1: grid[0],
+          r2: grid[1],
+          r3: grid[2],
+          r4: grid[3],
+          r5: grid[4],
+        },
+        bpm: +bpm,
+        isPublic: true,
+      });
+
+      await setDoc(
+        doc(database, `projects/${newProject.id}`),
+        {
+          projectId: newProject.id,
+        },
+        { merge: true }
+      );
+
+      router.push({
+        pathname: `/board/[id]`,
+        query: { id: newProject.id },
+      });
+      setUniqueID(newProject.id);
+    }
   };
-
-  // const updateDateProject = () => {};
-
-  // onValue(ref(db, `projects/${uniqueID}`), (snapshot) => {
-  //   const data = snapshot.val();
-  //   updateDateProject(projectElement, data);
-  // });
 
   // KEEP THIS FOR TESTING COLLABORATION
   // useEffect(() => {

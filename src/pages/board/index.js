@@ -84,6 +84,9 @@ const Board = () => {
         ownerId: user.uid,
         name: name,
         objectSounds: objectSounds,
+        beat,
+        selected,
+        selectedInstrument,
         grid: {
           r1: grid[0],
           r2: grid[1],
@@ -111,13 +114,6 @@ const Board = () => {
       });
     }
   };
-
-  // const updateDateProject = () => {};
-
-  // onValue(ref(db, `projects/${uniqueID}`), (snapshot) => {
-  //   const data = snapshot.val();
-  //   updateDateProject(projectElement, data);
-  // });
 
   // KEEP THIS FOR TESTING COLLABORATION
   // useEffect(() => {
