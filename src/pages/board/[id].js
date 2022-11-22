@@ -131,6 +131,7 @@ const Board = ({ data }) => {
       const newProject = await addDoc(collection(database, `projects`), {
         createdAt: serverTimestamp(),
         ownerId: user.uid,
+        username: currentUser.name,
         name: `${name}.copy` || "Untitled",
         objectSounds: objectSounds,
         beat: beat || null,

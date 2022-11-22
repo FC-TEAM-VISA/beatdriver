@@ -9,13 +9,13 @@ const UploadButton = () => {
   const [file, setFile] = useState("");
   const [percent, setPercent] = useState(0);
   const [user] = useAuthState(auth);
-  const dbRef = doc(database, "users", `${user.uid}`);
 
   function handleChange(event) {
     setFile(event.target.files[0]);
   }
 
   const handleUpload = async (event) => {
+    const dbRef = doc(database, "users", `${user.uid}`);
     if (!database) return;
 
     if (!file) return;
