@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import * as Tone from "tone";
-import Looper from "../../components/board/Looper";
-import AudioPlayer from "../../components/board/AudioPlayer";
-import Recorder from "../../components/recorder/Recorder";
-import TopToolbar from "../../components/toolbar/TopToolbar";
+import Looper from "../../../components/board/Looper";
+import AudioPlayer from "../../../components/board/AudioPlayer";
+import Recorder from "../../../components/recorder/Recorder";
+import TopToolbar from "../../../components/toolbar/TopToolbar";
 
 //firebase imports
 import {
@@ -17,7 +17,7 @@ import {
   query,
   getDoc,
 } from "firebase/firestore";
-import { database, auth, db } from "../../../utils/firebase";
+import { database, auth, db } from "../../../../utils/firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useCollectionData } from "react-firebase-hooks/firestore";
 import { useRouter } from "next/router";
@@ -223,6 +223,8 @@ const Board = ({ data }) => {
             togglePlaying={togglePlaying}
           />
         </div>
+
+        <div>Share</div>
 
         <div className="col-span-9">
           <AudioPlayer
