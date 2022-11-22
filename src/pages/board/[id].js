@@ -25,6 +25,7 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { useCollectionData } from "react-firebase-hooks/firestore";
 import { child, onValue, push, ref, set, update } from "firebase/database";
 import { uploadBytes } from "firebase/storage";
+import { useRouter } from "next/router";
 
 export const getServerSideProps = async (context) => {
   const projectRef = doc(database, "projects", context.query.id);
@@ -58,6 +59,7 @@ const initialGrid = [
 ];
 
 const Board = ({ data }) => {
+  const router = useRouter();
   //authentication + user info
   const [user] = useAuthState(auth);
   const dbRef = collection(database, "users");
