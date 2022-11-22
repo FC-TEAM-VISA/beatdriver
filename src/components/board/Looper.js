@@ -12,6 +12,7 @@ const Looper = ({
   steps,
   selectedInstrument,
   selected,
+  masterVolume,
 }) => {
   const [currButton, setCurrButton] = useState(0);
 
@@ -25,6 +26,8 @@ const Looper = ({
       setGrid(gridCopy);
     }
   };
+
+  player.volume.value = masterVolume;
 
   //this is what goes through the loop and triggers each row
   //if a button is triggered and already activated (by user) then it plays the sample
