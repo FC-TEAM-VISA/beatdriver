@@ -95,15 +95,7 @@ function TopToolbar({
           setName={setName}
         />
       </div>
-      {/* CLEAR BUTTON */}
-      <div>
-        <button
-          onClick={handleClear}
-          className="mt-1 mx-2 border-2 p-2 bg-red-900 hover:bg-red-600 border-white"
-        >
-          CLEAR
-        </button>
-      </div>
+
       {/* SOUND MENU */}
       <div className="">
         <label className="pr-2">SOUNDS:</label>
@@ -145,6 +137,15 @@ function TopToolbar({
           onChange={(e) => setMasterVolume(e.value)}
         />
         <label className="col-span-1 text-sm">MASTER</label>
+      </div>
+      {/* CLEAR BUTTON */}
+      <div>
+        <button
+          onClick={handleClear}
+          className="mt-1 mx-2 border-2 p-2 bg-red-900 hover:bg-red-600 border-white"
+        >
+          CLEAR
+        </button>
       </div>
     </div>
   );
