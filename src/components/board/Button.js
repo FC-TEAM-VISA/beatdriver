@@ -8,25 +8,25 @@ const Button = ({
 }) => {
   const triggeredInstrumentColor =
     selectedInstrument === "DRUMS"
-      ? "bg-red-800"
+      ? "bg-drums_dark"
       : selectedInstrument === "GUITAR"
-      ? "bg-blue-800"
+      ? "bg-guitar_dark"
       : selectedInstrument === "VOCALS"
-      ? "bg-purple-800"
+      ? "bg-vocals_dark"
       : selectedInstrument === "BASS"
-      ? "bg-green-800"
-      : "bg-pink-800";
+      ? "bg-bass_dark"
+      : "bg-keys_dark";
 
   const instrumentColor =
     selectedInstrument === "DRUMS"
-      ? "bg-red-400"
+      ? "bg-drums"
       : selectedInstrument === "GUITAR"
-      ? "bg-blue-400"
+      ? "bg-guitar"
       : selectedInstrument === "VOCALS"
-      ? "bg-purple-400"
+      ? "bg-vocals"
       : selectedInstrument === "BASS"
-      ? "bg-green-400"
-      : "bg-pink-400";
+      ? "bg-bass"
+      : "bg-keys";
 
   const drumButton = (activated, triggered) => {
     return activated && triggered
@@ -46,7 +46,7 @@ const Button = ({
     } else if (activated === false && triggered === true) {
       return `bg-sky-500 rounded-sm shadow-xl animate-pulse`;
     } else {
-      return `bg-purple-100 rounded-sm shadow-xl`;
+      return `bg-lavender_grey rounded-sm shadow-xl`;
     }
   };
 

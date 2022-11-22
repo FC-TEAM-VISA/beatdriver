@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import { BsFillPlayFill, BsStopFill } from "react-icons/bs";
 import { BiSave } from "react-icons/bi";
+import { Knob } from "primereact/knob";
 import SoundMenu from "../soundmenu/SoundMenu";
 import LoadMenu from "../loadmenu/LoadMenu";
 import ElementMaker from "./ElementMaker";
+import Recorder from "../recorder/Recorder";
 
 function TopToolbar({
   beat,
@@ -17,7 +19,7 @@ function TopToolbar({
   currentUser,
   setSelectedInstrument,
   playing,
-  setPlaying,
+  player,
   bpm,
   setBpm,
   selected,
@@ -27,6 +29,8 @@ function TopToolbar({
   togglePlaying,
   name,
   setName,
+  masterVolume,
+  setMasterVolume,
 }) {
   const [showInputEle, setShowInputEle] = useState(false);
 
@@ -45,8 +49,9 @@ function TopToolbar({
   };
 
   return (
-    <div className="flex">
-      <div className="mt-3">
+    <div className="flex flex-grow cursor-pointer place-items-center space-x-6">
+      {/* PROJECT TITLE */}
+      <div className="">
         <ElementMaker
           value={name}
           handleChange={(e) => setName(e.target.value)}
@@ -55,19 +60,24 @@ function TopToolbar({
           showInputEle={showInputEle}
         />
       </div>
-
-      <div className=" bg-teal-800 ml-3">
+      {/* RECORDER */}
+      <div>
+        <Recorder player={player} togglePlaying={togglePlaying} name={name} />
+      </div>
+      {/* PLAY BUTTON */}
+      <div className="">
         <button onClick={togglePlaying}>
           {playing ? (
-            <BsStopFill className="text-white bg-teal-800 h-12 w-12 p-2" />
+            <BsStopFill className="text-white h-12 w-12" />
           ) : (
-            <BsFillPlayFill className="text-white bg-teal-800 h-12 w-12 p-2" />
+            <BsFillPlayFill className="text-white h-12 w-12" />
           )}
         </button>
       </div>
+      {/* SAVE BUTTON */}
       <div>
         <BiSave
-          className="mt-4 mr-3 ml-2 cursor-pointer"
+          className="h-20 w-8"
           onClick={() =>
             user
               ? handleSave()
@@ -75,23 +85,27 @@ function TopToolbar({
           }
         />
       </div>
-      <LoadMenu
-        projects={projects}
-        setGrid={setGrid}
-        setUniqueID={setUniqueID}
-        uniqueID={uniqueID}
-        setName={setName}
-      />
+      {/* LOAD MENU */}
+      <div className="">
+        <LoadMenu
+          projects={projects}
+          setGrid={setGrid}
+          setUniqueID={setUniqueID}
+          uniqueID={uniqueID}
+          setName={setName}
+        />
+      </div>
+      {/* CLEAR BUTTON */}
       <div>
         <button
           onClick={handleClear}
-          className="mt-1 mx-2 border-2 p-1 bg-red-900 hover:bg-red-600 border-white"
+          className="mt-1 mx-2 border-2 p-2 bg-red-900 hover:bg-red-600 border-white"
         >
-          CLEAR BOARD
+          CLEAR
         </button>
       </div>
-
-      <div className="p-2 mx-4 mt-1 col-span-1">
+      {/* SOUND MENU */}
+      <div className="">
         <label className="pr-2">SOUNDS:</label>
         <SoundMenu
           beat={beat}
@@ -103,18 +117,34 @@ function TopToolbar({
           setSelected={setSelected}
         />
       </div>
-
-      <div className="p-2">
-        {/* BPM */}
-        <label className="p-2">BPM:</label>
-        <input
-          type="range"
-          min="50"
-          defaultValue="120"
-          max="300"
-          onChange={(e) => setBpm(e.target.value)}
+      {/* BPM */}
+      <div className="grid grid-cols-1 m-2 place-items-center">
+        <Knob
+          size={60}
+          value={bpm}
+          min={50}
+          max={300}
+          valueColor={"MediumPurple"}
+          rangeColor={"White"}
+          textColor={"White"}
+          onChange={(e) => setBpm(e.value)}
         />
-        <output className="p-1">{bpm}</output>
+        <label className="col-span-1 text-sm">BPM</label>
+      </div>
+      {/* MASTER VOLUME */}
+      <div className="grid grid-cols-1 m-2 place-items-center">
+        <Knob
+          size={60}
+          value={masterVolume}
+          valueTemplate={"{value}%"}
+          min={-20}
+          max={20}
+          valueColor={"MediumPurple"}
+          rangeColor={"White"}
+          textColor={"White"}
+          onChange={(e) => setMasterVolume(e.value)}
+        />
+        <label className="col-span-1 text-sm">MASTER</label>
       </div>
     </div>
   );

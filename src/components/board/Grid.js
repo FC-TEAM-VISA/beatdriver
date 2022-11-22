@@ -3,9 +3,9 @@ import Button from "./Button";
 
 const Grid = ({ grid, toggleActivation, selectedInstrument }) => {
   return (
-    <div className="flex items-center bg-black my-10">
-      <div className="flex-1 max-w-4xl mx-auto p-10">
-        <ul className="grid grid-cols-8 grid-rows-4 gap-8">
+    <div className="flex items-center my-2">
+      <div className="flex-1 max-w-4xl mx-auto p-5">
+        <ul className="grid grid-cols-8 grid-rows-5 gap-8">
           {grid.map((line, row) =>
             line.map((time, col) => {
               return (

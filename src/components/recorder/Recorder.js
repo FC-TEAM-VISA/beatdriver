@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { BsRecordCircle } from "react-icons/bs";
 import * as Tone from "tone";
 import { auth } from "../../../utils/firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
@@ -84,7 +85,13 @@ const Recorder = ({ togglePlaying, name }) => {
 
   return (
     <div>
-      <button onClick={toggleRec}>{isRec ? "STOP RECORDING" : "RECORD"}</button>
+      <button onClick={toggleRec}>
+        {isRec ? (
+          <BsRecordCircle className="text-red-600 animate-bounce" />
+        ) : (
+          <BsRecordCircle />
+        )}
+      </button>
     </div>
   );
 };
