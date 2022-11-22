@@ -1,10 +1,5 @@
 import React, { useState, useEffect } from "react";
 import Grid from "./Grid";
-import * as Tone from "tone";
-import { Player } from "tone";
-
-import { doc, updateDoc, serverTimestamp } from "firebase/firestore";
-import { database } from "../../../utils/firebase";
 
 const Looper = ({
   player,
@@ -14,10 +9,7 @@ const Looper = ({
   objectSounds,
   grid,
   setGrid,
-  sounds,
   steps,
-  uniqueID,
-  handleSave,
   selectedInstrument,
   selected,
 }) => {
@@ -43,11 +35,8 @@ const Looper = ({
         grid[i][j] = { activated, triggered: j === currButton, audio };
 
         if (grid[i][j].triggered && grid[i][j].activated && grid[i][j].audio) {
-          // Tone.context.lookAhead = 0;
-
           //plays the sound associated with the button
           player.player(objectSounds[grid[i][j].audio]).start();
-          // player.start();
         }
       }
     }

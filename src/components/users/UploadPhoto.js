@@ -1,20 +1,16 @@
 import React, { useState } from "react";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
-import { database, storage, beatsRef } from "../../../utils/firebase";
+import { database, storage } from "../../../utils/firebase";
 import { auth } from "../../../utils/firebase";
-import { doc, arrayUnion, updateDoc } from "firebase/firestore";
+import { doc, updateDoc } from "firebase/firestore";
 import { useAuthState } from "react-firebase-hooks/auth";
 
 function UploadPhoto() {
-  // State to store uploaded file
   const [file, setFile] = useState("");
-  // progress
   const [percent, setPercent] = useState(0);
   const [user] = useAuthState(auth);
-
   const dbRef = doc(database, "users", `${user?.uid}`);
 
-  // Handle file upload event and update state
   function handleChange(event) {
     setFile(event.target.files[0]);
   }
@@ -34,18 +30,13 @@ function UploadPhoto() {
           (snapshot.bytesTransferred / snapshot.totalBytes) * 100
         );
 
-        // update progress
         setPercent(percent);
       },
-      (err) => console.log(err),
       () => {
-        // download url
         getDownloadURL(uploadTask.snapshot.ref).then((url) => {
           updateDoc(dbRef, {
             photo: url,
-          })
-            .then(() => console.log("url loaded to collection"))
-            .catch((e) => console.log(e));
+          });
         });
       }
     );

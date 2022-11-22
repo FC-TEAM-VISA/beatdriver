@@ -24,8 +24,6 @@ function SoundMenu({
 
   const customSoundsExist = currentUser && currentUser.sounds;
 
-  // console.log("NAMMMMEEEE💯💯💯💯💯", selected);
-
   return (
     <Menu
       menuButton={({ open }) => (
@@ -40,7 +38,6 @@ function SoundMenu({
                 {docs.sounds?.map((sound, i) => (
                   <MenuItem
                     label={sound.name}
-                    // value={sound.url}
                     key={i}
                     onClick={() => {
                       handleBeatChange(sound.url);

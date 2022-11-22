@@ -1,19 +1,16 @@
 import React, { useState } from "react";
 import Image from "next/image";
-import Link from "next/link";
 import { auth } from "../../../utils/firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { database } from "../../../utils/firebase";
-import { doc, collection } from "firebase/firestore";
+import { collection } from "firebase/firestore";
 import { useCollectionData } from "react-firebase-hooks/firestore";
 import { BsInstagram, BsTwitter } from "react-icons/bs";
 import { GrSoundcloud } from "react-icons/gr";
 import UploadButton from "./UploadButton";
-import { Input } from "postcss";
 import Modal from "react-modal";
 import UpdateInfo from "./UpdateInfo";
 import UploadPhoto from "./UploadPhoto";
-import Uploadbutton from "./UploadButton";
 
 function User() {
   const [user] = useAuthState(auth);
@@ -26,8 +23,6 @@ function User() {
   if (user) {
     currentUser = docs?.find((doc) => doc.email === user.email);
   }
-
-  console.log(user, currentUser);
 
   const openModal = () => setModalOpen(true);
   const closeModal = () => setModalOpen(false);
@@ -139,7 +134,6 @@ function User() {
             </a>
           </div>
         </div>
-        {/* <div className="col-span-1" /> */}
         <div className="col-span-3 border-2 p-5 ml-10 grid place-items-center">
           <p className="text-3xl mt-3">UPLOAD YOUR OWN SOUNDS</p>
           <UploadButton />
