@@ -1,8 +1,8 @@
 import * as Tone from "tone";
 import React, { useEffect, useRef, useState, useCallback } from "react";
-import Looper from "../../components/board/looper";
-import AudioPlayer from "../../components/board/audioPlayer";
-import Recorder from "../../components/recorder/recorder";
+import Looper from "../../components/board/Looper";
+import AudioPlayer from "../../components/board/AudioPlayer";
+import Recorder from "../../components/recorder/Recorder";
 import TopToolbar from "../../components/toolbar/TopToolbar";
 
 //firebase imports

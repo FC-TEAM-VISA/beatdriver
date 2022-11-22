@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import Grid from "./grid";
+import Grid from "./Grid";
 import * as Tone from "tone";
 import { Player } from "tone";
 
