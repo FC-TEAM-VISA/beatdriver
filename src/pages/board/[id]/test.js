@@ -1,10 +1,9 @@
+import React, { useState } from "react";
 import * as Tone from "tone";
-import * as htmlToImage from "html-to-image";
-import React, { useState, createRef } from "react";
 import Looper from "../../../components/board/Looper";
 import AudioPlayer from "../../../components/board/AudioPlayer";
+import Recorder from "../../../components/recorder/Recorder";
 import TopToolbar from "../../../components/toolbar/TopToolbar";
-import EffectsMenu from "../../../components/effectsmenu/EffectsMenu";
 
 //firebase imports
 import {
@@ -80,15 +79,16 @@ const Board = ({ data }) => {
 	//project info
 	const orderedKeys = Object.keys(data.grid).sort();
 	const dataGrid = orderedKeys.map((row) => data.grid[row]);
-	const [grid, setGrid] = useState(dataGrid || initialGrid); //project board
-	const [uniqueID, setUniqueID] = useState(data.id); //project id
-	const [playing, setPlaying] = useState(false); //audio player
-	const [name, setName] = useState(data.name); //project name
-	const [isPublic, setIsPublic] = useState(true); //collab or solo
-	const [bpm, setBpm] = useState(data.bpm || 120); //tempo
-	const [mute, setMute] = useState(false); //mute button
-	const [masterVolume, setMasterVolume] = useState(data.masterVolume); //master volume
-	const ref = createRef(null);
+	const [name, setName] = useState(data.name);
+	const [isPublic, setIsPublic] = useState(true);
+	const [bpm, setBpm] = useState(data.bpm || 120);
+	const [mute, setMute] = useState(false);
+	const [masterVolume, setMasterVolume] = useState(0);
+	const [uniqueID, setUniqueID] = useState(data.id);
+	const [playing, setPlaying] = useState(false);
+	const [grid, setGrid] = useState(dataGrid || initialGrid);
+	const [link, setLink] = useState("");
+
 	const dbInstance = query(
 		collection(database, "projects"),
 		where(`ownerId`, "==", `${user?.uid}`)
@@ -102,8 +102,8 @@ const Board = ({ data }) => {
 			(project) => uniqueID === project.projectId
 		);
 	}
+
 	const handleSave = async () => {
-		const image = await takeScreenShot(ref.current);
 		if (currentProject) {
 			await updateDoc(doc(database, `projects/${uniqueID}`), {
 				updatedAt: serverTimestamp(),
@@ -119,9 +119,7 @@ const Board = ({ data }) => {
 					r5: grid[4],
 				},
 				bpm: +bpm,
-				masterVolume: +masterVolume,
 				isPublic,
-				screen: image,
 			});
 			setUniqueID(uniqueID);
 		} else {
@@ -144,9 +142,7 @@ const Board = ({ data }) => {
 					r5: grid[4],
 				},
 				bpm: +bpm,
-				masterVolume: +masterVolume,
 				isPublic: true,
-				screen: image,
 			});
 
 			await setDoc(
@@ -163,11 +159,6 @@ const Board = ({ data }) => {
 			});
 			setUniqueID(newProject.id);
 		}
-	};
-
-	const takeScreenShot = async (node) => {
-		const dataURI = await htmlToImage.toJpeg(node);
-		return dataURI;
 	};
 
 	// KEEP THIS FOR TESTING COLLABORATION
@@ -213,7 +204,38 @@ const Board = ({ data }) => {
 	return (
 		<div>
 			<div className="grid grid-cols-12 text-xl">
-				<div className="col-span-8 bg-slate-800">
+				{/* TOOLBAR */}
+				<div className="col-span-12 bg-teal-800">
+					<TopToolbar
+						beat={beat}
+						setBeat={setBeat}
+						projects={projects}
+						grid={grid}
+						setGrid={setGrid}
+						setUniqueID={setUniqueID}
+						uniqueID={uniqueID}
+						handleBeatChange={handleBeatChange}
+						currentUser={currentUser}
+						setSelectedInstrument={setSelectedInstrument}
+						playing={playing}
+						setPlaying={setPlaying}
+						bpm={bpm}
+						setBpm={setBpm}
+						selected={selected}
+						setSelected={setSelected}
+						user={user}
+						handleSave={handleSave}
+						name={name}
+						setName={setName}
+						togglePlaying={togglePlaying}
+					/>
+				</div>
+
+				<div>
+					<button onClick={handleCopyLink}>Share</button>
+				</div>
+
+				<div className="col-span-9">
 					<AudioPlayer
 						objectSounds={objectSounds}
 						bpm={bpm}
@@ -230,66 +252,36 @@ const Board = ({ data }) => {
 							}
 							return (
 								<>
-									<div className="col-span-8 bg-black">
-										{/* TOOLBAR */}
-										<TopToolbar
-											beat={beat}
-											setBeat={setBeat}
-											projects={projects}
-											grid={grid}
-											setGrid={setGrid}
-											setUniqueID={setUniqueID}
-											uniqueID={uniqueID}
-											handleBeatChange={handleBeatChange}
-											currentUser={currentUser}
-											setSelectedInstrument={setSelectedInstrument}
-											playing={playing}
-											player={player}
-											setPlaying={setPlaying}
-											bpm={bpm}
-											setBpm={setBpm}
-											selected={selected}
-											setSelected={setSelected}
-											user={user}
-											handleSave={handleSave}
-											name={name}
-											setName={setName}
-											togglePlaying={togglePlaying}
-											masterVolume={masterVolume}
-											setMasterVolume={setMasterVolume}
-										/>
-									</div>
-
-									<div>
-										<button onClick={handleCopyLink}>Share</button>
-									</div>
-
-									<div ref={ref}>
-										<Looper
-											player={player}
-											bpm={bpm}
-											playing={playing}
-											beat={beat}
-											objectSounds={objectSounds}
-											steps={steps}
-											sounds={sounds}
-											grid={grid}
-											setGrid={setGrid}
-											uniqueID={uniqueID}
-											handleSave={handleSave}
-											selectedInstrument={selectedInstrument}
-											selected={selected}
-											masterVolume={masterVolume}
-										/>
-									</div>
+									<Looper
+										player={player}
+										bpm={bpm}
+										playing={playing}
+										beat={beat}
+										objectSounds={objectSounds}
+										steps={steps}
+										sounds={sounds}
+										grid={grid}
+										setGrid={setGrid}
+										uniqueID={uniqueID}
+										handleSave={handleSave}
+										selectedInstrument={selectedInstrument}
+										selected={selected}
+									/>
+									<Recorder
+										player={player}
+										togglePlaying={togglePlaying}
+										name={name}
+									/>
 								</>
 							);
 						}}
 					</AudioPlayer>
 				</div>
 
-				<div className="col-span-4 ml-4 bg-prussian_blue">
-					<EffectsMenu />
+				<div className="col-span-3">
+					<div className="bg-blue-200 h-full col-span-2">
+						<div className=" bg-purple-400"></div>
+					</div>
 				</div>
 			</div>
 		</div>

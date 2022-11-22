@@ -60,7 +60,7 @@ function Navbar() {
 
   return (
     <header>
-      <div className="flex items-center space-x-3 p-2 pl-6 bg-blue-400 text-white  ">
+      <div className="flex flex-grow cursor-pointer place-items-center space-x-3 p-2 pl-6 bg-indigo_dye text-ghost_white">
         {/* LEFT NAV */}
         <div className="mt-2 flex items-center flex-grow sm:flex-grow-0 text-5xl">
           <Link href="/">
@@ -68,7 +68,7 @@ function Navbar() {
           </Link>
         </div>
         {/* RIGHT NAV */}
-        <div className="text-white flex items-center space-x-6 mx-6 whitespace-nowrap pl-10 text-2xl">
+        <div className="text-ghost_white flex items-center space-x-6 mx-6 whitespace-nowrap pl-10 text-2xl">
           <Link href="/discover">
             <p className="link">Discover</p>
           </Link>
@@ -76,9 +76,9 @@ function Navbar() {
             <p className="link">New Project</p>
           </Link>
           {!userGoogleInfo && (
-            <div onClick={login} className="link">
+            <button onClick={login} className="link">
               <p>Sign In</p>
-            </div>
+            </button>
           )}
           {userGoogleInfo && (
             <>
@@ -104,9 +104,9 @@ function Navbar() {
               </Link>
 
               <div>
-                <p className="link text-md" onClick={handleSignOut}>
+                <button className="link text-md" onClick={handleSignOut}>
                   Sign Out
-                </p>
+                </button>
               </div>
             </>
           )}

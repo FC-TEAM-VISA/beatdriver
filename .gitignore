@@ -40,4 +40,4 @@ src/pages/test.js
 
 src/pages/users/
 
-# src/pages/board
+src/pages/board/[id]/test.js
