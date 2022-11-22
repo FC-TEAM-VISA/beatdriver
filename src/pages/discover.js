@@ -1,9 +1,9 @@
 import React from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { collection, getDocs, where, query } from "firebase/firestore";
 import { database } from "../../utils/firebase";
 import { useCollectionData } from "react-firebase-hooks/firestore";
-import Image from "next/image";
 
 const isPublicQuery = query(
   collection(database, "projects"),
@@ -31,7 +31,7 @@ const Discover = () => {
           <Link href={`/board/${projectId}`} key={index} className="p-2">
             {screen && screen.length ? (
               <div className="m-2 flex-wrap">
-                <Image src={screen} alt="screen" width="200" height="200"></Image>
+                <Image src={screen} alt="screen" width={200} height={200} />
                 <h5 className="mt-1">
                   {name} by {username}
                 </h5>
