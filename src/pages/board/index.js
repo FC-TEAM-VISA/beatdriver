@@ -236,7 +236,11 @@ const Board = () => {
                     selectedInstrument={selectedInstrument}
                     selected={selected}
                   />
-                  <Recorder player={player} togglePlaying={togglePlaying} />
+                  <Recorder
+                    player={player}
+                    togglePlaying={togglePlaying}
+                    name={name}
+                  />
                 </>
               );
             }}
