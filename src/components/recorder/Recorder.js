@@ -43,7 +43,6 @@ const Recorder = ({ togglePlaying, name }) => {
       updateDoc(dbRef, {
         tracks: arrayUnion({ name: folderName, url }),
       });
-      console.log(url, "URL!");
     });
   };
 
@@ -60,10 +59,7 @@ const Recorder = ({ togglePlaying, name }) => {
   async function stopRecording() {
     if (!recorder) return;
     const recording = await recorder.stop();
-    // let blob = new Blob([recording], { type: "audio/wav" });
     const url = URL.createObjectURL(recording);
-    console.log(url, "URL");
-    // anchor.click();
     if (user) {
       if (
         window.confirm(
@@ -84,10 +80,6 @@ const Recorder = ({ togglePlaying, name }) => {
         anchor.click();
       }
     }
-
-    // anchor.href = url;
-    // anchor.download = "beat";
-    // anchor.click();
   }
 
   return (

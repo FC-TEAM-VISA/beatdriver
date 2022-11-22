@@ -4,7 +4,6 @@ import { BiSave } from "react-icons/bi";
 import SoundMenu from "../soundmenu/SoundMenu";
 import LoadMenu from "../loadmenu/LoadMenu";
 import ElementMaker from "./ElementMaker";
-// import { Dial } from "react-nexusui";
 
 function TopToolbar({
   beat,
@@ -30,15 +29,6 @@ function TopToolbar({
   setName,
 }) {
   const [showInputEle, setShowInputEle] = useState(false);
-  // let dial = new Nexus.Dial("#bpm", {
-  //   size: [75, 75],
-  //   interaction: "radial", // "radial", "vertical", or "horizontal"
-  //   mode: "relative", // "absolute" or "relative"
-  //   min: 0,
-  //   max: 1,
-  //   step: 0,
-  //   value: 0,
-  // });
 
   const handleClear = () => {
     const gridCopy = [...grid];
@@ -57,7 +47,6 @@ function TopToolbar({
   return (
     <div className="flex">
       <div className="mt-3">
-        {/* Invoke the ElementMaker component with some attributes */}
         <ElementMaker
           value={name}
           handleChange={(e) => setName(e.target.value)}

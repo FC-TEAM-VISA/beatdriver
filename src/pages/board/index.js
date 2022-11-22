@@ -1,5 +1,5 @@
 import * as Tone from "tone";
-import React, { useEffect, useRef, useState, useCallback } from "react";
+import React, { useState } from "react";
 import Looper from "../../components/board/Looper";
 import AudioPlayer from "../../components/board/AudioPlayer";
 import Recorder from "../../components/recorder/Recorder";
@@ -9,18 +9,15 @@ import TopToolbar from "../../components/toolbar/TopToolbar";
 import {
   collection,
   doc,
-  updateDoc,
   serverTimestamp,
   addDoc,
   setDoc,
   where,
   query,
 } from "firebase/firestore";
-import { database, auth, db } from "../../../utils/firebase";
+import { database, auth } from "../../../utils/firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useCollectionData } from "react-firebase-hooks/firestore";
-import { child, onValue, push, ref, set, update } from "firebase/database";
-import { uploadBytes } from "firebase/storage";
 import { useRouter } from "next/router";
 
 /* THE BOARD*/
@@ -63,10 +60,9 @@ const Board = () => {
   const [beat, setBeat] = useState(null);
   //project info
   const [name, setName] = useState("Untitled");
-  const [isPublic, setIsPublic] = useState(true);
   const [bpm, setBpm] = useState(120);
-  const [mute, setMute] = useState(false);
-  const [masterVolume, setMasterVolume] = useState(0);
+  const [mute] = useState(false);
+  const [masterVolume] = useState(0);
   const [uniqueID, setUniqueID] = useState(null);
   const [playing, setPlaying] = useState(false);
   const [grid, setGrid] = useState(initialGrid);
@@ -178,27 +174,6 @@ const Board = () => {
             togglePlaying={togglePlaying}
           />
         </div>
-
-        {/* <div className="p-2">
-          <label className="p-2">MASTER VOLUME:</label>
-          <input
-            type="range"
-            min="0"
-            defaultValue="0"
-            max="100"
-            onChange={(e) => setMasterVolume(e.target.value)}
-          />
-          <output className="p-1">{masterVolume}</output>
-        </div>
-
-        <div className="p-2">
-          <label className="p-2">NAME:</label>
-          <input
-            type="text"
-            placeholder="Untitled"
-            onChange={(e) => setName(e.target.value)}
-          />
-        </div> */}
 
         <div className="col-span-9">
           <AudioPlayer

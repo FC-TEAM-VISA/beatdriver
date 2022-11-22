@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState, useCallback } from "react";
+import React, { useState } from "react";
 import * as Tone from "tone";
 import Looper from "../../components/board/Looper";
 import AudioPlayer from "../../components/board/AudioPlayer";
@@ -15,16 +15,11 @@ import {
   setDoc,
   where,
   query,
-  limit,
-  orderBy,
-  getDocs,
   getDoc,
 } from "firebase/firestore";
 import { database, auth, db } from "../../../utils/firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useCollectionData } from "react-firebase-hooks/firestore";
-import { child, onValue, push, ref, set, update } from "firebase/database";
-import { uploadBytes } from "firebase/storage";
 import { useRouter } from "next/router";
 
 export const getServerSideProps = async (context) => {
@@ -41,6 +36,7 @@ export const getServerSideProps = async (context) => {
 /* THE BOARD*/
 const steps = 8;
 const buttonState = { triggered: false, activated: false, audio: "" };
+//# for each cell on grid
 const sounds = [
   ["1", "2", "3", "4", "5", "6", "7", "8"],
   ["9", "10", "11", "12", "13", "14", "15", "16"],
@@ -68,7 +64,6 @@ const Board = ({ data }) => {
   if (user) {
     currentUser = docs?.find((doc) => doc.email === user.email);
   }
-  console.log("currentUser: ", currentUser);
   //instruments
   const [selectedInstrument, setSelectedInstrument] = useState(
     data.selectedInstrument
@@ -106,14 +101,6 @@ const Board = ({ data }) => {
       (project) => uniqueID === project.projectId
     );
   }
-
-  console.log(projects);
-  console.log("truth: ", currentProject);
-
-  console.log("1", objectSounds);
-  console.log("2", beat);
-  console.log("3", selected);
-  console.log("4", selectedInstrument);
 
   const handleSave = async () => {
     if (currentProject) {
@@ -236,27 +223,6 @@ const Board = ({ data }) => {
             togglePlaying={togglePlaying}
           />
         </div>
-
-        {/* <div className="p-2">
-			  <label className="p-2">MASTER VOLUME:</label>
-			  <input
-				type="range"
-				min="0"
-				defaultValue="0"
-				max="100"
-				onChange={(e) => setMasterVolume(e.target.value)}
-			  />
-			  <output className="p-1">{masterVolume}</output>
-			</div>
-
-			<div className="p-2">
-			  <label className="p-2">NAME:</label>
-			  <input
-				type="text"
-				placeholder="Untitled"
-				onChange={(e) => setName(e.target.value)}
-			  />
-			</div> */}
 
         <div className="col-span-9">
           <AudioPlayer

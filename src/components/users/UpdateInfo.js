@@ -14,66 +14,33 @@ function UpdateInfo({ currentUser, user }) {
   const updateName = (newName) => {
     updateDoc(dbRef, {
       name: newName,
-    })
-      .then(() => console.log("name updated"))
-      .catch((e) => console.log(e.message));
+    });
   };
-
   const updateBio = (newBio) => {
     updateDoc(dbRef, {
       bio: newBio,
-    })
-      .then(() => console.log("bio updated"))
-      .catch((e) => console.log(e.message));
+    });
   };
   const updateLocation = (newLoc) => {
     updateDoc(dbRef, {
       location: newLoc,
-    })
-      .then(() => console.log("location updated"))
-      .catch((e) => console.log(e.message));
+    });
   };
   const updateInstagram = (newInsta) => {
     updateDoc(dbRef, {
       instagram: newInsta,
-    })
-      .then(() => console.log("instagram updated"))
-      .catch((e) => console.log(e.message));
+    });
   };
   const updateTwitter = (newTwitter) => {
     updateDoc(dbRef, {
       twitter: newTwitter,
-    })
-      .then(() => console.log("twitter updated"))
-      .catch((e) => console.log(e.message));
+    });
   };
   const updateSoundcloud = (newSound) => {
     updateDoc(dbRef, {
       soundcloud: newSound,
-    })
-      .then(() => console.log("soundcloud updated"))
-      .catch((e) => console.log(e.message));
+    });
   };
-
-  //   const updateProfile = (
-  //     newName,
-  //     newBio,
-  //     newSound,
-  //     newLoc,
-  //     newInsta,
-  //     newTwitter
-  //   ) => {
-  //     updateDoc(dbRef, {
-  //       name: newName,
-  //       bio: newBio,
-  //       location: newLoc,
-  //       instagram: newInsta,
-  //       twitter: newTwitter,
-  //       soundcloud: newSound,
-  //     })
-  //       .then(() => console.log("profile updated"))
-  //       .catch((e) => console.log(e.message));
-  //   };
 
   return (
     <>
@@ -117,7 +84,6 @@ function UpdateInfo({ currentUser, user }) {
         >
           Edit Location
         </button>
-        {/* IMAGE */}
         {/* TWITTER */}
         <input
           type="text"

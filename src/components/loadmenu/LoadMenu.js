@@ -1,14 +1,12 @@
-import React, { useState } from "react";
-import { Menu, MenuItem, MenuButton, SubMenu } from "@szhsin/react-menu";
+import React from "react";
+import { Menu, MenuItem, MenuButton } from "@szhsin/react-menu";
 import "@szhsin/react-menu/dist/index.css";
 import "@szhsin/react-menu/dist/transitions/slide.css";
 import { useRouter } from "next/router";
 
-function LoadMenu({ projects, setGrid, setUniqueID, uniqueID, setName }) {
-  // console.log(projects[0].grid);
+function LoadMenu({ projects, setGrid, setUniqueID, setName }) {
   const router = useRouter();
   const handleLoad = (project) => {
-    console.log(project);
     const objGrid = project.grid;
     const orderedKeys = Object.keys(objGrid).sort();
     const loadGrid = orderedKeys.map((row) => objGrid[row]);
@@ -33,7 +31,6 @@ function LoadMenu({ projects, setGrid, setUniqueID, uniqueID, setName }) {
           <MenuItem
             onClick={() => {
               handleLoad(project);
-              console.log(project.grid);
             }}
             key={i}
           >

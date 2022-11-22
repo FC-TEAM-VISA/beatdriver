@@ -1,8 +1,7 @@
-import React, { useEffect, useRef, useState } from "react";
+import React from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/router";
-
 //firebase imports
 import { auth } from "../../../utils/firebase";
 import {
@@ -11,15 +10,7 @@ import {
   getAdditionalUserInfo,
 } from "firebase/auth";
 import { useAuthState } from "react-firebase-hooks/auth";
-// import { onUserCreate } from "../../../utils/firebase";
-import {
-  collection,
-  addDoc,
-  doc,
-  getDoc,
-  setDoc,
-  serverTimestamp,
-} from "firebase/firestore";
+import { collection, doc, setDoc, serverTimestamp } from "firebase/firestore";
 import { database } from "../../../utils/firebase";
 import { useCollectionData } from "react-firebase-hooks/firestore";
 
@@ -30,7 +21,6 @@ function Navbar() {
   const dbInstance = collection(database, "users");
   const [docs] = useCollectionData(dbInstance);
   let currentUser;
-
   if (userGoogleInfo) {
     currentUser = docs?.find((doc) => doc.email === userGoogleInfo.email);
   }
