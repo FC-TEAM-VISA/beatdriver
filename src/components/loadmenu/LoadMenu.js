@@ -28,13 +28,14 @@ function LoadMenu({ projects, setGrid, setUniqueID, uniqueID, setName }) {
         <MenuButton>{open ? "CLOSE PANEL" : "LOAD PROJECT"}</MenuButton>
       )}
     >
-      {projects?.map((project) => (
+      {projects?.map((project, i) => (
         <>
           <MenuItem
             onClick={() => {
               handleLoad(project);
               console.log(project.grid);
             }}
+            key={i}
           >
             {project.name}
           </MenuItem>
