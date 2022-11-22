@@ -143,9 +143,9 @@ const Board = ({ data }) => {
         ownerId: user.uid,
         name: `${name}.copy` || "Untitled",
         objectSounds: objectSounds,
-        beat,
-        selected,
-        selectedInstrument,
+        beat: beat || null,
+        selected: selected || "SELECTED",
+        selectedInstrument: selectedInstrument || "selected",
         grid: {
           r1: grid[0],
           r2: grid[1],
