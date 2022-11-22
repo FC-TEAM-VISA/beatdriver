@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState, useCallback } from "react";
 import * as Tone from "tone";
 import Looper from "../../components/board/Looper";
 import AudioPlayer from "../../components/board/AudioPlayer";
-import Recorder from "../../components/recorder/Recorder";
+import Record from "../../components/recorder/Record";
 import TopToolbar from "../../components/toolbar/TopToolbar";
 
 //firebase imports
@@ -234,7 +234,7 @@ const Board = ({ data }) => {
                     selectedInstrument={selectedInstrument}
                     selected={selected}
                   />
-                  <Recorder player={player} togglePlaying={togglePlaying} />
+                  <Record player={player} togglePlaying={togglePlaying} />
                 </>
               );
             }}
