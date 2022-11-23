@@ -23,7 +23,13 @@ import { useRouter } from "next/router";
 
 /* THE BOARD*/
 const steps = 8;
-const buttonState = { triggered: false, activated: false, audio: "" };
+const buttonState = {
+  triggered: false,
+  activated: false,
+  audio: "",
+  chorus: 0,
+  reverb: 0,
+};
 const sounds = [
 	["1", "2", "3", "4", "5", "6", "7", "8"],
 	["9", "10", "11", "12", "13", "14", "15", "16"],

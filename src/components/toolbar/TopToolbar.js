@@ -55,112 +55,112 @@ function TopToolbar({
   const notLoggedIn = () => (user ? handleSave() : setOpen(true));
 
   return (
-		<div className="flex flex-grow cursor-pointer place-items-center space-x-6">
-			{/* PROJECT TITLE */}
-			<div className="">
-				<ElementMaker
-					value={name}
-					handleChange={(e) => setName(e.target.value)}
-					handleDoubleClick={() => setShowInputEle(true)}
-					handleBlur={() => setShowInputEle(false)}
-					showInputEle={showInputEle}
-				/>
-			</div>
-			{/* RECORDER */}
-			<div>
-				<Recorder player={player} togglePlaying={togglePlaying} name={name} />
-			</div>
-			{/* PLAY BUTTON */}
-			<div className="">
-				<button onClick={togglePlaying}>
-					{playing ? (
-						<BsStopFill className="text-white hover:text-blue-500 h-12 w-12" />
-					) : (
-						<BsFillPlayFill className="text-white h-12 w-12" />
-					)}
-				</button>
-			</div>
-			{/* SAVE BUTTON */}
-			<div>
-				<BiSave className="h-20 w-8 hover:blue-800" onClick={notLoggedIn} />
-			</div>
-			<Popup
-				open={open}
-				closeOnDocumentClick
-				onClose={closeModal}
-				className="popup-content"
-			>
-				<div className="grid bg-oxford_blue place-items-center">
-					<p className="text-4xl mt-10 mb-5">
-						PLEASE LOG IN OR SIGN UP TO SAVE YOUR PROJECT!
-					</p>
-					<p className="mb-10">click anywhere to close</p>
-				</div>
-			</Popup>
-			{/* LOAD MENU */}
-			<div className="">
-				<LoadMenu
-					projects={projects}
-					setGrid={setGrid}
-					setUniqueID={setUniqueID}
-					uniqueID={uniqueID}
-					setName={setName}
-				/>
-			</div>
+    <div className="flex flex-grow cursor-pointer place-items-center space-x-6">
+      {/* PROJECT TITLE */}
+      <div className="">
+        <ElementMaker
+          value={name}
+          handleChange={(e) => setName(e.target.value)}
+          handleDoubleClick={() => setShowInputEle(true)}
+          handleBlur={() => setShowInputEle(false)}
+          showInputEle={showInputEle}
+        />
+      </div>
+      {/* RECORDER */}
+      <div>
+        <Recorder player={player} togglePlaying={togglePlaying} name={name} />
+      </div>
+      {/* PLAY BUTTON */}
+      <div className="">
+        <button onClick={togglePlaying}>
+          {playing ? (
+            <BsStopFill className="text-white hover:text-blue-500 h-12 w-12" />
+          ) : (
+            <BsFillPlayFill className="text-white h-12 w-12" />
+          )}
+        </button>
+      </div>
+      {/* SAVE BUTTON */}
+      <div>
+        <BiSave className="h-20 w-8 hover:blue-800" onClick={notLoggedIn} />
+      </div>
+      <Popup
+        open={open}
+        closeOnDocumentClick
+        onClose={closeModal}
+        className="popup-content"
+      >
+        <div className="grid bg-oxford_blue place-items-center">
+          <p className="text-4xl mt-10 mb-5">
+            PLEASE LOG IN OR SIGN UP TO SAVE YOUR PROJECT!
+          </p>
+          <p className="mb-10">click anywhere to close</p>
+        </div>
+      </Popup>
+      {/* LOAD MENU */}
+      <div className="">
+        <LoadMenu
+          projects={projects}
+          setGrid={setGrid}
+          setUniqueID={setUniqueID}
+          uniqueID={uniqueID}
+          setName={setName}
+        />
+      </div>
 
-			{/* SOUND MENU */}
-			<div className="">
-				<label className="pr-2">SOUNDS:</label>
-				<SoundMenu
-					beat={beat}
-					handleBeatChange={handleBeatChange}
-					setBeat={setBeat}
-					currentUser={currentUser}
-					setSelectedInstrument={setSelectedInstrument}
-					selected={selected}
-					setSelected={setSelected}
-				/>
-			</div>
-			{/* BPM */}
-			<div className="grid grid-cols-1 m-2 place-items-center">
-				<Knob
-					size={60}
-					value={bpm}
-					min={50}
-					max={300}
-					valueColor={"MediumPurple"}
-					rangeColor={"White"}
-					textColor={"White"}
-					onChange={(e) => setBpm(e.value)}
-				/>
-				<label className="col-span-1 text-sm">BPM</label>
-			</div>
-			{/* MASTER VOLUME */}
-			<div className="grid grid-cols-1 m-2 place-items-center">
-				<Knob
-					size={60}
-					value={masterVolume}
-					valueTemplate={"{value}%"}
-					min={-70}
-					max={20}
-					valueColor={"MediumPurple"}
-					rangeColor={"White"}
-					textColor={"White"}
-					onChange={(e) => setMasterVolume(e.value)}
-				/>
-				<label className="col-span-1 text-sm">MASTER</label>
-			</div>
-			{/* CLEAR BUTTON */}
-			<div>
-				<button
-					onClick={handleClear}
-					className="mt-1 mx-2 border-2 p-2 bg-red-900 hover:bg-red-600 border-white"
-				>
-					CLEAR
-				</button>
-			</div>
-		</div>
-	);
+      {/* SOUND MENU */}
+      <div className="">
+        <label className="pr-2">SOUNDS:</label>
+        <SoundMenu
+          beat={beat}
+          handleBeatChange={handleBeatChange}
+          setBeat={setBeat}
+          currentUser={currentUser}
+          setSelectedInstrument={setSelectedInstrument}
+          selected={selected}
+          setSelected={setSelected}
+        />
+      </div>
+      {/* BPM */}
+      <div className="grid grid-cols-1 m-2 place-items-center">
+        <Knob
+          size={60}
+          value={bpm}
+          min={50}
+          max={300}
+          valueColor={"MediumPurple"}
+          rangeColor={"White"}
+          textColor={"White"}
+          onChange={(e) => setBpm(e.value)}
+        />
+        <label className="col-span-1 text-sm">BPM</label>
+      </div>
+      {/* MASTER VOLUME */}
+      <div className="grid grid-cols-1 m-2 place-items-center">
+        <Knob
+          size={60}
+          value={masterVolume}
+          valueTemplate={"{value}%"}
+          min={-70}
+          max={20}
+          valueColor={"MediumPurple"}
+          rangeColor={"White"}
+          textColor={"White"}
+          onChange={(e) => setMasterVolume(e.value)}
+        />
+        <label className="col-span-1 text-sm">MASTER</label>
+      </div>
+      {/* CLEAR BUTTON */}
+      <div>
+        <button
+          onClick={handleClear}
+          className="mt-1 mx-2 border-2 p-2 bg-red-900 hover:bg-red-600 border-white"
+        >
+          CLEAR
+        </button>
+      </div>
+    </div>
+  );
 }
 
 export default TopToolbar;
