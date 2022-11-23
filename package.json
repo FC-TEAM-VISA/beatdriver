@@ -31,6 +31,7 @@
     "react-nexusui": "^0.1.7",
     "react-redux": "^8.0.5",
     "react-router-dom": "^6.4.3",
+    "reactjs-popup": "^2.0.5",
     "reactronica": "^0.8.1-canary.0",
     "tone": "^14.7.77"
   },
@@ -39,6 +40,7 @@
     "eslint": "8.27.0",
     "eslint-config-next": "13.0.2",
     "postcss": "^8.4.18",
+    "tailwind-scrollbar": "^2.0.1",
     "tailwindcss": "^3.2.3"
   }
 }
