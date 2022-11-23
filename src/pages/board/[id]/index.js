@@ -5,6 +5,8 @@ import Looper from "../../../components/board/Looper";
 import AudioPlayer from "../../../components/board/AudioPlayer";
 import TopToolbar from "../../../components/toolbar/TopToolbar";
 import EffectsMenu from "../../../components/effectsmenu/EffectsMenu";
+import Popup from "reactjs-popup";
+import "reactjs-popup/dist/index.css";
 
 //firebase imports
 import {
@@ -88,6 +90,10 @@ const Board = ({ data }) => {
   const [bpm, setBpm] = useState(data.bpm || 120); //tempo
   const [mute, setMute] = useState(false); //mute button
   const [masterVolume, setMasterVolume] = useState(data.masterVolume); //master volume
+  //popup
+  const [open, setOpen] = useState(false);
+  const closeModal = () => setOpen(false);
+
   const ref = createRef(null);
   const dbInstance = query(
     collection(database, "projects"),
@@ -125,9 +131,7 @@ const Board = ({ data }) => {
       });
       setUniqueID(uniqueID);
     } else {
-      window.alert(
-        "Are you sure you want to save this to your projects? You will be redirected to your own copy."
-      );
+      setOpen(true);
       const newProject = await addDoc(collection(database, `projects`), {
         createdAt: serverTimestamp(),
         ownerId: user.uid,
@@ -215,6 +219,20 @@ const Board = ({ data }) => {
     <div>
       <div className="grid grid-cols-12 text-xl">
         <div className="col-span-8 bg-slate-800">
+          <Popup
+            open={open}
+            closeOnDocumentClick
+            onClose={closeModal}
+            className="popup-content"
+          >
+            <div className="grid bg-oxford_blue place-items-center">
+              <p className="text-4xl mt-10 mb-5">
+                Are you sure you want to save this to your projects? You will be
+                redirected to your own copy.
+              </p>
+              <p className="mb-10">click anywhere to close</p>
+            </div>
+          </Popup>
           <AudioPlayer
             objectSounds={objectSounds}
             bpm={bpm}

@@ -31,6 +31,7 @@
     "react-nexusui": "^0.1.7",
     "react-redux": "^8.0.5",
     "react-router-dom": "^6.4.3",
+    "reactjs-popup": "^2.0.5",
     "reactronica": "^0.8.1-canary.0",
     "tone": "^14.7.77"
   },

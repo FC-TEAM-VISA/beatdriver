@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { BsFillPlayFill, BsStopFill } from "react-icons/bs";
 import { BiSave } from "react-icons/bi";
 import { Knob } from "primereact/knob";
+import Popup from "reactjs-popup";
+import "reactjs-popup/dist/index.css";
 import SoundMenu from "../soundmenu/SoundMenu";
 import LoadMenu from "../loadmenu/LoadMenu";
 import ElementMaker from "./ElementMaker";
@@ -33,6 +35,8 @@ function TopToolbar({
   setMasterVolume,
 }) {
   const [showInputEle, setShowInputEle] = useState(false);
+  const [open, setOpen] = useState(false);
+  const closeModal = () => setOpen(false);
 
   const handleClear = () => {
     const gridCopy = [...grid];
@@ -47,6 +51,8 @@ function TopToolbar({
     }
     setGrid(gridCopy);
   };
+
+  const notLoggedIn = () => (user ? handleSave() : setOpen(true));
 
   return (
     <div className="flex flex-grow cursor-pointer place-items-center space-x-6">
@@ -76,15 +82,21 @@ function TopToolbar({
       </div>
       {/* SAVE BUTTON */}
       <div>
-        <BiSave
-          className="h-20 w-8"
-          onClick={() =>
-            user
-              ? handleSave()
-              : window.alert("LOG IN OR SIGN UP TO SAVE A PROJECT")
-          }
-        />
+        <BiSave className="h-20 w-8" onClick={notLoggedIn} />
       </div>
+      <Popup
+        open={open}
+        closeOnDocumentClick
+        onClose={closeModal}
+        className="popup-content"
+      >
+        <div className="grid bg-oxford_blue place-items-center">
+          <p className="text-4xl mt-10 mb-5">
+            PLEASE LOG IN OR SIGN UP TO SAVE YOUR PROJECT!
+          </p>
+          <p className="mb-10">click anywhere to close</p>
+        </div>
+      </Popup>
       {/* LOAD MENU */}
       <div className="">
         <LoadMenu

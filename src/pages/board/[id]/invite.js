@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-
+import Popup from "reactjs-popup";
+import "reactjs-popup/dist/index.css";
 import { doc, updateDoc, getDoc, arrayUnion } from "firebase/firestore";
 import { database, auth } from "../../../../utils/firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
@@ -24,12 +25,16 @@ const Invite = ({ data }) => {
   const router = useRouter();
   const [user] = useAuthState(auth);
   const projectRef = doc(database, "projects", data.id);
+  const [ownerOpen, setOwnerOpen] = useState(false);
+  const [signInOpen, setSignInOpen] = useState(false);
+  const closeSignInModal = () => setSignInOpen(false);
+  const closeOwnerModal = () => setOwnerOpen(false);
 
   const handleAcceptInvite = () => {
     if (!user) {
-      window.alert("Please sign in to accept invite.");
+      setSignInOpen(true);
     } else if (user.uid === data.ownerId) {
-      window.alert("You are the owner of this project.");
+      setOwnerOpen(true);
     } else {
       console.log("Successfully accepted invite!");
 
@@ -48,7 +53,7 @@ const Invite = ({ data }) => {
     <>
       {!user ? (
         <h3 className="text-2xl text-center">
-          Please log in to accept {data.ownerId}'s invitation to collaborate on{" "}
+          Please log in to accept {data.username}'s invitation to collaborate on{" "}
           {data.name}.
         </h3>
       ) : (
@@ -65,6 +70,34 @@ const Invite = ({ data }) => {
           </button>
         </div>
       )}
+
+      <Popup
+        open={signInOpen}
+        closeOnDocumentClick
+        onClose={closeSignInModal}
+        className="popup-content"
+      >
+        <div className="grid bg-oxford_blue place-items-center">
+          <p className="text-4xl mt-10 mb-5">
+            Please sign in to accept invite.
+          </p>
+          <p className="mb-10">click anywhere to close</p>
+        </div>
+      </Popup>
+
+      <Popup
+        open={ownerOpen}
+        closeOnDocumentClick
+        onClose={closeOwnerModal}
+        className="popup-content"
+      >
+        <div className="grid bg-oxford_blue place-items-center">
+          <p className="text-4xl mt-10 mb-5">
+            You are the owner of this project.
+          </p>
+          <p className="mb-10">click anywhere to close</p>
+        </div>
+      </Popup>
     </>
   );
 };

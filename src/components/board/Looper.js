@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Grid from "./Grid";
+import Popup from "reactjs-popup";
+import "reactjs-popup/dist/index.css";
 
 const Looper = ({
   player,
@@ -15,10 +17,12 @@ const Looper = ({
   masterVolume,
 }) => {
   const [currButton, setCurrButton] = useState(0);
+  const [open, setOpen] = useState(false);
+  const closeModal = () => setOpen(false);
 
   const toggleActivation = (row, col) => {
     if (selected === "SELECTED") {
-      window.alert("PLEASE SELECT A SOUND");
+      setOpen(true);
     } else {
       const gridCopy = [...grid];
       const { triggered, activated } = gridCopy[row][col];
@@ -67,6 +71,18 @@ const Looper = ({
         toggleActivation={toggleActivation}
         selectedInstrument={selectedInstrument}
       />
+      <Popup
+        open={open}
+        closeOnDocumentClick
+        onClose={closeModal}
+        className="popup-content"
+      >
+        <div className="grid bg-oxford_blue place-items-center">
+          <p className="text-4xl mt-10 mb-5">PLEASE SELECT A SOUND!</p>
+          <p className="mb-10">click anywhere to close</p>
+        </div>
+      </Popup>
+      ;
     </div>
   );
 };
