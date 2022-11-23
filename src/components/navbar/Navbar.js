@@ -73,7 +73,7 @@ function Navbar() {
             <p className="link">Discover</p>
           </Link>
           <Link href="/board">
-            <p className="link">New Project</p>
+            <button className="link">New Project</button>
           </Link>
           {!userGoogleInfo && (
             <button onClick={login} className="link">
