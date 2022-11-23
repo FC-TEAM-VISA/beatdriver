@@ -75,6 +75,7 @@ const Board = () => {
 	const [projects] = useCollectionData(dbInstance);
 
 	useEffect(() => {
+    // handleClear
 		const gridCopy = [...grid];
 		for (let i = 0; i < grid.length; i++) {
 			for (let j = 0; j < grid[i].length; j++) {
@@ -88,20 +89,6 @@ const Board = () => {
 		setGrid(gridCopy);
     console.log('set grid!')
 	}, []);
-
-	// const handleClear = () => {
-	// 	const gridCopy = [...grid];
-	// 	for (let i = 0; i < grid.length; i++) {
-	// 		for (let j = 0; j < grid[i].length; j++) {
-	// 			gridCopy[i][j] = {
-	// 				triggered: false,
-	// 				activated: false,
-	// 				audio: "",
-	// 			};
-	// 		}
-	// 	}
-	// 	setGrid(gridCopy);
-	// };
 
 	const handleSave = async () => {
 		const image = await takeScreenShot(ref.current);
@@ -218,7 +205,6 @@ const Board = () => {
 											setUniqueID={setUniqueID}
 											uniqueID={uniqueID}
 											handleBeatChange={handleBeatChange}
-											// handleClear={handleClear}
 											currentUser={currentUser}
 											setSelectedInstrument={setSelectedInstrument}
 											playing={playing}

@@ -18,7 +18,6 @@ function TopToolbar({
   uniqueID,
   setBeat,
   handleBeatChange,
-  // handleClear,
   currentUser,
   setSelectedInstrument,
   playing,
