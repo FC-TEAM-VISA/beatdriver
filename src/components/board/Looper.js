@@ -29,8 +29,10 @@ const Looper = ({
         triggered,
         activated: !activated,
         audio: beat,
-        chorus: 10,
-        reverb: 0.5,
+        volume: 0,
+        gain: 0,
+        chorus: 0,
+        reverb: 0,
       };
       setGrid(gridCopy);
     }
