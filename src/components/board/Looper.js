@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Grid from "./Grid";
+import * as Tone from "tone";
 
 const Looper = ({
   player,
@@ -22,7 +23,13 @@ const Looper = ({
     } else {
       const gridCopy = [...grid];
       const { triggered, activated } = gridCopy[row][col];
-      gridCopy[row][col] = { triggered, activated: !activated, audio: beat };
+      gridCopy[row][col] = {
+        triggered,
+        activated: !activated,
+        audio: beat,
+        chorus: 10,
+        reverb: 0.5,
+      };
       setGrid(gridCopy);
     }
   };
@@ -34,12 +41,30 @@ const Looper = ({
   const nextButton = (currButton) => {
     for (let i = 0; i < grid.length; i++) {
       for (let j = 0; j < grid[i].length; j++) {
-        const { activated, audio } = grid[i][j];
-        grid[i][j] = { activated, triggered: j === currButton, audio };
+        const { activated, audio, reverb, chorus, volume } = grid[i][j];
+
+        grid[i][j] = {
+          activated,
+          triggered: j === currButton,
+          audio,
+          reverb,
+          chorus,
+          volume,
+        };
 
         if (grid[i][j].triggered && grid[i][j].activated && grid[i][j].audio) {
-          //plays the sound associated with the button
-          player.player(objectSounds[grid[i][j].audio]).start();
+          //IDK WHY this is UNDEFINED:
+          console.log("CHORUS", objectSounds[grid[i][j].chorus]);
+
+          player
+            .player(objectSounds[grid[i][j].audio])
+            //since objectSounds[grid[i][j].chorus] is undefined replace what in the .chain() with
+            // .chain(new Tone.Chorus(80).toDestination(), new Tone.Reverb(.5).toDestination()) and this should effect the sound, delete the .toDestination() below if you add the effects w the toDestinations
+
+            .chain(new Tone.Chorus(objectSounds[grid[i][j].chorus]))
+            .toDestination()
+
+            .start();
         }
       }
     }

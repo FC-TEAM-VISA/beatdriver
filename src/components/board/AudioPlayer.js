@@ -8,7 +8,7 @@ const AudioPlayer = ({ children, objectSounds, bpm, masterVolume }) => {
   useEffect(() => {
     const player = new Tone.Players(objectSounds, () => {
       setPlayer(player);
-    }).connect(Tone.Destination);
+    });
   }, [objectSounds, bpm, masterVolume]);
 
   return children({ player });
