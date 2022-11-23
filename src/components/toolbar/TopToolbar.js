@@ -46,6 +46,10 @@ function TopToolbar({
           triggered: false,
           activated: false,
           audio: "",
+          volume: 0,
+          gain: 0,
+          chorus: 0,
+          reverb: 0,
         };
       }
     }

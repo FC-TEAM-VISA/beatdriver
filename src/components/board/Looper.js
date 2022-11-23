@@ -28,10 +28,14 @@ const Looper = ({
       const { triggered, activated } = gridCopy[row][col];
       gridCopy[row][col] = {
         triggered,
+
         activated: !activated,
+
         audio: beat,
         chorus: 10,
         reverb: 0.5,
+        volume: 0,
+        gain: 0,
       };
       setGrid(gridCopy);
     }
