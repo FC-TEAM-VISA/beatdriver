@@ -20,13 +20,15 @@ function User() {
   const [modalOpen, setModalOpen] = useState(false);
   const [photoModalOpen, setPhotoModalOpen] = useState(false);
   let currentUser;
+  let isPublicQuery;
   if (user) {
     currentUser = docs?.find((doc) => doc.email === user.email);
+    isPublicQuery = query(
+      collection(database, "projects"),
+      where("ownerId", "==", `${user.uid}`)
+    );
   }
-  const isPublicQuery = query(
-    collection(database, "projects"),
-    where("ownerId", "==", `${user.uid}`)
-  );
+
   const [projects] = useCollectionData(isPublicQuery);
 
   const openModal = () => setModalOpen(true);
