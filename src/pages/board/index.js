@@ -23,7 +23,15 @@ import { useRouter } from "next/router";
 
 /* THE BOARD*/
 const steps = 8;
-const buttonState = { triggered: false, activated: false, audio: "" };
+const buttonState = {
+  triggered: false,
+  activated: false,
+  audio: "",
+  volume: 0,
+  gain: 0,
+  chorus: 0,
+  reverb: 0,
+};
 const sounds = [
   ["1", "2", "3", "4", "5", "6", "7", "8"],
   ["9", "10", "11", "12", "13", "14", "15", "16"],
@@ -67,6 +75,11 @@ const Board = () => {
   const [bpm, setBpm] = useState(120); //tempo
   const [mute] = useState(false); //mute button
   const [masterVolume, setMasterVolume] = useState(0); //master vol
+  const [rowOneVolume, setRowOneVolume] = useState(0);
+  const [rowOneGain, setRowOneGain] = useState(0);
+  const [rowOneChorus, setRowOneChorus] = useState(0);
+  const [rowOneReverb, setRowOneReverb] = useState(0);
+
   const ref = createRef(null);
   const dbInstance = query(
     collection(database, "projects"),
@@ -232,7 +245,17 @@ const Board = () => {
         </div>
 
         <div className="col-span-4 ml-4 bg-prussian_blue">
-          <EffectsMenu />
+          <EffectsMenu
+            grid={grid}
+            rowOneVolume={rowOneVolume}
+            setRowOneVolume={setRowOneVolume}
+            rowOneReverb={rowOneReverb}
+            setRowOneReverb={setRowOneReverb}
+            rowOneChorus={rowOneChorus}
+            setRowOneChorus={setRowOneChorus}
+            rowOneGain={rowOneGain}
+            setRowOneGain={setRowOneGain}
+          />
         </div>
       </div>
     </div>
