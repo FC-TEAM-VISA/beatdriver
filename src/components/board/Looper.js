@@ -26,7 +26,15 @@ const Looper = ({
     } else {
       const gridCopy = [...grid];
       const { triggered, activated } = gridCopy[row][col];
-      gridCopy[row][col] = { triggered, activated: !activated, audio: beat };
+      gridCopy[row][col] = {
+        triggered,
+        activated: !activated,
+        audio: beat,
+        volume: 0,
+        gain: 0,
+        chorus: 0,
+        reverb: 0,
+      };
       setGrid(gridCopy);
     }
   };

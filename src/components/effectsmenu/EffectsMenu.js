@@ -3,6 +3,7 @@ import { Knob } from "primereact/knob";
 import { json } from "react-router-dom";
 
 function EffectsMenu({
+  setGrid,
   grid,
   rowOneVolume,
   setRowOneVolume,
@@ -14,6 +15,7 @@ function EffectsMenu({
   setRowOneGain,
 }) {
   const [value, setValue] = useState(0);
+  const [b1, setB1] = useState({});
   let rowOneIndex;
   let rowOneButton;
   // console.log(rowOneVolume, rowOneGain, rowOneChorus, rowOneReverb);
@@ -21,28 +23,54 @@ function EffectsMenu({
   const handleRowOneDropdown = (event) => {
     const values = JSON.parse(event.target.value);
     rowOneButton = values.button;
+    setB1(rowOneButton);
     rowOneIndex = values.index;
-    // console.log("HELLO", button, index);
+    console.log("HELLO", rowOneButton, rowOneIndex);
+    // setRowOneVolume(rowOneButton.volume);
   };
+
+  console.log("b", b1);
+  console.log("🎹", rowOneVolume);
 
   // console.log(rowOneVolume);
 
-  const changeEffects = () => {};
+  const handleVolume = () => {
+    // console.log("testing", b1, b1.volume);
+    // const gridCopy = [...grid];
+    // for (let i = 0; i < grid.length; i++) {
+    //   for (let j = 0; j < grid[i].length; j++) {
+    //     const { triggered, activated, audio, gain, chorus, reverb } =
+    //       gridCopy[i][j];
+    //     if (i === rowOneIndex) {
+    //       gridCopy[i][j] = {
+    //         triggered,
+    //         activated,
+    //         audio,
+    //         volume: rowOneVolume,
+    //         gain,
+    //         chorus,
+    //         reverb,
+    //       };
+    //     }
+    //   }
+    // }
+    // setGrid(gridCopy);
+  };
 
-  grid[0].map((button, index) => {
-    if (index === rowOneIndex) {
-      console.log(grid[0][rowOneIndex].volume);
-      grid[0][rowOneIndex].volume = rowOneVolume;
-      grid[0][rowOneIndex].gain = rowOneGain;
-      grid[0][rowOneIndex].chorus = rowOneChorus;
-      grid[0][rowOneIndex].reverb = rowOneReverb;
-    }
-  });
+  // grid[0].map((button, index) => {
+  //   if (index === rowOneIndex) {
+  //     console.log(grid[0][rowOneIndex].volume);
+  //     grid[0][rowOneIndex].volume = rowOneVolume;
+  //     grid[0][rowOneIndex].gain = rowOneGain;
+  //     grid[0][rowOneIndex].chorus = rowOneChorus;
+  //     grid[0][rowOneIndex].reverb = rowOneReverb;
+  //   }
+  // });
 
-  // useEffect(() => {
-  //   changeEffects();
-  //   console.log("im tired");
-  // }, [rowOneVolume, rowOneReverb, rowOneGain, rowOneChorus]);
+  useEffect(() => {
+    handleVolume();
+    console.log("testing", b1, b1.volume);
+  }, [rowOneVolume, rowOneReverb, rowOneGain, rowOneChorus]);
 
   return (
     <div className="grid col-span-4 place-items-center p-5 scrollbar scrollbar-thumb-red-800 scrollbar-track-mint_cream overflow-y-scroll h-4/5">
@@ -58,7 +86,7 @@ function EffectsMenu({
               handleRowOneDropdown(e);
             }}
           >
-            {grid[0].map((button, index) => {
+            {grid[0]?.map((button, index) => {
               return (
                 <option key={index} value={JSON.stringify({ button, index })}>
                   {index + 1}

@@ -9,17 +9,15 @@ const Grid = ({ grid, toggleActivation, selectedInstrument }) => {
           {grid.map((line, row) =>
             line.map((time, col) => {
               return (
-                <div>
-                  <Button
-                    key={row + col}
-                    column={col + 1}
-                    row={row + 1}
-                    activated={grid[row][col]["activated"]}
-                    triggered={grid[row][col]["triggered"]}
-                    toggleActivation={() => toggleActivation(row, col)}
-                    selectedInstrument={selectedInstrument}
-                  />
-                </div>
+                <Button
+                  key={row + col}
+                  column={col + 1}
+                  row={row + 1}
+                  activated={grid[row][col]["activated"]}
+                  triggered={grid[row][col]["triggered"]}
+                  toggleActivation={() => toggleActivation(row, col)}
+                  selectedInstrument={selectedInstrument}
+                />
               );
             })
           )}

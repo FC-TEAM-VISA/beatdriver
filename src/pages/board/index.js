@@ -180,6 +180,7 @@ const Board = () => {
             bpm={bpm}
             mute={mute}
             masterVolume={masterVolume}
+            rowOneVolume={rowOneVolume}
           >
             {({ player }) => {
               if (!player) {
@@ -246,6 +247,7 @@ const Board = () => {
 
         <div className="col-span-4 ml-4 bg-prussian_blue">
           <EffectsMenu
+            setGrid={setGrid}
             grid={grid}
             rowOneVolume={rowOneVolume}
             setRowOneVolume={setRowOneVolume}
