@@ -4,7 +4,7 @@ import { Knob } from "primereact/knob";
 function EffectsMenu() {
   const [value, setValue] = useState(0);
   return (
-    <div className="grid col-span-4 place-items-center p-5 scrollbar-thin scrollbar-thumb-pewter_blue scrollbar-track-mint_cream overflow-y-scroll h-4/5">
+    <div className="grid col-span-4 place-items-center p-5 scrollbar scrollbar-thumb-red-800 scrollbar-track-mint_cream overflow-y-scroll h-4/5">
       {/* ROW 1 */}
       <div className="grid bg-violet-600 p-5">
         <div className="mb-2">
@@ -20,8 +20,8 @@ function EffectsMenu() {
             <option value="row1node8">8</option>
           </select>
         </div>
-        <div className="flex">
-          <div className="field col-12 md:col-4 p-1">
+        <div className="flex place-items-center">
+          <div className="field col-12 md:col-4 p-1 grid place-items-center">
             <Knob
               size={60}
               valueColor={"MediumPurple"}
@@ -32,7 +32,7 @@ function EffectsMenu() {
             />
             <label className="col-span-1 text-sm ">REVERB</label>
           </div>
-          <div className="field col-12 md:col-4 p-1">
+          <div className="field col-12 md:col-4 p-1 grid place-items-center">
             <Knob
               size={60}
               valueColor={"MediumPurple"}
@@ -43,7 +43,7 @@ function EffectsMenu() {
             />
             <label className="col-span-1 text-sm">GAIN</label>
           </div>
-          <div className="field col-12 md:col-4 p-1">
+          <div className="field col-12 md:col-4 p-1 grid place-items-center">
             <Knob
               size={60}
               valueColor={"MediumPurple"}
@@ -54,7 +54,7 @@ function EffectsMenu() {
             />
             <label className="col-span-1 text-sm">CHORUS</label>
           </div>
-          <div className="field col-12 md:col-4 p-1">
+          <div className="field col-12 md:col-4 p-1 grid place-items-center">
             <Knob
               size={60}
               valueColor={"MediumPurple"}
@@ -83,7 +83,7 @@ function EffectsMenu() {
           </select>
         </div>
         <div className="flex">
-          <div className="field col-12 md:col-4 p-1">
+          <div className="field col-12 md:col-4 p-1 grid place-items-center">
             <Knob
               size={60}
               valueColor={"MediumPurple"}
@@ -94,7 +94,7 @@ function EffectsMenu() {
             />
             <label className="col-span-1 text-sm ">REVERB</label>
           </div>
-          <div className="field col-12 md:col-4 p-1">
+          <div className="field col-12 md:col-4 p-1 grid place-items-center">
             <Knob
               size={60}
               valueColor={"MediumPurple"}
@@ -105,7 +105,7 @@ function EffectsMenu() {
             />
             <label className="col-span-1 text-sm">GAIN</label>
           </div>
-          <div className="field col-12 md:col-4 p-1">
+          <div className="field col-12 md:col-4 p-1 grid place-items-center">
             <Knob
               size={60}
               valueColor={"MediumPurple"}
@@ -116,7 +116,7 @@ function EffectsMenu() {
             />
             <label className="col-span-1 text-sm">CHORUS</label>
           </div>
-          <div className="field col-12 md:col-4 p-1">
+          <div className="field col-12 md:col-4 p-1 grid place-items-center">
             <Knob
               size={60}
               valueColor={"MediumPurple"}
@@ -145,7 +145,7 @@ function EffectsMenu() {
           </select>
         </div>
         <div className="flex">
-          <div className="field col-12 md:col-4 p-1">
+          <div className="field col-12 md:col-4 p-1 grid place-items-center">
             <Knob
               size={60}
               valueColor={"MediumPurple"}
@@ -156,7 +156,7 @@ function EffectsMenu() {
             />
             <label className="col-span-1 text-sm ">REVERB</label>
           </div>
-          <div className="field col-12 md:col-4 p-1">
+          <div className="field col-12 md:col-4 p-1 grid place-items-center">
             <Knob
               size={60}
               valueColor={"MediumPurple"}
@@ -167,7 +167,7 @@ function EffectsMenu() {
             />
             <label className="col-span-1 text-sm">GAIN</label>
           </div>
-          <div className="field col-12 md:col-4 p-1">
+          <div className="field col-12 md:col-4 p-1 grid place-items-center">
             <Knob
               size={60}
               valueColor={"MediumPurple"}
@@ -178,7 +178,7 @@ function EffectsMenu() {
             />
             <label className="col-span-1 text-sm">CHORUS</label>
           </div>
-          <div className="field col-12 md:col-4 p-1">
+          <div className="field col-12 md:col-4 p-1 grid place-items-center">
             <Knob
               size={60}
               valueColor={"MediumPurple"}
@@ -207,7 +207,7 @@ function EffectsMenu() {
           </select>
         </div>
         <div className="flex">
-          <div className="field col-12 md:col-4 p-1">
+          <div className="field col-12 md:col-4 p-1 grid place-items-center">
             <Knob
               size={60}
               valueColor={"MediumPurple"}
@@ -218,7 +218,7 @@ function EffectsMenu() {
             />
             <label className="col-span-1 text-sm ">REVERB</label>
           </div>
-          <div className="field col-12 md:col-4 p-1">
+          <div className="field col-12 md:col-4 p-1 grid place-items-center">
             <Knob
               size={60}
               valueColor={"MediumPurple"}
@@ -229,7 +229,7 @@ function EffectsMenu() {
             />
             <label className="col-span-1 text-sm">GAIN</label>
           </div>
-          <div className="field col-12 md:col-4 p-1">
+          <div className="field col-12 md:col-4 p-1 grid place-items-center">
             <Knob
               size={60}
               valueColor={"MediumPurple"}
@@ -240,7 +240,7 @@ function EffectsMenu() {
             />
             <label className="col-span-1 text-sm">CHORUS</label>
           </div>
-          <div className="field col-12 md:col-4 p-1">
+          <div className="field col-12 md:col-4 p-1 grid place-items-center">
             <Knob
               size={60}
               valueColor={"MediumPurple"}
@@ -269,7 +269,7 @@ function EffectsMenu() {
           </select>
         </div>
         <div className="flex">
-          <div className="field col-12 md:col-4 p-1">
+          <div className="field col-12 md:col-4 p-1 grid place-items-center">
             <Knob
               size={60}
               valueColor={"MediumPurple"}
@@ -280,7 +280,7 @@ function EffectsMenu() {
             />
             <label className="col-span-1 text-sm ">REVERB</label>
           </div>
-          <div className="field col-12 md:col-4 p-1">
+          <div className="field col-12 md:col-4 p-1 grid place-items-center">
             <Knob
               size={60}
               valueColor={"MediumPurple"}
@@ -291,7 +291,7 @@ function EffectsMenu() {
             />
             <label className="col-span-1 text-sm">GAIN</label>
           </div>
-          <div className="field col-12 md:col-4 p-1">
+          <div className="field col-12 md:col-4 p-1 grid place-items-center">
             <Knob
               size={60}
               valueColor={"MediumPurple"}
@@ -302,7 +302,7 @@ function EffectsMenu() {
             />
             <label className="col-span-1 text-sm">CHORUS</label>
           </div>
-          <div className="field col-12 md:col-4 p-1">
+          <div className="field col-12 md:col-4 p-1 grid place-items-center">
             <Knob
               size={60}
               valueColor={"MediumPurple"}
