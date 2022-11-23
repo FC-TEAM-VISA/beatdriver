@@ -31,13 +31,13 @@ const Discover = () => {
 					<Link href={`/board/${projectId}`} key={index} className="p-2">
 						{screen && screen.length ? (
 							<div className="m-2 flex-wrap">
-								<div className="relative h-200 w-200">
+								<div className="relative w-50 h-50 aspect-w-5 aspect-h-4">
 									<Image
 										src={screen}
 										alt="screen"
 										layout="fill" // required
-										objectFit="cover" // change to suit your needs
-										// className="aspect-square" // just an example
+										objectFit="fill" // change to suit your needs
+										className="aspect-square" // just an example
 									/>
 									{/* <Image src={screen} alt="screen" width={200} height={200} /> */}
 								</div>
