@@ -1,6 +1,6 @@
 import * as Tone from "tone";
 import * as htmlToImage from "html-to-image";
-import React, { useState, createRef } from "react";
+import React, { useState, useEffect, createRef } from "react";
 import Looper from "../../components/board/Looper";
 import AudioPlayer from "../../components/board/AudioPlayer";
 import TopToolbar from "../../components/toolbar/TopToolbar";
@@ -74,7 +74,7 @@ const Board = () => {
 	);
 	const [projects] = useCollectionData(dbInstance);
 
-	const handleClear = () => {
+	useEffect(() => {
 		const gridCopy = [...grid];
 		for (let i = 0; i < grid.length; i++) {
 			for (let j = 0; j < grid[i].length; j++) {
@@ -86,8 +86,22 @@ const Board = () => {
 			}
 		}
 		setGrid(gridCopy);
-	};
-	handleClear();
+    console.log('set grid!')
+	}, []);
+
+	// const handleClear = () => {
+	// 	const gridCopy = [...grid];
+	// 	for (let i = 0; i < grid.length; i++) {
+	// 		for (let j = 0; j < grid[i].length; j++) {
+	// 			gridCopy[i][j] = {
+	// 				triggered: false,
+	// 				activated: false,
+	// 				audio: "",
+	// 			};
+	// 		}
+	// 	}
+	// 	setGrid(gridCopy);
+	// };
 
 	const handleSave = async () => {
 		const image = await takeScreenShot(ref.current);
@@ -204,7 +218,7 @@ const Board = () => {
 											setUniqueID={setUniqueID}
 											uniqueID={uniqueID}
 											handleBeatChange={handleBeatChange}
-											handleClear={handleClear}
+											// handleClear={handleClear}
 											currentUser={currentUser}
 											setSelectedInstrument={setSelectedInstrument}
 											playing={playing}

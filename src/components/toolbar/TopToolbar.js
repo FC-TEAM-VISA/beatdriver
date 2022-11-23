@@ -18,7 +18,7 @@ function TopToolbar({
   uniqueID,
   setBeat,
   handleBeatChange,
-  handleClear,
+  // handleClear,
   currentUser,
   setSelectedInstrument,
   playing,
@@ -39,19 +39,19 @@ function TopToolbar({
   const [open, setOpen] = useState(false);
   const closeModal = () => setOpen(false);
 
-  // const handleClear = () => {
-  //   const gridCopy = [...grid];
-  //   for (let i = 0; i < grid.length; i++) {
-  //     for (let j = 0; j < grid[i].length; j++) {
-  //       gridCopy[i][j] = {
-  //         triggered: false,
-  //         activated: false,
-  //         audio: "",
-  //       };
-  //     }
-  //   }
-  //   setGrid(gridCopy);
-  // };
+  const handleClear = () => {
+    const gridCopy = [...grid];
+    for (let i = 0; i < grid.length; i++) {
+      for (let j = 0; j < grid[i].length; j++) {
+        gridCopy[i][j] = {
+          triggered: false,
+          activated: false,
+          audio: "",
+        };
+      }
+    }
+    setGrid(gridCopy);
+  };
 
   const notLoggedIn = () => (user ? handleSave() : setOpen(true));
 
