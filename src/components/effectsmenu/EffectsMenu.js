@@ -15,7 +15,7 @@ function EffectsMenu({
   setRowOneGain,
 }) {
   const [value, setValue] = useState(0);
-  const [b1, setB1] = useState({});
+  const [b1Index, setB1Index] = useState(0);
   let rowOneIndex;
   let rowOneButton;
   // console.log(rowOneVolume, rowOneGain, rowOneChorus, rowOneReverb);
@@ -23,38 +23,55 @@ function EffectsMenu({
   const handleRowOneDropdown = (event) => {
     const values = JSON.parse(event.target.value);
     rowOneButton = values.button;
-    setB1(rowOneButton);
     rowOneIndex = values.index;
+    setB1Index(values.index);
     console.log("HELLO", rowOneButton, rowOneIndex);
-    // setRowOneVolume(rowOneButton.volume);
+    setRowOneVolume(rowOneButton.volume);
   };
 
-  console.log("b", b1);
+  // console.log("b", b1);
   console.log("🎹", rowOneVolume);
 
   // console.log(rowOneVolume);
 
   const handleVolume = () => {
     // console.log("testing", b1, b1.volume);
-    // const gridCopy = [...grid];
-    // for (let i = 0; i < grid.length; i++) {
-    //   for (let j = 0; j < grid[i].length; j++) {
-    //     const { triggered, activated, audio, gain, chorus, reverb } =
-    //       gridCopy[i][j];
-    //     if (i === rowOneIndex) {
-    //       gridCopy[i][j] = {
-    //         triggered,
-    //         activated,
-    //         audio,
-    //         volume: rowOneVolume,
-    //         gain,
-    //         chorus,
-    //         reverb,
-    //       };
-    //     }
+    const gridCopy = [...grid];
+    for (let i = 0; i < grid.length; i++) {
+      for (let j = 0; j < grid[i].length; j++) {
+        const { triggered, activated, audio, gain, chorus, reverb } =
+          gridCopy[i][j];
+        if (j === b1Index) {
+          console.log(i, b1Index);
+          gridCopy[i][j] = {
+            triggered,
+            activated,
+            audio,
+            volume: rowOneVolume,
+            gain,
+            chorus,
+            reverb,
+          };
+          console.log(grid[i][b1Index]);
+        }
+      }
+    }
+    setGrid(gridCopy);
+    // grid[0].forEach((button, i) => {
+    //   const { triggered, activated, audio, gain, chourse, reverb } = button;
+    //   if (i === rowOneIndex) {
+    //     button = {
+    //       triggered,
+    //       activated,
+    //       audio,
+    //       volume: rowOneVolume,
+    //       gain,
+    //       chourse,
+    //       reverb,
+    //     };
     //   }
-    // }
-    // setGrid(gridCopy);
+    //   console.log(button);
+    // });
   };
 
   // grid[0].map((button, index) => {
@@ -69,7 +86,6 @@ function EffectsMenu({
 
   useEffect(() => {
     handleVolume();
-    console.log("testing", b1, b1.volume);
   }, [rowOneVolume, rowOneReverb, rowOneGain, rowOneChorus]);
 
   return (
