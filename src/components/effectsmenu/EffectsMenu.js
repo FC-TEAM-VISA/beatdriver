@@ -115,6 +115,8 @@ function EffectsMenu({
           <div className="field col-12 md:col-4 p-1 grid place-items-center">
             <Knob
               size={60}
+              min={-40}
+              max={20}
               valueColor={"MediumPurple"}
               rangeColor={"White"}
               textColor={"WHITE"}
