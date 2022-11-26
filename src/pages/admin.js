@@ -6,7 +6,7 @@ import { arrayUnion, updateDoc, doc } from "firebase/firestore";
 const Admin = () => {
   const [file, setFile] = useState("");
   const [percent, setPercent] = useState(0);
-  const dbRef = doc(database, "built_in_vocals", `vox`);
+  const dbRef = doc(database, "built_in_guitar", `guitar`);
 
   function handleChange(event) {
     setFile(event.target.files[0]);
@@ -17,7 +17,7 @@ const Admin = () => {
 
     if (!file) return;
 
-    const storageRef = ref(storage, `built-in-instruments/vocals/${file.name}`);
+    const storageRef = ref(storage, `built-in-instruments/guitar/${file.name}`);
     const uploadTask = uploadBytesResumable(storageRef, file);
 
     uploadTask.on(

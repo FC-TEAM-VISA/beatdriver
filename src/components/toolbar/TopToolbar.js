@@ -126,7 +126,7 @@ function TopToolbar({
       </div>
 
       {/* SOUND MENU */}
-      <div className="hover:scale-110">
+      <div className="">
         <label className="pr-2">SOUNDS:</label>
         <SoundMenu
           beat={beat}
