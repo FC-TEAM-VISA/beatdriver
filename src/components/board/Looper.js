@@ -46,29 +46,21 @@ const Looper = ({
   const nextButton = (currButton) => {
     for (let i = 0; i < grid.length; i++) {
       for (let j = 0; j < grid[i].length; j++) {
-        const { activated, audio, reverb, chorus, volume } = grid[i][j];
+        const { activated, audio, reverb, chorus, volume, gain } = grid[i][j];
 
         grid[i][j] = {
           activated,
           triggered: j === currButton,
           audio,
-          // reverb: new Tone.Chorus(volume + 40),
           reverb,
           chorus,
           volume,
+          gain,
         };
 
         if (grid[i][j].triggered && grid[i][j].activated && grid[i][j].audio) {
-          //IDK WHY this is UNDEFINED:
-          console.log("CHORUS", objectSounds[grid[i][j].chorus]);
-          console.log("VOLUME", grid[i][j].volume);
-          console.log("REBErB", grid[i][j].reverb);
-          // const volume = new Tone.Volume(grid[i][j].volume).toDestination();
-          // console.log(volume);
-          // console.log();
-          player.player(objectSounds[grid[i][j].audio]).volume.value = [
-            grid[i][j].volume,
-          ];
+          player.player(objectSounds[grid[i][j].audio]).volume.value =
+            grid[i][j].volume;
 
           player
             .player(objectSounds[grid[i][j].audio])
