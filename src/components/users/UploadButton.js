@@ -31,6 +31,9 @@ const UploadButton = () => {
         );
         setPercent(percent);
       },
+      (error) => {
+        console.log(error);
+      },
       () => {
         // download url
         getDownloadURL(uploadTask.snapshot.ref).then((url) => {

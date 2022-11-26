@@ -32,6 +32,9 @@ function UploadPhoto() {
 
         setPercent(percent);
       },
+      (error) => {
+        console.log(error);
+      },
       () => {
         getDownloadURL(uploadTask.snapshot.ref).then((url) => {
           updateDoc(dbRef, {
