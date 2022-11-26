@@ -1,21 +1,26 @@
 import React, { useState } from "react";
-import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
+import {
+  getDownloadURL,
+  ref,
+  uploadBytes,
+  uploadBytesResumable,
+} from "firebase/storage";
 import { database, storage } from "../../../utils/firebase";
 import { auth } from "../../../utils/firebase";
-import { doc, arrayUnion, updateDoc } from "firebase/firestore";
+import { doc, arrayUnion, updateDoc, collection } from "firebase/firestore";
 import { useAuthState } from "react-firebase-hooks/auth";
 
 const UploadButton = () => {
   const [file, setFile] = useState("");
   const [percent, setPercent] = useState(0);
   const [user] = useAuthState(auth);
+  const dbRef = doc(database, `users/${user?.uid}`);
 
   function handleChange(event) {
     setFile(event.target.files[0]);
   }
 
   const handleUpload = async (event) => {
-    const dbRef = doc(database, "users", `${user.uid}`);
     if (!database) return;
 
     if (!file) return;
@@ -31,12 +36,17 @@ const UploadButton = () => {
         );
         setPercent(percent);
       },
+      (error) => {
+        console.log(error);
+      },
       () => {
         // download url
         getDownloadURL(uploadTask.snapshot.ref).then((url) => {
           updateDoc(dbRef, {
             sounds: arrayUnion({ name: file.name, url }),
-          });
+          })
+            .then(() => console.log(url))
+            .catch((e) => console.log(e));
         });
       }
     );
