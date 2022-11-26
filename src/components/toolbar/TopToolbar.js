@@ -158,7 +158,7 @@ function TopToolbar({
           size={60}
           value={masterVolume}
           valueTemplate={"{value}%"}
-          min={-70}
+          min={-60}
           max={20}
           valueColor={"MediumPurple"}
           rangeColor={"White"}
