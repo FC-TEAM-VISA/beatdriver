@@ -1,9 +1,10 @@
 import React, { useState } from "react";
+import Link from "next/link";
 import Image from "next/image";
 import { auth } from "../../../utils/firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { database } from "../../../utils/firebase";
-import { collection } from "firebase/firestore";
+import { collection, where, query } from "firebase/firestore";
 import { useCollectionData } from "react-firebase-hooks/firestore";
 import { BsInstagram, BsTwitter } from "react-icons/bs";
 import { GrSoundcloud } from "react-icons/gr";
@@ -19,14 +20,19 @@ function User() {
   const [modalOpen, setModalOpen] = useState(false);
   const [photoModalOpen, setPhotoModalOpen] = useState(false);
   let currentUser;
-
+  let isPublicQuery;
   if (user) {
     currentUser = docs?.find((doc) => doc.email === user.email);
+    isPublicQuery = query(
+      collection(database, "projects"),
+      where("ownerId", "==", `${user.uid}`)
+    );
   }
+
+  const [projects] = useCollectionData(isPublicQuery);
 
   const openModal = () => setModalOpen(true);
   const closeModal = () => setModalOpen(false);
-
   const openPhotoModal = () => setPhotoModalOpen(true);
   const closePhotoModal = () => setPhotoModalOpen(false);
 
@@ -169,6 +175,39 @@ function User() {
               </div>
             ))
           )}
+        </div>
+      </div>
+      {/* PROJECTS */}
+      <div className="grid grid-cols-10 ml-10 mt-5">
+        <div className="col-span-9 border-2">
+          <h1 className="grid text-3xl p-2 font-extrabold">PROJECTS:</h1>
+          <div className="grid grid-cols-5 m-5">
+            {projects?.map(({ projectId, name, screen, username }, index) => (
+              <Link href={`/board/${projectId}`} key={index} className="p-2">
+                {screen && screen.length ? (
+                  <div className="m-2 flex-wrap">
+                    <div className="relative w-50 h-50 aspect-w-5 aspect-h-4">
+                      <Image
+                        src={screen}
+                        alt="screen"
+                        layout="fill" // required
+                        objectFit="fill" // change to suit your needs
+                        className="aspect-square" // just an example
+                      />
+                      {/* <Image src={screen} alt="screen" width={200} height={200} /> */}
+                    </div>
+                    <h5 className="mt-1">
+                      {name} by {username}
+                    </h5>
+                  </div>
+                ) : (
+                  <h5>
+                    {name} by {username}
+                  </h5>
+                )}
+              </Link>
+            ))}
+          </div>
         </div>
       </div>
     </>

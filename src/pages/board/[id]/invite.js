@@ -53,13 +53,13 @@ const Invite = ({ data }) => {
     <>
       {!user ? (
         <h3 className="text-2xl text-center">
-          Please log in to accept {data.username}'s invitation to collaborate on{" "}
-          {data.name}.
+          Please log in to accept invitation to join {data.name} from{" "}
+          {data.username}.
         </h3>
       ) : (
         <div>
           <h3 className="text-2xl p-5">
-            {data.ownerId} is inviting you to collaborate on their project{" "}
+            {data.ownerId} is inviting you to collaborate on their project
             {data.name}
           </h3>
           <button
