@@ -8,14 +8,24 @@ const AudioPlayer = ({
   bpm,
   masterVolume,
   rowOneVolume,
+  testyTest,
+  chorusTest,
 }) => {
   const [player, setPlayer] = useState(null);
+
+  // useEffect(() => {
+  //   const player = new Tone.Players(objectSounds, () => {
+  //     setPlayer(player);
+  //   });
+  //   const reverb = new Tone.Reverb({ decay: rowOneReverb });
+  //   player.chain(reverb, Tone.Destination)
+  // }, [objectSounds, bpm, masterVolume, rowOneVolume, rowOneReverb]);
 
   useEffect(() => {
     const player = new Tone.Players(objectSounds, () => {
       setPlayer(player);
     }).connect(Tone.Destination);
-  }, [objectSounds, bpm, masterVolume, rowOneVolume]);
+  }, [objectSounds, bpm, masterVolume, testyTest, chorusTest]);
 
   return children({ player });
 };

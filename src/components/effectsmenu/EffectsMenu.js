@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Knob } from "primereact/knob";
-import { json } from "react-router-dom";
+
+// chorus, phaser, reverb, tremolo
 
 function EffectsMenu({
   setGrid,
@@ -14,6 +15,7 @@ function EffectsMenu({
   rowOneGain,
   setRowOneGain,
 }) {
+  // reverb, chorus, tremolo, distortion
   const [value, setValue] = useState(0);
   const [b1Index, setB1Index] = useState(0);
   let rowOneIndex;
@@ -26,19 +28,16 @@ function EffectsMenu({
     rowOneIndex = values.index;
     setB1Index(values.index);
     console.log("HELLO", rowOneButton, rowOneIndex);
-    setRowOneVolume(rowOneButton.volume);
+    console.log("reverb", typeof rowOneReverb);
+    setRowOneVolume(rowOneButton?.volume);
+    setRowOneReverb(rowOneButton.reverb);
+    setRowOneChorus(rowOneButton.chorus);
   };
 
-  // console.log("b", b1);
-  console.log("🎹", rowOneVolume);
-
-  // console.log(rowOneVolume);
-
   const handleVolume = () => {
-    // console.log("testing", b1, b1.volume);
     const gridCopy = [...grid];
-    for (let i = 0; i < grid.length; i++) {
-      for (let j = 0; j < grid[i].length; j++) {
+    for (let i = 0; i < gridCopy.length; i++) {
+      for (let j = 0; j < gridCopy[i].length; j++) {
         const { triggered, activated, audio, gain, chorus, reverb } =
           gridCopy[i][j];
         if (j === b1Index) {
@@ -49,8 +48,8 @@ function EffectsMenu({
             audio,
             volume: rowOneVolume,
             gain,
-            chorus,
-            reverb,
+            chorus: rowOneChorus,
+            reverb: rowOneReverb,
           };
           console.log(grid[i][b1Index]);
         }
@@ -150,6 +149,8 @@ function EffectsMenu({
           <div className="field col-12 md:col-4 p-1 grid place-items-center">
             <Knob
               size={60}
+              min={1}
+              max={60}
               valueColor={"MediumPurple"}
               rangeColor={"White"}
               textColor={"WHITE"}

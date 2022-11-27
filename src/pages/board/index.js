@@ -30,7 +30,7 @@ const buttonState = {
   volume: 0,
   gain: 0,
   chorus: 0,
-  reverb: 0,
+  reverb: 1,
 };
 const sounds = [
   ["1", "2", "3", "4", "5", "6", "7", "8"],
@@ -78,7 +78,13 @@ const Board = () => {
   const [rowOneVolume, setRowOneVolume] = useState(0);
   const [rowOneGain, setRowOneGain] = useState(0);
   const [rowOneChorus, setRowOneChorus] = useState(0);
-  const [rowOneReverb, setRowOneReverb] = useState(0);
+  const [rowOneReverb, setRowOneReverb] = useState(1);
+  const [testyTest, setTestyTest] = useState(1);
+  const [chorusTest, setChorusTest] = useState({
+    frequency: 1,
+    delay: 1,
+    depth: 1,
+  });
 
   const ref = createRef(null);
   const dbInstance = query(
@@ -181,6 +187,9 @@ const Board = () => {
             mute={mute}
             masterVolume={masterVolume}
             rowOneVolume={rowOneVolume}
+            rowOneReverb={rowOneReverb}
+            testyTest={testyTest}
+            chorusTest={chorusTest}
           >
             {({ player }) => {
               if (!player) {
@@ -237,6 +246,9 @@ const Board = () => {
                       selectedInstrument={selectedInstrument}
                       selected={selected}
                       masterVolume={masterVolume}
+                      rowOneReverb={rowOneReverb}
+                      setTestyTest={setTestyTest}
+                      setChorusTest={setChorusTest}
                     />
                   </div>
                 </>

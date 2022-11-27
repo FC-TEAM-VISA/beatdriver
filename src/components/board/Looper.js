@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import * as Tone from "tone";
 import Grid from "./Grid";
 import Popup from "reactjs-popup";
 import "reactjs-popup/dist/index.css";
@@ -15,6 +16,8 @@ const Looper = ({
   selectedInstrument,
   selected,
   masterVolume,
+  setTestyTest,
+  setChorusTest,
 }) => {
   const [currButton, setCurrButton] = useState(0);
   const [open, setOpen] = useState(false);
@@ -25,7 +28,8 @@ const Looper = ({
       setOpen(true);
     } else {
       const gridCopy = [...grid];
-      const { triggered, activated } = gridCopy[row][col];
+      const { triggered, activated, volume, gain, chorus, reverb } =
+        gridCopy[row][col];
       gridCopy[row][col] = {
         triggered,
         activated: !activated,
@@ -33,12 +37,13 @@ const Looper = ({
         volume: 0,
         gain: 0,
         chorus: 0,
-        reverb: 0,
+        reverb: 1,
       };
       setGrid(gridCopy);
     }
   };
 
+  // player.volume.value = masterVolume;
   player.volume.value = masterVolume;
 
   //this is what goes through the loop and triggers each row
@@ -46,12 +51,38 @@ const Looper = ({
   const nextButton = (currButton) => {
     for (let i = 0; i < grid.length; i++) {
       for (let j = 0; j < grid[i].length; j++) {
-        const { activated, audio } = grid[i][j];
-        grid[i][j] = { activated, triggered: j === currButton, audio };
+        const { activated, audio, volume, gain, reverb, chorus } = grid[i][j];
+        grid[i][j] = {
+          activated,
+          triggered: j === currButton,
+          audio,
+          volume,
+          gain,
+          reverb,
+          chorus,
+        };
 
         if (grid[i][j].triggered && grid[i][j].activated && grid[i][j].audio) {
           //plays the sound associated with the button
-          player.player(objectSounds[grid[i][j].audio]).start();
+          player.player(objectSounds[grid[i][j].audio]).reverb =
+            grid[i][j].reverb;
+          player.player(objectSounds[grid[i][j].audio]).chorus =
+            grid[i][j].chorus;
+
+          const toneReverb = new Tone.Reverb({ decay: grid[i][j].reverb });
+          const toneChorus = new Tone.Chorus(6, 1.5, 2);
+          console.log("MAIN PLAYER 💯💯💯💯💯💯💯", player);
+          console.log(
+            "INDIVIDUAL PLAYER 👍👍👍👍👍👍👍👍",
+            player.player(objectSounds[grid[i][j].audio])
+          );
+          setTestyTest(grid[i][j].reverb);
+          setChorusTest(grid[i][j].chorus);
+
+          player
+            .player(objectSounds[grid[i][j].audio])
+            .chain(toneReverb, toneChorus, Tone.Destination)
+            .start();
         }
       }
     }
