@@ -67,6 +67,18 @@ const Board = () => {
   const [bpm, setBpm] = useState(120); //tempo
   const [mute] = useState(false); //mute button
   const [masterVolume, setMasterVolume] = useState(0); //master volume
+  const [chorus, setChorus] = useState({
+    frequency: 0,
+    delayTime: 0,
+    depth: 0,
+  });
+  const [reverb, setReverb] = useState({ decay: 1 });
+  const [phaser, setPhaser] = useState({
+    frequency: 0,
+    octaves: 0,
+    baseFrequency: 0,
+  });
+  const [tremolo, setTremolo] = useState({ frequency: 0, depth: 0 });
 
   const ref = createRef(null);
   const dbInstance = query(
@@ -184,6 +196,10 @@ const Board = () => {
             bpm={bpm}
             mute={mute}
             masterVolume={masterVolume}
+            reverb={reverb}
+            chorus={chorus}
+            phaser={phaser}
+            tremolo={tremolo}
           >
             {({ player }) => {
               if (!player) {
@@ -249,7 +265,16 @@ const Board = () => {
         </div>
 
         <div className="col-span-4 ml-4 bg-prussian_blue">
-          <EffectsMenu />
+          <EffectsMenu
+            reverb={reverb}
+            chorus={chorus}
+            phaser={phaser}
+            tremolo={tremolo}
+            setReverb={setReverb}
+            setChorus={setChorus}
+            setPhaser={setPhaser}
+            setTremolo={setTremolo}
+          />
         </div>
       </div>
     </div>

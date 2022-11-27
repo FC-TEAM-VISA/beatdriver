@@ -2,204 +2,206 @@ import React, { useState } from "react";
 import { Knob } from "primereact/knob";
 // chorus, phaser, reverb, tremolo + mute effect button
 
-function EffectsMenu() {
+function EffectsMenu({
+  reverb,
+  chorus,
+  phaser,
+  tremolo,
+  setReverb,
+  setPhaser,
+  setChorus,
+  setTremolo,
+}) {
   const [value, setValue] = useState(0);
 
   return (
     <div className="grid col-span-4 place-items-center p-5 scrollbar scrollbar-thumb-red-800 scrollbar-track-mint_cream overflow-y-scroll h-4/5">
       {/* ROW 1 */}
       <div className="grid bg-violet-600 p-5">
+        <div>
+          <h1>CHORUS</h1>
+        </div>
         <div className="flex place-items-center">
           <div className="field col-12 md:col-4 p-1 grid place-items-center">
             <Knob
               size={60}
+              min={0}
+              max={10}
               valueColor={"MediumPurple"}
               rangeColor={"White"}
               textColor={"WHITE"}
-              value={value}
-              onChange={(e) => setValue(e.value)}
+              value={chorus.frequency}
+              onChange={(e) =>
+                setChorus({
+                  frequency: e.value,
+                  delayTime: chorus.delayTime,
+                  depth: chorus.depth,
+                })
+              }
             />
-            <label className="col-span-1 text-sm ">REVERB</label>
+            <label className="col-span-1 text-sm ">FREQUENCY</label>
           </div>
           <div className="field col-12 md:col-4 p-1 grid place-items-center">
             <Knob
               size={60}
+              min={0}
+              max={10}
               valueColor={"MediumPurple"}
               rangeColor={"White"}
               textColor={"WHITE"}
-              value={value}
-              onChange={(e) => setValue(e.value)}
+              value={chorus.delayTime}
+              onChange={(e) =>
+                setChorus({
+                  frequency: chorus.frequency,
+                  delayTime: e.value,
+                  depth: chorus.depth,
+                })
+              }
             />
-            <label className="col-span-1 text-sm">GAIN</label>
+            <label className="col-span-1 text-sm">DELAY</label>
           </div>
           <div className="field col-12 md:col-4 p-1 grid place-items-center">
             <Knob
               size={60}
+              min={0}
+              max={10}
               valueColor={"MediumPurple"}
               rangeColor={"White"}
               textColor={"WHITE"}
-              value={value}
-              onChange={(e) => setValue(e.value)}
+              value={chorus.depth}
+              onChange={(e) =>
+                setChorus({
+                  frequency: chorus.frequency,
+                  delayTime: chorus.delayTime,
+                  depth: e.value,
+                })
+              }
             />
-            <label className="col-span-1 text-sm">CHORUS</label>
-          </div>
-          <div className="field col-12 md:col-4 p-1 grid place-items-center">
-            <Knob
-              size={60}
-              valueColor={"MediumPurple"}
-              rangeColor={"White"}
-              textColor={"WHITE"}
-              value={value}
-              onChange={(e) => setValue(e.value)}
-            />
-            <label className="col-span-1 text-sm">VOLUME</label>
+            <label className="col-span-1 text-sm">DEPTH</label>
           </div>
         </div>
       </div>
       {/* ROW 2 */}
       <div className="grid bg-green-700 p-5 mt-5">
+        <div>
+          <h1>PHASER</h1>
+        </div>
         <div className="flex">
           <div className="field col-12 md:col-4 p-1 grid place-items-center">
             <Knob
               size={60}
+              min={0}
+              max={10}
               valueColor={"MediumPurple"}
               rangeColor={"White"}
               textColor={"WHITE"}
-              value={value}
-              onChange={(e) => setValue(e.value)}
+              value={phaser.frequency}
+              onChange={(e) =>
+                setPhaser({
+                  frequency: e.value,
+                  octaves: phaser.octaves,
+                  baseFrequency: phaser.baseFrequency,
+                })
+              }
             />
-            <label className="col-span-1 text-sm ">REVERB</label>
+            <label className="col-span-1 text-sm ">FREQUENCY</label>
           </div>
           <div className="field col-12 md:col-4 p-1 grid place-items-center">
             <Knob
               size={60}
+              min={0}
+              max={8}
               valueColor={"MediumPurple"}
               rangeColor={"White"}
               textColor={"WHITE"}
-              value={value}
-              onChange={(e) => setValue(e.value)}
+              value={phaser.octaves}
+              onChange={(e) =>
+                setPhaser({
+                  frequency: phaser.frequency,
+                  octaves: e.value,
+                  baseFrequency: phaser.baseFrequency,
+                })
+              }
             />
-            <label className="col-span-1 text-sm">GAIN</label>
+            <label className="col-span-1 text-sm">OCTAVES</label>
           </div>
           <div className="field col-12 md:col-4 p-1 grid place-items-center">
             <Knob
               size={60}
+              min={100}
+              max={1000}
               valueColor={"MediumPurple"}
               rangeColor={"White"}
               textColor={"WHITE"}
-              value={value}
-              onChange={(e) => setValue(e.value)}
+              value={phaser.baseFrequency}
+              onChange={(e) =>
+                setPhaser({
+                  frequency: phaser.frequency,
+                  octaves: phaser.octaves,
+                  baseFrequency: e.value,
+                })
+              }
             />
-            <label className="col-span-1 text-sm">CHORUS</label>
-          </div>
-          <div className="field col-12 md:col-4 p-1 grid place-items-center">
-            <Knob
-              size={60}
-              valueColor={"MediumPurple"}
-              rangeColor={"White"}
-              textColor={"WHITE"}
-              value={value}
-              onChange={(e) => setValue(e.value)}
-            />
-            <label className="col-span-1 text-sm">BPM</label>
+            <label className="col-span-1 text-sm">BASE FREQ</label>
           </div>
         </div>
       </div>
       {/* ROW 3 */}
       <div className="grid bg-blue-500 p-5 mt-5">
+        <div>
+          <h1>REVERB</h1>
+        </div>
         <div className="flex">
           <div className="field col-12 md:col-4 p-1 grid place-items-center">
             <Knob
               size={60}
+              min={0}
+              max={5}
               valueColor={"MediumPurple"}
               rangeColor={"White"}
               textColor={"WHITE"}
-              value={value}
-              onChange={(e) => setValue(e.value)}
+              value={reverb.decay}
+              onChange={(e) => setReverb({ decay: e.value })}
             />
             <label className="col-span-1 text-sm ">REVERB</label>
-          </div>
-          <div className="field col-12 md:col-4 p-1 grid place-items-center">
-            <Knob
-              size={60}
-              valueColor={"MediumPurple"}
-              rangeColor={"White"}
-              textColor={"WHITE"}
-              value={value}
-              onChange={(e) => setValue(e.value)}
-            />
-            <label className="col-span-1 text-sm">GAIN</label>
-          </div>
-          <div className="field col-12 md:col-4 p-1 grid place-items-center">
-            <Knob
-              size={60}
-              valueColor={"MediumPurple"}
-              rangeColor={"White"}
-              textColor={"WHITE"}
-              value={value}
-              onChange={(e) => setValue(e.value)}
-            />
-            <label className="col-span-1 text-sm">CHORUS</label>
-          </div>
-          <div className="field col-12 md:col-4 p-1 grid place-items-center">
-            <Knob
-              size={60}
-              valueColor={"MediumPurple"}
-              rangeColor={"White"}
-              textColor={"WHITE"}
-              value={value}
-              onChange={(e) => setValue(e.value)}
-            />
-            <label className="col-span-1 text-sm">BPM</label>
           </div>
         </div>
       </div>
       {/* ROW 4 */}
       <div className="grid bg-red-700 p-5 mt-5">
+        <div>
+          <h1>TREMOLO</h1>
+        </div>
         <div className="flex">
           <div className="field col-12 md:col-4 p-1 grid place-items-center">
             <Knob
               size={60}
+              min={0}
+              max={30}
               valueColor={"MediumPurple"}
               rangeColor={"White"}
               textColor={"WHITE"}
-              value={value}
-              onChange={(e) => setValue(e.value)}
+              value={tremolo.frequency}
+              onChange={(e) =>
+                setTremolo({ frequency: e.value, depth: tremolo.depth })
+              }
             />
-            <label className="col-span-1 text-sm ">REVERB</label>
+            <label className="col-span-1 text-sm ">FREQUENCY</label>
           </div>
           <div className="field col-12 md:col-4 p-1 grid place-items-center">
             <Knob
               size={60}
+              min={0}
+              max={1}
               valueColor={"MediumPurple"}
               rangeColor={"White"}
               textColor={"WHITE"}
-              value={value}
-              onChange={(e) => setValue(e.value)}
+              value={tremolo.depth}
+              onChange={(e) =>
+                setTremolo({ frequency: tremolo.frequency, depth: e.value })
+              }
             />
-            <label className="col-span-1 text-sm">GAIN</label>
-          </div>
-          <div className="field col-12 md:col-4 p-1 grid place-items-center">
-            <Knob
-              size={60}
-              valueColor={"MediumPurple"}
-              rangeColor={"White"}
-              textColor={"WHITE"}
-              value={value}
-              onChange={(e) => setValue(e.value)}
-            />
-            <label className="col-span-1 text-sm">CHORUS</label>
-          </div>
-          <div className="field col-12 md:col-4 p-1 grid place-items-center">
-            <Knob
-              size={60}
-              valueColor={"MediumPurple"}
-              rangeColor={"White"}
-              textColor={"WHITE"}
-              value={value}
-              onChange={(e) => setValue(e.value)}
-            />
-            <label className="col-span-1 text-sm">BPM</label>
+            <label className="col-span-1 text-sm">DEPTH</label>
           </div>
         </div>
       </div>
@@ -213,7 +215,7 @@ function EffectsMenu() {
               rangeColor={"White"}
               textColor={"WHITE"}
               value={value}
-              onChange={(e) => setValue(e.value)}
+              onChange={(e) => setTremolo({ frequency: 0, depth: 0 })}
             />
             <label className="col-span-1 text-sm ">REVERB</label>
           </div>
