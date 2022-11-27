@@ -23,6 +23,7 @@ const AudioPlayer = ({
     const toneReverb = new Tone.Reverb(reverb).toDestination();
     const tonePhaser = new Tone.Phaser(phaser).toDestination();
     const toneTremolo = new Tone.Tremolo(tremolo).toDestination();
+    console.log(toneChorus);
 
     player.chain(toneChorus, toneReverb, tonePhaser, toneTremolo);
   }, [objectSounds, bpm, masterVolume, reverb, phaser, chorus, tremolo]);

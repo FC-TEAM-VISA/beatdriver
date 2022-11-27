@@ -264,7 +264,7 @@ function EffectsMenu({
         ▀         ▀  ▀▀▀▀▀▀▀▀▀▀▀          ▀          ▀▀▀▀▀▀▀▀▀▀▀  ▀         ▀  ▀▀▀▀▀▀▀▀▀▀ 
                                                       
        */}
-      <div className="grid col-span-1 bg-blue-500 py-5 px-5 mt-5">
+      <div className="grid bg-blue-500 py-5 px-5 mt-5 ml-6 justify-self-start">
         <div>
           <h1>REVERB</h1>
         </div>
@@ -277,7 +277,7 @@ function EffectsMenu({
               valueColor={"MediumPurple"}
               rangeColor={"White"}
               textColor={"WHITE"}
-              value={Math.round(reverb.decay * 100)}
+              value={reverb.decay === 1 ? 0 : Math.round(reverb.decay * 100)}
               onChange={(e) => setReverb({ decay: e.value / 100 })}
             />
             <label className="col-span-1 text-sm ">REVERB</label>
@@ -296,7 +296,7 @@ function EffectsMenu({
             ▐░▌     ▐░▌      ▐░▌ ▐░█▄▄▄▄▄▄▄▄▄ ▐░▌       ▐░▌▐░█▄▄▄▄▄▄▄█░▌▐░█▄▄▄▄▄▄▄▄▄ ▐░█▄▄▄▄▄▄▄█░▌
             ▐░▌     ▐░▌       ▐░▌▐░░░░░░░░░░░▌▐░▌       ▐░▌▐░░░░░░░░░░░▌▐░░░░░░░░░░░▌▐░░░░░░░░░░░▌                                          
        */}
-      <div className="grid col-span-1 bg-red-700 px-5 py-5 mt-5">
+      <div className="grid bg-red-700 px-5 py-5 mt-5 -ml-12">
         <div>
           <h1>TREMOLO</h1>
         </div>
