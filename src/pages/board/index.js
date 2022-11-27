@@ -71,6 +71,9 @@ const Board = () => {
     frequency: 0,
     delayTime: 0,
     depth: 0,
+    feedback: 0,
+    spread: 0,
+    wet: 0,
   });
   const [reverb, setReverb] = useState({ decay: 1 });
   const [phaser, setPhaser] = useState({

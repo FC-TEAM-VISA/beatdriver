@@ -12,10 +12,8 @@ function EffectsMenu({
   setChorus,
   setTremolo,
 }) {
-  const [value, setValue] = useState(0);
-
   return (
-    <div className="grid col-span-4 place-items-center p-5 scrollbar scrollbar-thumb-red-800 scrollbar-track-mint_cream overflow-y-scroll h-4/5">
+    <div className="grid grid-cols-2 place-items-center p-5 scrollbar scrollbar-thumb-red-800 scrollbar-track-mint_cream overflow-y-scroll h-4/5">
       {/* 
         ▄▄▄▄▄▄▄▄▄▄▄  ▄         ▄  ▄▄▄▄▄▄▄▄▄▄▄  ▄▄▄▄▄▄▄▄▄▄▄  ▄         ▄  ▄▄▄▄▄▄▄▄▄▄▄ 
         ▐░░░░░░░░░░░▌▐░▌       ▐░▌▐░░░░░░░░░░░▌▐░░░░░░░░░░░▌▐░▌       ▐░▌▐░░░░░░░░░░░▌
@@ -30,11 +28,12 @@ function EffectsMenu({
         ▀▀▀▀▀▀▀▀▀▀▀  ▀         ▀  ▀▀▀▀▀▀▀▀▀▀▀  ▀         ▀  ▀▀▀▀▀▀▀▀▀▀▀  ▀▀▀▀▀▀▀▀▀▀▀ 
                                                       
        */}
-      <div className="grid bg-violet-600 p-5">
+      <div className="grid col-span-2 bg-violet-600 px-10 py-5">
         <div>
           <h1>CHORUS</h1>
         </div>
-        <div className="flex place-items-center">
+        <div className="flex place-items-center space-x-5">
+          {/* TOP ROW OF KNOBS!!! */}
           <div className="field col-12 md:col-4 p-1 grid place-items-center">
             <Knob
               size={60}
@@ -49,6 +48,9 @@ function EffectsMenu({
                   frequency: e.value,
                   delayTime: chorus.delayTime,
                   depth: chorus.depth,
+                  feedback: chorus.feedback,
+                  spread: chorus.spread,
+                  wet: chorus.wet,
                 })
               }
             />
@@ -68,6 +70,9 @@ function EffectsMenu({
                   frequency: chorus.frequency,
                   delayTime: e.value * 1000,
                   depth: chorus.depth,
+                  feedback: chorus.feedback,
+                  spread: chorus.spread,
+                  wet: chorus.wet,
                 })
               }
             />
@@ -87,10 +92,83 @@ function EffectsMenu({
                   frequency: chorus.frequency,
                   delayTime: chorus.delayTime,
                   depth: e.value / 100,
+                  feedback: chorus.feedback,
+                  spread: chorus.spread,
+                  wet: chorus.wet,
                 })
               }
             />
             <label className="col-span-1 text-sm">DEPTH</label>
+          </div>
+        </div>
+        <div className="flex place-items-center space-x-5">
+          {" "}
+          {/* BOTTOM ROW OF KNOBS!!! */}
+          <div className="field col-12 md:col-4 p-1 grid place-items-center">
+            <Knob
+              size={60}
+              min={0}
+              max={100}
+              valueColor={"MediumPurple"}
+              rangeColor={"White"}
+              textColor={"WHITE"}
+              value={Math.round(chorus.feedback * 100)}
+              onChange={(e) =>
+                setChorus({
+                  frequency: chorus.frequency,
+                  delayTime: chorus.delayTime,
+                  depth: chorus.depth,
+                  feedback: e.value / 100,
+                  spread: chorus.spread,
+                  wet: chorus.wet,
+                })
+              }
+            />
+            <label className="col-span-1 text-sm">FEEDBACK</label>
+          </div>
+          <div className="field col-12 md:col-4 p-1 grid place-items-center">
+            <Knob
+              size={60}
+              min={0}
+              max={360}
+              valueColor={"MediumPurple"}
+              rangeColor={"White"}
+              textColor={"WHITE"}
+              value={chorus.spread}
+              onChange={(e) =>
+                setChorus({
+                  frequency: chorus.frequency,
+                  delayTime: chorus.delayTime,
+                  depth: chorus.depth,
+                  feedback: chorus.feedback,
+                  spread: e.value,
+                  wet: chorus.wet,
+                })
+              }
+            />
+            <label className="col-span-1 text-sm">SPREAD</label>
+          </div>
+          <div className="field col-12 md:col-4 p-1 grid place-items-center">
+            <Knob
+              size={60}
+              min={0}
+              max={100}
+              valueColor={"MediumPurple"}
+              rangeColor={"White"}
+              textColor={"WHITE"}
+              value={Math.round(chorus.wet * 100)}
+              onChange={(e) =>
+                setChorus({
+                  frequency: chorus.frequency,
+                  delayTime: chorus.delayTime,
+                  depth: chorus.depth,
+                  feedback: chorus.feedback,
+                  spread: chorus.spread,
+                  wet: e.value / 100,
+                })
+              }
+            />
+            <label className="col-span-1 text-sm">WET</label>
           </div>
         </div>
       </div>
@@ -108,11 +186,11 @@ function EffectsMenu({
         ▀            ▀         ▀  ▀         ▀  ▀▀▀▀▀▀▀▀▀▀▀  ▀▀▀▀▀▀▀▀▀▀▀  ▀         ▀ 
                                                       
        */}
-      <div className="grid bg-green-700 p-5 mt-5">
+      <div className="grid col-span-2 bg-green-700 px-10 py-5 mt-5">
         <div>
           <h1>PHASER</h1>
         </div>
-        <div className="flex">
+        <div className="flex space-x-5">
           <div className="field col-12 md:col-4 p-1 grid place-items-center">
             <Knob
               size={60}
@@ -186,7 +264,7 @@ function EffectsMenu({
         ▀         ▀  ▀▀▀▀▀▀▀▀▀▀▀          ▀          ▀▀▀▀▀▀▀▀▀▀▀  ▀         ▀  ▀▀▀▀▀▀▀▀▀▀ 
                                                       
        */}
-      <div className="grid bg-blue-500 p-5 mt-5">
+      <div className="grid col-span-1 bg-blue-500 py-5 px-5 mt-5">
         <div>
           <h1>REVERB</h1>
         </div>
@@ -218,11 +296,11 @@ function EffectsMenu({
             ▐░▌     ▐░▌      ▐░▌ ▐░█▄▄▄▄▄▄▄▄▄ ▐░▌       ▐░▌▐░█▄▄▄▄▄▄▄█░▌▐░█▄▄▄▄▄▄▄▄▄ ▐░█▄▄▄▄▄▄▄█░▌
             ▐░▌     ▐░▌       ▐░▌▐░░░░░░░░░░░▌▐░▌       ▐░▌▐░░░░░░░░░░░▌▐░░░░░░░░░░░▌▐░░░░░░░░░░░▌                                          
        */}
-      <div className="grid bg-red-700 p-5 mt-5">
+      <div className="grid col-span-1 bg-red-700 px-5 py-5 mt-5">
         <div>
           <h1>TREMOLO</h1>
         </div>
-        <div className="flex">
+        <div className="flex space-x-5">
           <div className="field col-12 md:col-4 p-1 grid place-items-center">
             <Knob
               size={60}
