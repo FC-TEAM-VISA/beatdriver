@@ -1,7 +1,6 @@
 import * as htmlToImage from "html-to-image";
 import React, { useState, useEffect, createRef } from "react";
 import Looper from "../../components/board/Looper";
-import AudioPlayer from "../../components/board/AudioPlayer";
 import TopToolbar from "../../components/toolbar/TopToolbar";
 import EffectsMenu from "../../components/effectsmenu/EffectsMenu";
 
@@ -23,13 +22,6 @@ import { useRouter } from "next/router";
 /* THE BOARD*/
 const steps = 8;
 const buttonState = { triggered: false, activated: false, audio: "" };
-const sounds = [
-  ["1", "2", "3", "4", "5", "6", "7", "8"],
-  ["9", "10", "11", "12", "13", "14", "15", "16"],
-  ["17", "18", "19", "20", "21", "22", "23", "24"],
-  ["25", "26", "27", "28", "29", "30", "31", "32"],
-  ["33", "34", "35", "36", "37", "38", "39", "40"],
-];
 
 //sets up how big the grid will be
 const initialGrid = [
@@ -79,38 +71,24 @@ const Board = () => {
     feedback: 0,
     bypass: 0,
   });
-  // const [bitcrusher, setBitcrusher] = useState({
-  //   bits: 1, //1 to 16
-  //   normfreq: 0, //0 to 1
-  //   bufferSize: 4096, //256 to 16384
-  // });
   const [phaser, setPhaser] = useState({
     rate: 0.1, //0.01 to 8 is a decent range, but higher values are possible
-    depth: 0, //0 to 1
-    feedback: 0, //0 to 1+
-    stereoPhase: 0, //0 to 180
-    baseModulationFrequency: 500, //500 to 1500
+    depth: 0.6, //0 to 1
+    feedback: 0.7, //0 to 1+
+    stereoPhase: 40, //0 to 180
+    baseModulationFrequency: 700, //500 to 1500
     bypass: 0,
   });
   const [tremolo, setTremolo] = useState({
-    intensity: 0, //0 to 1
-    rate: 0.001, //0.001 to 8
+    intensity: 0.3, //0 to 1
+    rate: 5, //0.001 to 8
     stereoPhase: 0, //0 to 180
     bypass: 0,
   });
   const [moog, setMoog] = useState({
-    cutoff: 0, //0 to 1
-    resonance: 0, //0 to 4
+    cutoff: 0.065, //0 to 1
+    resonance: 3.5, //0 to 4
     bufferSize: 4096, //256 to 16384
-  });
-  const [wahWah, setWahWah] = useState({
-    automode: true, //true/false
-    baseFrequency: 0, //0 to 1
-    excursionOctaves: 1, //1 to 6
-    sweep: 0, //0 to 1
-    resonance: 1, //1 to 100
-    sensitivity: -1, //-1 to 1
-    bypass: 0,
   });
 
   useEffect(() => {
@@ -154,6 +132,10 @@ const Board = () => {
         masterVolume: +masterVolume,
         isPublic: true,
         screen: image,
+        chorus: chorus,
+        phaser: phaser,
+        tremolo: tremolo,
+        moog: moog,
       });
 
       setUniqueID(newProject.id);
@@ -178,26 +160,6 @@ const Board = () => {
     const dataURI = await htmlToImage.toJpeg(node);
     return dataURI;
   };
-
-  // KEEP THIS FOR TESTING COLLABORATION
-  // useEffect(() => {
-  //   if (uniqueID) {
-  //     const realTime = async () => {
-  //       await updateDoc(doc(database, `projects/${uniqueID}`), {
-  //         createdAt: serverTimestamp(),
-  //         grid: {
-  //           r1: grid[0],
-  //           r2: grid[1],
-  //           r3: grid[2],
-  //           r4: grid[3],
-  //           r5: grid[4],
-  //         },
-  //         bpm: +bpm,
-  //       });
-  //     };
-  //     realTime();
-  //   }
-  // }, [grid, bpm]);
 
   const [val, setVal] = useState("");
 
@@ -225,79 +187,55 @@ const Board = () => {
     <div>
       <div className="grid grid-cols-12 text-xl">
         <div className="col-span-8 bg-slate-800">
-          <AudioPlayer
-            objectSounds={objectSounds}
-            bpm={bpm}
-            mute={mute}
-            masterVolume={masterVolume}
-          >
-            {({ player }) => {
-              if (!player) {
-                return (
-                  <p className="flex items-center justify-center animate-bounce">
-                    LOADING....
-                  </p>
-                );
-              }
-              return (
-                <>
-                  <div className="col-span-8 bg-black">
-                    {/* TOOLBAR */}
-                    <TopToolbar
-                      beat={beat}
-                      setBeat={setBeat}
-                      projects={projects}
-                      grid={grid}
-                      setGrid={setGrid}
-                      setUniqueID={setUniqueID}
-                      uniqueID={uniqueID}
-                      handleBeatChange={handleBeatChange}
-                      currentUser={currentUser}
-                      setSelectedInstrument={setSelectedInstrument}
-                      playing={playing}
-                      player={player}
-                      setPlaying={setPlaying}
-                      bpm={bpm}
-                      setBpm={setBpm}
-                      selected={selected}
-                      setSelected={setSelected}
-                      user={user}
-                      handleSave={handleSave}
-                      name={name}
-                      setName={setName}
-                      togglePlaying={togglePlaying}
-                      masterVolume={masterVolume}
-                      setMasterVolume={setMasterVolume}
-                    />
-                  </div>
-                  <div ref={ref}>
-                    <Looper
-                      player={player}
-                      bpm={bpm}
-                      playing={playing}
-                      beat={beat}
-                      objectSounds={objectSounds}
-                      steps={steps}
-                      sounds={sounds}
-                      grid={grid}
-                      setGrid={setGrid}
-                      uniqueID={uniqueID}
-                      handleSave={handleSave}
-                      selectedInstrument={selectedInstrument}
-                      selected={selected}
-                      masterVolume={masterVolume}
-                      soundArray={soundArray}
-                      chorus={chorus}
-                      phaser={phaser}
-                      tremolo={tremolo}
-                      moog={moog}
-                      wahWah={wahWah}
-                    />
-                  </div>
-                </>
-              );
-            }}
-          </AudioPlayer>
+          <div className="col-span-8 bg-black">
+            {/* TOOLBAR */}
+            <TopToolbar
+              beat={beat}
+              setBeat={setBeat}
+              projects={projects}
+              grid={grid}
+              setGrid={setGrid}
+              setUniqueID={setUniqueID}
+              uniqueID={uniqueID}
+              handleBeatChange={handleBeatChange}
+              currentUser={currentUser}
+              setSelectedInstrument={setSelectedInstrument}
+              playing={playing}
+              setPlaying={setPlaying}
+              bpm={bpm}
+              setBpm={setBpm}
+              selected={selected}
+              setSelected={setSelected}
+              user={user}
+              handleSave={handleSave}
+              name={name}
+              setName={setName}
+              togglePlaying={togglePlaying}
+              masterVolume={masterVolume}
+              setMasterVolume={setMasterVolume}
+            />
+          </div>
+          <div ref={ref}>
+            <Looper
+              bpm={bpm}
+              playing={playing}
+              beat={beat}
+              objectSounds={objectSounds}
+              steps={steps}
+              grid={grid}
+              setGrid={setGrid}
+              uniqueID={uniqueID}
+              handleSave={handleSave}
+              selectedInstrument={selectedInstrument}
+              selected={selected}
+              masterVolume={masterVolume}
+              soundArray={soundArray}
+              chorus={chorus}
+              phaser={phaser}
+              tremolo={tremolo}
+              moog={moog}
+            />
+          </div>
         </div>
 
         <div className="col-span-4 ml-4 bg-prussian_blue">
@@ -310,8 +248,6 @@ const Board = () => {
             setTremolo={setTremolo}
             moog={moog}
             setMoog={setMoog}
-            wahWah={wahWah}
-            setWahWah={setWahWah}
           />
         </div>
       </div>

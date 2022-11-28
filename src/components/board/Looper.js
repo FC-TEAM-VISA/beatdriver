@@ -30,7 +30,6 @@ const Looper = ({
   phaser,
   tremolo,
   moog,
-  wahWah,
 }) => {
   const [currButton, setCurrButton] = useState(0);
   const [open, setOpen] = useState(false);
@@ -93,16 +92,6 @@ const Looper = ({
     bufferSize: 4096, //256 to 16384
   });
 
-  const tunaWah = new tuna.WahWah({
-    automode: true, //true/false
-    baseFrequency: wahWah.baseFrequency, //0 to 1
-    excursionOctaves: wahWah.excursionOctaves, //1 to 6
-    sweep: wahWah.sweep, //0 to 1
-    resonance: wahWah.resonance, //1 to 100
-    sensitivity: wahWah.sensitivity, //-1 to 1
-    bypass: 0,
-  });
-
   const playAudio = (audioBuffer, startTime) => {
     source = audioContext.createBufferSource();
     source.buffer = audioBuffer;
@@ -113,9 +102,9 @@ const Looper = ({
     volume.connect(tunaChorus);
     tunaChorus.connect(tunaPhaser);
     tunaPhaser.connect(tunaTremolo);
-    tunaTremolo.connect(tunaMoog);
-    tunaMoog.connect(tunaWah);
-    tunaWah.connect(audioContext.destination);
+    // tunaTremolo.connect(tunaMoog);
+    // tunaMoog.connect(tunaWah);
+    tunaTremolo.connect(audioContext.destination);
     source.start(startTime);
   };
 
@@ -132,7 +121,7 @@ const Looper = ({
     }
   };
 
-  //   player.volume.value = masterVolume;
+  // player.volume.value = masterVolume;
 
   //this is what goes through the loop and triggers each row
   //if a button is triggered and already activated (by user) then it plays the sample
