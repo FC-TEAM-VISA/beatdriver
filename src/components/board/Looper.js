@@ -22,7 +22,11 @@ const Looper = ({
 	const [open, setOpen] = useState(false);
 	const closeModal = () => setOpen(false);
 
-	// if button.instrument is selected,
+	useEffect(() => {
+		console.log(instrument);
+	}, [selectedInstrument]);
+
+	// if button.instrument is selected
 	const toggleActivation = (row, col) => {
 		if (selected === "SELECTED") {
 			setOpen(true);
@@ -55,7 +59,6 @@ const Looper = ({
 				button.activated = activated;
 			}
 			gridCopy[row][col] = button;
-			// setCurrButton(button);
 			setGrid(gridCopy);
 		}
 	};
