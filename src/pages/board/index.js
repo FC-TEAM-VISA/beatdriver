@@ -79,7 +79,11 @@ const Board = () => {
     feedback: 0,
     bypass: 0,
   });
-  const [reverb, setReverb] = useState({ decay: 1 });
+  const [bitcrusher, setBitcrusher] = useState({
+    bits: 4, //1 to 16
+    normfreq: 0.1, //0 to 1
+    bufferSize: 4096, //256 to 16384
+  });
   const [phaser, setPhaser] = useState({
     rate: 0.1, //0.01 to 8 is a decent range, but higher values are possible
     depth: 0.6, //0 to 1
@@ -88,7 +92,12 @@ const Board = () => {
     baseModulationFrequency: 700, //500 to 1500
     bypass: 0,
   });
-  const [tremolo, setTremolo] = useState({ frequency: 0, depth: 0 });
+  const [tremolo, setTremolo] = useState({
+    intensity: 0.3, //0 to 1
+    rate: 5, //0.001 to 8
+    stereoPhase: 0, //0 to 180
+    bypass: 0,
+  });
 
   useEffect(() => {
     // handleClear
@@ -266,6 +275,8 @@ const Board = () => {
                       soundArray={soundArray}
                       chorus={chorus}
                       phaser={phaser}
+                      tremolo={tremolo}
+                      bitcrusher={bitcrusher}
                     />
                   </div>
                 </>
@@ -276,11 +287,11 @@ const Board = () => {
 
         <div className="col-span-4 ml-4 bg-prussian_blue">
           <EffectsMenu
-            reverb={reverb}
+            bitcrusher={bitcrusher}
             chorus={chorus}
             phaser={phaser}
             tremolo={tremolo}
-            setReverb={setReverb}
+            setBitcrusher={setBitcrusher}
             setChorus={setChorus}
             setPhaser={setPhaser}
             setTremolo={setTremolo}

@@ -3,11 +3,11 @@ import { Knob } from "primereact/knob";
 // chorus, phaser, reverb, tremolo + mute effect button
 
 function EffectsMenu({
-  reverb,
+  bitcrusher,
   chorus,
   phaser,
   tremolo,
-  setReverb,
+  setBitcrusher,
   setPhaser,
   setChorus,
   setTremolo,
@@ -245,11 +245,30 @@ function EffectsMenu({
         ▀         ▀  ▀▀▀▀▀▀▀▀▀▀▀          ▀          ▀▀▀▀▀▀▀▀▀▀▀  ▀         ▀  ▀▀▀▀▀▀▀▀▀▀ 
                                                       
        */}
-      <div className="grid bg-blue-500 py-5 px-5 mt-5 ml-6 justify-self-start">
+      <div className="grid col-span-2 bg-blue-500 py-5 px-5 mt-5 ml-6 justify-self-start">
         <div>
-          <h1>REVERB</h1>
+          <h1>BITCRUSHER</h1>
         </div>
         <div className="flex">
+          <div className="field col-12 md:col-4 p-1 grid place-items-center">
+            <Knob
+              size={60}
+              min={1}
+              max={16}
+              valueColor={"MediumPurple"}
+              rangeColor={"White"}
+              textColor={"WHITE"}
+              value={bitcrusher.bits}
+              onChange={(e) =>
+                setBitcrusher({
+                  bits: e.value,
+                  normfreq: bitcrusher.normfreq,
+                  bufferSize: bitcrusher.bufferSize,
+                })
+              }
+            />
+            <label className="col-span-1 text-sm ">BITS</label>
+          </div>
           <div className="field col-12 md:col-4 p-1 grid place-items-center">
             <Knob
               size={60}
@@ -258,10 +277,35 @@ function EffectsMenu({
               valueColor={"MediumPurple"}
               rangeColor={"White"}
               textColor={"WHITE"}
-              value={reverb.decay === 1 ? 0 : Math.round(reverb.decay * 100)}
-              onChange={(e) => setReverb({ decay: e.value / 100 })}
+              value={Math.round(bitcrusher.normfreq * 100)}
+              onChange={(e) =>
+                setBitcrusher({
+                  bits: bitcrusher.bits,
+                  normfreq: e.value / 100,
+                  bufferSize: bitcrusher.bufferSize,
+                })
+              }
             />
-            <label className="col-span-1 text-sm ">REVERB</label>
+            <label className="col-span-1 text-sm ">FREQUENCY</label>
+          </div>
+          <div className="field col-12 md:col-4 p-1 grid place-items-center">
+            <Knob
+              size={60}
+              min={256}
+              max={16384}
+              valueColor={"MediumPurple"}
+              rangeColor={"White"}
+              textColor={"WHITE"}
+              value={bitcrusher.bufferSize}
+              onChange={(e) =>
+                setBitcrusher({
+                  bits: bitcrusher.bits,
+                  normfreq: bitcrusher.normfreq,
+                  bufferSize: e.value,
+                })
+              }
+            />
+            <label className="col-span-1 text-sm ">BUFFER</label>
           </div>
         </div>
       </div>
@@ -277,7 +321,7 @@ function EffectsMenu({
             ▐░▌     ▐░▌      ▐░▌ ▐░█▄▄▄▄▄▄▄▄▄ ▐░▌       ▐░▌▐░█▄▄▄▄▄▄▄█░▌▐░█▄▄▄▄▄▄▄▄▄ ▐░█▄▄▄▄▄▄▄█░▌
             ▐░▌     ▐░▌       ▐░▌▐░░░░░░░░░░░▌▐░▌       ▐░▌▐░░░░░░░░░░░▌▐░░░░░░░░░░░▌▐░░░░░░░░░░░▌                                          
        */}
-      <div className="grid bg-red-700 px-5 py-5 mt-5 -ml-12">
+      <div className="grid col-span-2 bg-red-700 px-5 py-5 mt-5 -ml-12">
         <div>
           <h1>TREMOLO</h1>
         </div>
@@ -286,34 +330,61 @@ function EffectsMenu({
             <Knob
               size={60}
               min={0}
-              max={30}
+              max={100}
               valueColor={"MediumPurple"}
               rangeColor={"White"}
               textColor={"WHITE"}
-              value={tremolo.frequency}
+              value={Math.round(tremolo.intensity * 100)}
               onChange={(e) =>
-                setTremolo({ frequency: e.value, depth: tremolo.depth })
+                setTremolo({
+                  intensity: e.value / 100,
+                  rate: tremolo.rate,
+                  stereoPhase: tremolo.stereoPhase,
+                  bypass: tremolo.bypass,
+                })
               }
             />
-            <label className="col-span-1 text-sm ">FREQUENCY</label>
+            <label className="col-span-1 text-sm ">INTENSITY</label>
           </div>
           <div className="field col-12 md:col-4 p-1 grid place-items-center">
             <Knob
               size={60}
               min={0}
-              max={100}
+              max={8}
               valueColor={"MediumPurple"}
               rangeColor={"White"}
               textColor={"WHITE"}
-              value={Math.round(tremolo.depth * 100)}
+              value={tremolo.rate}
               onChange={(e) =>
                 setTremolo({
-                  frequency: tremolo.frequency,
-                  depth: e.value / 100,
+                  intensity: tremolo.intensity,
+                  rate: e.value,
+                  stereoPhase: tremolo.stereoPhase,
+                  bypass: tremolo.bypass,
                 })
               }
             />
-            <label className="col-span-1 text-sm">DEPTH</label>
+            <label className="col-span-1 text-sm">RATE</label>
+          </div>
+          <div className="field col-12 md:col-4 p-1 grid place-items-center">
+            <Knob
+              size={60}
+              min={0}
+              max={180}
+              valueColor={"MediumPurple"}
+              rangeColor={"White"}
+              textColor={"WHITE"}
+              value={tremolo.stereoPhase}
+              onChange={(e) =>
+                setTremolo({
+                  intensity: tremolo.intensity,
+                  rate: tremolo.rate,
+                  stereoPhase: tremolo.stereoPhase,
+                  bypass: tremolo.bypass,
+                })
+              }
+            />
+            <label className="col-span-1 text-sm">STEREO PHASE</label>
           </div>
         </div>
       </div>

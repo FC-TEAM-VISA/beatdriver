@@ -28,6 +28,8 @@ const Looper = ({
   soundArray,
   chorus,
   phaser,
+  tremolo,
+  bitcrusher,
 }) => {
   const [currButton, setCurrButton] = useState(0);
   const [open, setOpen] = useState(false);
@@ -61,32 +63,47 @@ const Looper = ({
     });
   }, [soundArray, beat]);
 
+  const tunaChorus = new tuna.Chorus({
+    rate: chorus.rate,
+    feedback: chorus.feedback,
+    delay: chorus.delay,
+    bypass: 0,
+  });
+
+  const tunaPhaser = new tuna.Phaser({
+    rate: phaser.rate, //0.01 to 8 is a decent range, but higher values are possible
+    depth: phaser.depth, //0 to 1
+    feedback: phaser.feedback, //0 to 1+
+    stereoPhase: phaser.stereoPhase, //0 to 180
+    baseModulationFrequency: phaser.baseModulationFrequency, //500 to 1500
+    bypass: 0,
+  });
+
+  const tunaTremolo = new tuna.Tremolo({
+    intensity: tremolo.intensity, //0 to 1
+    rate: tremolo.rate, //0.001 to 8
+    stereoPhase: tremolo.stereoPhase, //0 to 180
+    bypass: 0,
+  });
+
+  const tunaBitcrusher = new tuna.Bitcrusher({
+    bits: bitcrusher.bits, //1 to 16
+    normfreq: bitcrusher.normfreq, //0 to 1
+    // bufferSize: bitcrusher.bufferSize, //256 to 16384
+  });
+
   const playAudio = (audioBuffer, startTime) => {
     source = audioContext.createBufferSource();
     source.buffer = audioBuffer;
     const volume = audioContext.createGain();
 
-    const tunaChorus = new tuna.Chorus({
-      rate: chorus.rate,
-      feedback: chorus.feedback,
-      delay: chorus.delay,
-      bypass: 0,
-    });
-
-    const tunaPhaser = new tuna.Phaser({
-      rate: phaser.rate, //0.01 to 8 is a decent range, but higher values are possible
-      depth: phaser.depth, //0 to 1
-      feedback: phaser.feedback, //0 to 1+
-      stereoPhase: phaser.stereoPhase, //0 to 180
-      baseModulationFrequency: phaser.baseModulationFrequency, //500 to 1500
-      bypass: 0,
-    });
-
     volume.gain.value = masterVolume;
     source.connect(volume);
     volume.connect(tunaChorus);
     tunaChorus.connect(tunaPhaser);
-    tunaPhaser.connect(audioContext.destination);
+    tunaPhaser.connect(tunaTremolo);
+    // tunaTremolo.connect(tunaBitcrusher);
+    tunaTremolo.connect(audioContext.destination);
     source.start(startTime);
   };
 
