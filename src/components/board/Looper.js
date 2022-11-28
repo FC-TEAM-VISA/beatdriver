@@ -5,9 +5,12 @@ import Popup from "reactjs-popup";
 import "reactjs-popup/dist/index.css";
 
 let audioContext;
+let tuna;
+let source;
 if (typeof window !== "undefined") {
   const AudioContext = window.AudioContext || window.webkitAudioContext;
   audioContext = new AudioContext();
+  tuna = new Tuna(audioContext);
 }
 
 const Looper = ({
@@ -28,10 +31,14 @@ const Looper = ({
   const [open, setOpen] = useState(false);
   const closeModal = () => setOpen(false);
   //audio things
-  // console.log("LOOPER FILE", audioContext);
-  //   let tuna = new Tuna(audioContext);
-
   const [samples, setSamples] = useState([]);
+
+  let chorus = new tuna.Chorus({
+    rate: 1.5,
+    feedback: 0.2,
+    delay: 0.0045,
+    bypass: 0,
+  });
 
   const getSample = async (filepath) => {
     const res = await fetch(filepath);
@@ -43,9 +50,7 @@ const Looper = ({
   const setupSamples = async (paths) => {
     console.log("context created");
     console.log("setting up samples");
-
     const audioBuffers = [];
-
     for (const path of paths) {
       const sample = await getSample(path);
       audioBuffers.push(sample);
@@ -62,12 +67,11 @@ const Looper = ({
   }, [soundArray, beat]);
 
   const playAudio = (audioBuffer, startTime) => {
-    const source = audioContext.createBufferSource();
-    const volume = audioContext.createGain();
-    volume.gain.value = 0;
-    source.connect(volume);
+    source = audioContext.createBufferSource();
     source.buffer = audioBuffer;
-    source.connect(audioContext.destination);
+    const volume = audioContext.createGain();
+    volume.gain.value = masterVolume;
+    source.connect(volume).connect(audioContext.destination);
     source.start(startTime);
   };
 
