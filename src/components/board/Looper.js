@@ -24,10 +24,7 @@ const Looper = ({
   //audio things
   let audioContext = new AudioContext();
   //   let tuna = new Tuna(audioContext);
-  const source = audioContext.createBufferSource();
-  const volume = audioContext.createGain();
-  volume.gain.value = 1;
-  source.connect(volume);
+
   const [samples, setSamples] = useState([]);
 
   const getSample = async (filepath) => {
@@ -52,15 +49,17 @@ const Looper = ({
   };
 
   useEffect(() => {
-    if (playing) {
-      setupSamples(soundArray).then((res) => {
-        setSamples(res);
-        console.log("samples created", samples);
-      });
-    }
-  }, [playing]);
+    setupSamples(soundArray).then((res) => {
+      setSamples(res);
+      console.log("samples created", samples);
+    });
+  }, [soundArray, beat]);
 
   const playAudio = (audioBuffer, startTime) => {
+    const source = audioContext.createBufferSource();
+    // const volume = audioContext.createGain();
+    // volume.gain.value = 1;
+    // source.connect(volume);
     source.buffer = audioBuffer;
     source.connect(audioContext.destination);
     source.start(startTime);
@@ -89,7 +88,11 @@ const Looper = ({
         const { activated, audio } = grid[i][j];
         grid[i][j] = { activated, triggered: j === currButton, audio };
 
-        if (grid[i][j].triggered && grid[i][j].activated && grid[i][j].audio) {
+        if (
+          grid[i][j].triggered &&
+          grid[i][j].activated &&
+          grid[i][j].audio !== ""
+        ) {
           //plays the sound associated with the button
           //   player.player(objectSounds[grid[i][j].audio]).start();
           console.log("audioContext", audioContext);
