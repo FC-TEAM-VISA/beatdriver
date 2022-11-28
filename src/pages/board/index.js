@@ -53,6 +53,8 @@ const Board = () => {
 	}
 	//instruments
 	const [selectedInstrument, setSelectedInstrument] = useState("selected");
+	const [oldSelectedInstrument, setOldSelectedInstrument] = useState("DRUMS");
+	const [ifChangedInstrument, setIfChangedInstrument] = useState(true);
 	const [selected, setSelected] = useState("SELECTED");
 	const [objectSounds, setObjectSounds] = useState({
 		"https://firebasestorage.googleapis.com/v0/b/music-collaboration-app.appspot.com/o/built-in-instruments%2Fdrums%2Fclap%2Fclap-808.wav?alt=media&token=1e2bd7d8-dad2-49b6-a6db-9959a06f1520":
@@ -75,7 +77,7 @@ const Board = () => {
 	const [projects] = useCollectionData(dbInstance);
 
 	useEffect(() => {
-    // handleClear
+		// handleClear
 		const gridCopy = [...grid];
 		for (let i = 0; i < grid.length; i++) {
 			for (let j = 0; j < grid[i].length; j++) {
@@ -87,8 +89,25 @@ const Board = () => {
 			}
 		}
 		setGrid(gridCopy);
-    console.log('set grid!')
+		console.log("set grid!");
 	}, []);
+
+	// compare instrument selection values
+	useEffect(() => {
+		if (
+			!oldSelectedInstrument ||
+			(oldSelectedInstrument && oldSelectedInstrument !== selectedInstrument)
+		) {
+			setIfChangedInstrument(true);
+		} else {
+			console.log("selectedInstrument THIS IS IN INDEX", selectedInstrument); // not even getting here
+			setOldSelectedInstrument(selectedInstrument);
+			setIfChangedInstrument(false);
+		}
+	}, [selectedInstrument, oldSelectedInstrument]);
+
+	console.log("selectedInstrument", selectedInstrument);
+	console.log("oldSelectedInstrument", oldSelectedInstrument);
 
 	const handleSave = async () => {
 		const image = await takeScreenShot(ref.current);
@@ -237,6 +256,9 @@ const Board = () => {
 											uniqueID={uniqueID}
 											handleSave={handleSave}
 											selectedInstrument={selectedInstrument}
+											oldSelectedInstrument={oldSelectedInstrument}
+											setOldSelectedInstrument={setOldSelectedInstrument}
+											ifChangedInstrument={ifChangedInstrument}
 											selected={selected}
 											masterVolume={masterVolume}
 										/>

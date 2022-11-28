@@ -211,8 +211,8 @@ const Board = ({ data }) => {
 
 	const handleCopyLink = () => {
 		const host = "localhost:3000";
-		navigator.clipboard.writeText(`${host}/board/${data.id}/invite`);
-		// window.alert(`Copied link "${host}/board/${data.id}/invite"!`);
+		const currentUrl = window.location.href;
+		navigator.clipboard.writeText(`${currentUrl}/invite`);
 	};
 
 	return (
