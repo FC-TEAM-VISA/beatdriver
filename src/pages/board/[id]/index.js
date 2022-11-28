@@ -18,7 +18,7 @@ import {
   query,
   getDoc,
 } from "firebase/firestore";
-import { database, auth, db } from "../../../../utils/firebase";
+import { database, auth } from "../../../../utils/firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useCollectionData } from "react-firebase-hooks/firestore";
 import { useRouter } from "next/router";
@@ -199,11 +199,11 @@ const Board = ({ data }) => {
     setPlaying((prev) => !prev);
   };
 
-	const handleCopyLink = () => {
-		const host = "localhost:3000";
-		const currentUrl = window.location.href;
-		navigator.clipboard.writeText(`${currentUrl}/invite`);
-	};
+  const handleCopyLink = () => {
+    const host = "localhost:3000";
+    const currentUrl = window.location.href;
+    navigator.clipboard.writeText(`${currentUrl}/invite`);
+  };
 
   return (
     <div>
