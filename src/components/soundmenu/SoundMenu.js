@@ -7,135 +7,142 @@ import { database } from "../../../utils/firebase";
 import { useCollectionData } from "react-firebase-hooks/firestore";
 
 function SoundMenu({
-  handleBeatChange,
-  currentUser,
-  setSelectedInstrument,
-  selected,
-  setSelected,
+	handleBeatChange,
+	currentUser,
+	selectedInstrument,
+	setSelectedInstrument,
+	setOldSelectedInstrument,
+	selected,
+	setSelected,
 }) {
-  const drumsRef = collection(database, "built_in_drums");
-  const bassRef = collection(database, "built_in_bass");
-  const guitarRef = collection(database, "built_in_guitar");
-  const vocalsRef = collection(database, "built_in_vocals");
-  const [drums] = useCollectionData(drumsRef);
-  const [bass] = useCollectionData(bassRef);
-  const [vocals] = useCollectionData(vocalsRef);
-  const [guitar] = useCollectionData(guitarRef);
+	const drumsRef = collection(database, "built_in_drums");
+	const bassRef = collection(database, "built_in_bass");
+	const guitarRef = collection(database, "built_in_guitar");
+	const vocalsRef = collection(database, "built_in_vocals");
+	const [drums] = useCollectionData(drumsRef);
+	const [bass] = useCollectionData(bassRef);
+	const [vocals] = useCollectionData(vocalsRef);
+	const [guitar] = useCollectionData(guitarRef);
 
-  const customSoundsExist = currentUser && currentUser.sounds;
+	const customSoundsExist = currentUser && currentUser.sounds;
 
-  return (
-    <Menu
-      menuButton={({ open }) => (
-        <MenuButton>{open ? "CLOSE PANEL" : `${selected}`}</MenuButton>
-      )}
-    >
-      <SubMenu label="INSTRUMENTS">
-        <SubMenu label="drums">
-          {drums?.map((docs, i) => {
-            return (
-              <SubMenu label={docs.id} key={i}>
-                {docs.sounds?.map((sound, i) => (
-                  <MenuItem
-                    label={sound.name}
-                    key={i}
-                    onClick={() => {
-                      handleBeatChange(sound.url);
-                      setSelected(`${docs.id}-${sound.name}`);
-                      setSelectedInstrument(`DRUMS`);
-                    }}
-                  >
-                    {sound.name}
-                  </MenuItem>
-                ))}
-              </SubMenu>
-            );
-          })}
-        </SubMenu>
+	return (
+		<Menu
+			menuButton={({ open }) => (
+				<MenuButton>{open ? "CLOSE PANEL" : `${selected}`}</MenuButton>
+			)}
+		>
+			<SubMenu label="INSTRUMENTS">
+				<SubMenu label="drums">
+					{drums?.map((docs, i) => {
+						return (
+							<SubMenu label={docs.id} key={i}>
+								{docs.sounds?.map((sound, i) => (
+									<MenuItem
+										label={sound.name}
+										key={i}
+										onClick={() => {
+											handleBeatChange(sound.url);
+											setSelected(`${docs.id}-${sound.name}`);
+											setSelectedInstrument(`DRUMS`);
+											setOldSelectedInstrument(selectedInstrument);
+										}}
+									>
+										{sound.name}
+									</MenuItem>
+								))}
+							</SubMenu>
+						);
+					})}
+				</SubMenu>
 
-        <SubMenu label="bass">
-          {bass?.map((docs, i) => {
-            return (
-              <SubMenu label={docs.id} key={i}>
-                {docs.sounds?.map((sound, i) => (
-                  <MenuItem
-                    label={sound.name}
-                    key={i}
-                    onClick={() => {
-                      handleBeatChange(sound.url);
-                      setSelected(`${docs.id}-${sound.name}`);
-                      setSelectedInstrument(`BASS`);
-                    }}
-                  >
-                    {sound.name}
-                  </MenuItem>
-                ))}
-              </SubMenu>
-            );
-          })}
-        </SubMenu>
-        <SubMenu label="guitar">
-          {guitar?.map((docs, i) => {
-            return (
-              <SubMenu label={docs.id} key={i}>
-                {docs.sounds?.map((sound, i) => (
-                  <MenuItem
-                    label={sound.name}
-                    key={i}
-                    onClick={() => {
-                      handleBeatChange(sound.url);
-                      setSelected(`${docs.id}-${sound.name}`);
-                      setSelectedInstrument(`GUITAR`);
-                    }}
-                  >
-                    {sound.name}
-                  </MenuItem>
-                ))}
-              </SubMenu>
-            );
-          })}
-        </SubMenu>
-        <SubMenu label="vocals">
-          {vocals?.map((docs, i) => {
-            return (
-              <SubMenu label={docs.id} key={i}>
-                {docs.sounds?.map((sound, i) => (
-                  <MenuItem
-                    label={sound.name}
-                    key={i}
-                    onClick={() => {
-                      handleBeatChange(sound.url);
-                      setSelected(`${docs.id}-${sound.name}`);
-                      setSelectedInstrument(`VOCALS`);
-                    }}
-                  >
-                    {sound.name}
-                  </MenuItem>
-                ))}
-              </SubMenu>
-            );
-          })}
-        </SubMenu>
-        {customSoundsExist && (
-          <SubMenu label={currentUser?.name}>
-            {currentUser?.sounds?.map((sound, i) => (
-              <MenuItem
-                label={sound.name}
-                key={i}
-                onClick={() => {
-                  handleBeatChange(sound.url);
-                  setSelected(`${currentUser?.name}-${sound.name}`);
-                  setSelectedInstrument(`USER`);
-                }}
-              >
-                {sound.name}
-              </MenuItem>
-            ))}
-          </SubMenu>
-        )}
-      </SubMenu>
-    </Menu>
-  );
+				<SubMenu label="bass">
+					{bass?.map((docs, i) => {
+						return (
+							<SubMenu label={docs.id} key={i}>
+								{docs.sounds?.map((sound, i) => (
+									<MenuItem
+										label={sound.name}
+										key={i}
+										onClick={() => {
+											handleBeatChange(sound.url);
+											setSelected(`${docs.id}-${sound.name}`);
+											setSelectedInstrument(`BASS`);
+											setOldSelectedInstrument(selectedInstrument);
+										}}
+									>
+										{sound.name}
+									</MenuItem>
+								))}
+							</SubMenu>
+						);
+					})}
+				</SubMenu>
+				<SubMenu label="guitar">
+					{guitar?.map((docs, i) => {
+						return (
+							<SubMenu label={docs.id} key={i}>
+								{docs.sounds?.map((sound, i) => (
+									<MenuItem
+										label={sound.name}
+										key={i}
+										onClick={() => {
+											handleBeatChange(sound.url);
+											setSelected(`${docs.id}-${sound.name}`);
+											setSelectedInstrument(`GUITAR`);
+											setOldSelectedInstrument(selectedInstrument);
+										}}
+									>
+										{sound.name}
+									</MenuItem>
+								))}
+							</SubMenu>
+						);
+					})}
+				</SubMenu>
+				<SubMenu label="vocals">
+					{vocals?.map((docs, i) => {
+						return (
+							<SubMenu label={docs.id} key={i}>
+								{docs.sounds?.map((sound, i) => (
+									<MenuItem
+										label={sound.name}
+										key={i}
+										onClick={() => {
+											handleBeatChange(sound.url);
+											setSelected(`${docs.id}-${sound.name}`);
+											setSelectedInstrument(`VOCALS`);
+											setOldSelectedInstrument(selectedInstrument);
+										}}
+									>
+										{sound.name}
+									</MenuItem>
+								))}
+							</SubMenu>
+						);
+					})}
+				</SubMenu>
+				{customSoundsExist && (
+					<SubMenu label={currentUser?.name}>
+						{currentUser?.sounds?.map((sound, i) => (
+							<MenuItem
+								label={sound.name}
+								key={i}
+								onClick={() => {
+									handleBeatChange(sound.url);
+									setSelected(`${currentUser?.name}-${sound.name}`);
+									setSelectedInstrument(`USER`);
+									setOldSelectedInstrument(selectedInstrument);
+								}}
+							>
+								{sound.name}
+							</MenuItem>
+						))}
+					</SubMenu>
+				)}
+			</SubMenu>
+		</Menu>
+	);
 }
 
 export default SoundMenu;

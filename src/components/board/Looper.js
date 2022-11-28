@@ -13,6 +13,9 @@ const Looper = ({
 	setGrid,
 	steps,
 	selectedInstrument,
+	oldSelectedInstrument,
+	setOldSelectedInstrument,
+	ifChangedInstrument,
 	selected,
 	masterVolume,
 }) => {
@@ -26,7 +29,22 @@ const Looper = ({
 		} else {
 			const gridCopy = [...grid];
 			const { triggered, activated } = gridCopy[row][col];
-			gridCopy[row][col] = { triggered, activated: !activated, audio: beat };
+			console.log("activated", activated);
+			console.log("!!activated", !!activated);
+			console.log("oldSelectedInstrument", oldSelectedInstrument);
+			console.log("ifChangedInstrument", ifChangedInstrument);
+
+			let isActivated = false;
+			if (ifChangedInstrument || !!activated === false) {
+				isActivated = true;
+			} else {
+				isActivated = !activated;
+			}
+			gridCopy[row][col] = {
+				triggered,
+				activated: isActivated, // if changing instrument and not already activated
+				audio: beat,
+			};
 			setGrid(gridCopy);
 		}
 	};

@@ -225,7 +225,9 @@ const Board = () => {
 											uniqueID={uniqueID}
 											handleBeatChange={handleBeatChange}
 											currentUser={currentUser}
+											selectedInstrument={selectedInstrument}
 											setSelectedInstrument={setSelectedInstrument}
+											setOldSelectedInstrument={setOldSelectedInstrument}
 											playing={playing}
 											player={player}
 											setPlaying={setPlaying}
