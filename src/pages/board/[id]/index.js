@@ -199,11 +199,11 @@ const Board = ({ data }) => {
     setPlaying((prev) => !prev);
   };
 
-  const handleCopyLink = () => {
-    const host = "localhost:3000";
-    navigator.clipboard.writeText(`${host}/board/${data.id}/invite`);
-    // window.alert(`Copied link "${host}/board/${data.id}/invite"!`);
-  };
+	const handleCopyLink = () => {
+		const host = "localhost:3000";
+		const currentUrl = window.location.href;
+		navigator.clipboard.writeText(`${currentUrl}/invite`);
+	};
 
   return (
     <div>
