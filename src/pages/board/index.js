@@ -58,7 +58,7 @@ const Board = () => {
     "https://firebasestorage.googleapis.com/v0/b/music-collaboration-app.appspot.com/o/built-in-instruments%2Fdrums%2Fclap%2Fclap-808.wav?alt=media&token=1e2bd7d8-dad2-49b6-a6db-9959a06f1520":
       "https://firebasestorage.googleapis.com/v0/b/music-collaboration-app.appspot.com/o/built-in-instruments%2Fdrums%2Fclap%2Fclap-808.wav?alt=media&token=1e2bd7d8-dad2-49b6-a6db-9959a06f1520",
   });
-  const [beat, setBeat] = useState(null);
+  const [beat, setBeat] = useState(0);
   const [soundArray, setSoundArray] = useState([]);
   //project info
   const [grid, setGrid] = useState(initialGrid); //project board
@@ -161,21 +161,26 @@ const Board = () => {
   //   }
   // }, [grid, bpm]);
 
+  const [val, setVal] = useState("");
+
   const handleBeatChange = (value) => {
     const findSample = soundArray.find((sample) => sample === value);
     if (!findSample) {
       let arrayCopy = [...soundArray];
       arrayCopy.push(value);
       setSoundArray(arrayCopy);
-      setBeat(arrayCopy.length - 1);
-    } else {
-      setBeat(soundArray.indexOf(value));
     }
+    setVal(value);
   };
+
+  useEffect(() => {
+    const idx = soundArray.indexOf(val);
+    setBeat(idx);
+    console.log(val, soundArray, beat);
+  }, [soundArray, val, beat]);
 
   const togglePlaying = () => {
     setPlaying((prev) => !prev);
-    // Tone.start();
   };
 
   return (

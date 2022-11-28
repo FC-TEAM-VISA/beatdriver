@@ -3,6 +3,8 @@ import Grid from "./Grid";
 import Popup from "reactjs-popup";
 import "reactjs-popup/dist/index.css";
 
+let audioContext = new AudioContext();
+
 const Looper = ({
   player,
   bpm,
@@ -21,7 +23,7 @@ const Looper = ({
   const [open, setOpen] = useState(false);
   const closeModal = () => setOpen(false);
   //audio things
-  let audioContext;
+
   const [samples, setSamples] = useState([]);
 
   //   useEffect(() => {
@@ -39,7 +41,6 @@ const Looper = ({
   };
 
   const setupSamples = async (paths) => {
-    audioContext = new AudioContext();
     console.log("context created");
     console.log("setting up samples");
 
@@ -54,20 +55,19 @@ const Looper = ({
   };
 
   useEffect(() => {
-    if (audioContext !== "undefined") {
+    if (playing) {
       setupSamples(soundArray).then((res) => {
         setSamples(res);
         console.log("samples created", samples);
       });
     }
-  }, [soundArray]);
+  }, [playing]);
 
   const playAudio = (audioBuffer, startTime) => {
     const sampleSource = audioContext.createBufferSource();
     sampleSource.buffer = audioBuffer;
     sampleSource.connect(audioContext.destination);
     sampleSource.start(startTime);
-    return sampleSource;
   };
 
   //end audio things
@@ -96,11 +96,12 @@ const Looper = ({
         if (grid[i][j].triggered && grid[i][j].activated && grid[i][j].audio) {
           //plays the sound associated with the button
           //   player.player(objectSounds[grid[i][j].audio]).start();
-          //   console.log("samples", samples);
-          //   console.log("index", samples[grid[i][j].audio]);
-          //   console.log("button", grid[i][j].audio);
-          //   playAudio(samples[grid[i][j].audio], 0);
-          playAudio(samples[0], 0);
+          console.log("audioContext", audioContext);
+          console.log("samples", samples);
+          console.log("index", samples[grid[i][j].audio]);
+          console.log("button", grid[i][j].audio);
+          playAudio(samples[grid[i][j].audio], 0);
+          //   playAudio(samples[0], 0);
         }
       }
     }
