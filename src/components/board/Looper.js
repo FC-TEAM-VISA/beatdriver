@@ -1,9 +1,8 @@
+import Tuna from "tunajs";
 import React, { useState, useEffect } from "react";
 import Grid from "./Grid";
 import Popup from "reactjs-popup";
 import "reactjs-popup/dist/index.css";
-
-let audioContext = new AudioContext();
 
 const Looper = ({
   player,
@@ -23,15 +22,13 @@ const Looper = ({
   const [open, setOpen] = useState(false);
   const closeModal = () => setOpen(false);
   //audio things
-
+  let audioContext = new AudioContext();
+  //   let tuna = new Tuna(audioContext);
+  const source = audioContext.createBufferSource();
+  const volume = audioContext.createGain();
+  volume.gain.value = 1;
+  source.connect(volume);
   const [samples, setSamples] = useState([]);
-
-  //   useEffect(() => {
-  //     if (playing) {
-  //       audioContext = new AudioContext();
-  //       console.log("context created");
-  //     }
-  //   }, [playing]);
 
   const getSample = async (filepath) => {
     const res = await fetch(filepath);
@@ -64,10 +61,9 @@ const Looper = ({
   }, [playing]);
 
   const playAudio = (audioBuffer, startTime) => {
-    const sampleSource = audioContext.createBufferSource();
-    sampleSource.buffer = audioBuffer;
-    sampleSource.connect(audioContext.destination);
-    sampleSource.start(startTime);
+    source.buffer = audioBuffer;
+    source.connect(audioContext.destination);
+    source.start(startTime);
   };
 
   //end audio things
@@ -83,7 +79,7 @@ const Looper = ({
     }
   };
 
-  player.volume.value = masterVolume;
+  //   player.volume.value = masterVolume;
 
   //this is what goes through the loop and triggers each row
   //if a button is triggered and already activated (by user) then it plays the sample

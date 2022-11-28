@@ -1,4 +1,3 @@
-import * as Tone from "tone";
 import * as htmlToImage from "html-to-image";
 import React, { useState, useEffect, createRef } from "react";
 import Looper from "../../components/board/Looper";
@@ -67,7 +66,7 @@ const Board = () => {
   const [name, setName] = useState("Untitled"); //project name
   const [bpm, setBpm] = useState(120); //tempo
   const [mute] = useState(false); //mute button
-  const [masterVolume, setMasterVolume] = useState(0); //master vol
+  const [masterVolume, setMasterVolume] = useState(1); //master vol
   const ref = createRef(null);
   const dbInstance = query(
     collection(database, "projects"),
