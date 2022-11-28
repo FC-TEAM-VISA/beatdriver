@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import Grid from "./Grid";
 import Popup from "reactjs-popup";
 import "reactjs-popup/dist/index.css";
+import { InputRightAddon } from "@chakra-ui/react";
 
 let audioContext;
 let tuna;
@@ -26,19 +27,17 @@ const Looper = ({
   selected,
   masterVolume,
   soundArray,
+  chorus,
 }) => {
   const [currButton, setCurrButton] = useState(0);
   const [open, setOpen] = useState(false);
   const closeModal = () => setOpen(false);
   //audio things
   const [samples, setSamples] = useState([]);
+  let tunaChorus;
 
-  let chorus = new tuna.Chorus({
-    rate: 1.5,
-    feedback: 0.2,
-    delay: 0.0045,
-    bypass: 0,
-  });
+  if (tuna) {
+  }
 
   const getSample = async (filepath) => {
     const res = await fetch(filepath);
@@ -70,8 +69,30 @@ const Looper = ({
     source = audioContext.createBufferSource();
     source.buffer = audioBuffer;
     const volume = audioContext.createGain();
+    // volume.gain.value = masterVolume;
+    // volume.connect(tunaChorus);
+    tunaChorus = new tuna.Chorus({
+      // rate: chorus.rate,
+      // feedback: chorus.feedback,
+      // delay: chorus.delay,
+      // bypass: 0,
+      rate: 4,
+      feedback: 0.5,
+      delay: 0.5,
+      bypass: 0,
+    });
+
+    // Create regular Web Audio nodes
+    let input = audioContext.createGain();
+    let output = audioContext.createGain();
+    // input.gain.value = masterVolume;
     volume.gain.value = masterVolume;
-    source.connect(volume).connect(audioContext.destination);
+    // Use the Tuna node just like regular nodes
+    input.connect(tunaChorus);
+    tunaChorus.connect(output);
+    tunaChorus.connect(volume);
+
+    source.connect(tunaChorus).connect(audioContext.destination);
     source.start(startTime);
   };
 

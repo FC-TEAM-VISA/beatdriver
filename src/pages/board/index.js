@@ -73,6 +73,19 @@ const Board = () => {
     where(`ownerId`, "==", `${user?.uid}`)
   );
   const [projects] = useCollectionData(dbInstance);
+  const [chorus, setChorus] = useState({
+    rate: 0,
+    delay: 0,
+    feedback: 0,
+    bypass: 0,
+  });
+  const [reverb, setReverb] = useState({ decay: 1 });
+  const [phaser, setPhaser] = useState({
+    frequency: 0,
+    octaves: 0,
+    baseFrequency: 0,
+  });
+  const [tremolo, setTremolo] = useState({ frequency: 0, depth: 0 });
 
   useEffect(() => {
     // handleClear
@@ -248,6 +261,7 @@ const Board = () => {
                       selected={selected}
                       masterVolume={masterVolume}
                       soundArray={soundArray}
+                      chorus={chorus}
                     />
                   </div>
                 </>
@@ -257,7 +271,16 @@ const Board = () => {
         </div>
 
         <div className="col-span-4 ml-4 bg-prussian_blue">
-          <EffectsMenu />
+          <EffectsMenu
+            reverb={reverb}
+            chorus={chorus}
+            phaser={phaser}
+            tremolo={tremolo}
+            setReverb={setReverb}
+            setChorus={setChorus}
+            setPhaser={setPhaser}
+            setTremolo={setTremolo}
+          />
         </div>
       </div>
     </div>
