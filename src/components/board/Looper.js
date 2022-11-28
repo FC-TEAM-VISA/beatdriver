@@ -4,6 +4,12 @@ import Grid from "./Grid";
 import Popup from "reactjs-popup";
 import "reactjs-popup/dist/index.css";
 
+let audioContext;
+if (typeof window !== "undefined") {
+  const AudioContext = window.AudioContext || window.webkitAudioContext;
+  audioContext = new AudioContext();
+}
+
 const Looper = ({
   player,
   bpm,
@@ -22,12 +28,9 @@ const Looper = ({
   const [open, setOpen] = useState(false);
   const closeModal = () => setOpen(false);
   //audio things
-  let audioContext = new AudioContext();
+  // console.log("LOOPER FILE", audioContext);
   //   let tuna = new Tuna(audioContext);
-  const source = audioContext.createBufferSource();
-  const volume = audioContext.createGain();
-  volume.gain.value = 0;
-  source.connect(volume);
+
   const [samples, setSamples] = useState([]);
 
   const getSample = async (filepath) => {
@@ -59,6 +62,10 @@ const Looper = ({
   }, [soundArray, beat]);
 
   const playAudio = (audioBuffer, startTime) => {
+    const source = audioContext.createBufferSource();
+    const volume = audioContext.createGain();
+    volume.gain.value = 0;
+    source.connect(volume);
     source.buffer = audioBuffer;
     source.connect(audioContext.destination);
     source.start(startTime);
