@@ -3,7 +3,6 @@ import React, { useState, useEffect } from "react";
 import Grid from "./Grid";
 import Popup from "reactjs-popup";
 import "reactjs-popup/dist/index.css";
-import { InputRightAddon } from "@chakra-ui/react";
 
 let audioContext;
 let tuna;
@@ -28,16 +27,13 @@ const Looper = ({
   masterVolume,
   soundArray,
   chorus,
+  phaser,
 }) => {
   const [currButton, setCurrButton] = useState(0);
   const [open, setOpen] = useState(false);
   const closeModal = () => setOpen(false);
   //audio things
   const [samples, setSamples] = useState([]);
-  let tunaChorus;
-
-  if (tuna) {
-  }
 
   const getSample = async (filepath) => {
     const res = await fetch(filepath);
@@ -69,30 +65,28 @@ const Looper = ({
     source = audioContext.createBufferSource();
     source.buffer = audioBuffer;
     const volume = audioContext.createGain();
-    // volume.gain.value = masterVolume;
-    // volume.connect(tunaChorus);
-    tunaChorus = new tuna.Chorus({
-      // rate: chorus.rate,
-      // feedback: chorus.feedback,
-      // delay: chorus.delay,
-      // bypass: 0,
-      rate: 4,
-      feedback: 0.5,
-      delay: 0.5,
+
+    const tunaChorus = new tuna.Chorus({
+      rate: chorus.rate,
+      feedback: chorus.feedback,
+      delay: chorus.delay,
       bypass: 0,
     });
 
-    // Create regular Web Audio nodes
-    let input = audioContext.createGain();
-    let output = audioContext.createGain();
-    // input.gain.value = masterVolume;
-    volume.gain.value = masterVolume;
-    // Use the Tuna node just like regular nodes
-    input.connect(tunaChorus);
-    tunaChorus.connect(output);
-    tunaChorus.connect(volume);
+    const tunaPhaser = new tuna.Phaser({
+      rate: phaser.rate, //0.01 to 8 is a decent range, but higher values are possible
+      depth: phaser.depth, //0 to 1
+      feedback: phaser.feedback, //0 to 1+
+      stereoPhase: phaser.stereoPhase, //0 to 180
+      baseModulationFrequency: phaser.baseModulationFrequency, //500 to 1500
+      bypass: 0,
+    });
 
-    source.connect(tunaChorus).connect(audioContext.destination);
+    volume.gain.value = masterVolume;
+    source.connect(volume);
+    volume.connect(tunaChorus);
+    tunaChorus.connect(tunaPhaser);
+    tunaPhaser.connect(audioContext.destination);
     source.start(startTime);
   };
 

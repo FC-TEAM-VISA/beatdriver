@@ -62,11 +62,11 @@ function EffectsMenu({
               valueColor={"MediumPurple"}
               rangeColor={"White"}
               textColor={"WHITE"}
-              value={Math.round(chorus.delay * 100)}
+              value={Math.round(chorus.delay * 1000)}
               onChange={(e) =>
                 setChorus({
                   rate: chorus.rate,
-                  delay: e.value / 100,
+                  delay: e.value / 1000,
                   feedback: chorus.feedback,
                   bypass: chorus.bypass,
                 })
@@ -91,55 +91,13 @@ function EffectsMenu({
                 setChorus({
                   rate: chorus.rate,
                   delay: chorus.delay,
-                  feedback: e.value / 100,
-                  bypass: chorus.bypass,
-                })
-              }
-            />
-            <label className="col-span-1 text-sm">FEEDBACK</label>
-          </div>
-          <div className="field col-12 md:col-4 p-1 grid place-items-center">
-            <Knob
-              size={60}
-              min={0}
-              max={100}
-              valueColor={"MediumPurple"}
-              rangeColor={"White"}
-              textColor={"WHITE"}
-              value={Math.round(chorus.bypass * 100)}
-              onChange={(e) =>
-                setChorus({
-                  rate: chorus.rate,
-                  delay: chorus.delay,
                   feedback: chorus.feedback,
                   bypass: e.value / 100,
                 })
               }
             />
-            <label className="col-span-1 text-sm">BYPASS</label>
+            <label className="col-span-1 text-sm">FEEDBACK</label>
           </div>
-          {/* <div className="field col-12 md:col-4 p-1 grid place-items-center">
-            <Knob
-              size={60}
-              min={0}
-              max={100}
-              valueColor={"MediumPurple"}
-              rangeColor={"White"}
-              textColor={"WHITE"}
-              value={Math.round(chorus.wet * 100)}
-              onChange={(e) =>
-                setChorus({
-                  frequency: chorus.frequency,
-                  delayTime: chorus.delayTime,
-                  depth: chorus.depth,
-                  feedback: chorus.feedback,
-                  spread: chorus.spread,
-                  wet: e.value / 100,
-                })
-              }
-            /> */}
-          {/* <label className="col-span-1 text-sm">WET</label>
-          </div> */}
         </div>
       </div>
       {/* 
@@ -165,54 +123,107 @@ function EffectsMenu({
             <Knob
               size={60}
               min={0}
-              max={10}
+              max={8}
               valueColor={"MediumPurple"}
               rangeColor={"White"}
               textColor={"WHITE"}
-              value={phaser.frequency}
+              value={phaser.rate}
               onChange={(e) =>
                 setPhaser({
-                  frequency: e.value,
-                  octaves: phaser.octaves,
-                  baseFrequency: phaser.baseFrequency,
+                  rate: e.value,
+                  depth: phaser.depth,
+                  feedback: phaser.feedback,
+                  stereoPhase: phaser.stereoPhase,
+                  baseModulationFrequency: phaser.baseModulationFrequency,
+                  bypass: phaser.bypass,
                 })
               }
             />
-            <label className="col-span-1 text-sm ">FREQUENCY</label>
+            <label className="col-span-1 text-sm ">RATE</label>
           </div>
           <div className="field col-12 md:col-4 p-1 grid place-items-center">
             <Knob
               size={60}
               min={0}
-              max={8}
+              max={100}
               valueColor={"MediumPurple"}
               rangeColor={"White"}
               textColor={"WHITE"}
-              value={phaser.octaves}
+              value={Math.round(phaser.depth * 100)}
               onChange={(e) =>
                 setPhaser({
-                  frequency: phaser.frequency,
-                  octaves: e.value,
-                  baseFrequency: phaser.baseFrequency,
+                  rate: phaser.rate,
+                  depth: e.value / 100,
+                  feedback: phaser.feedback,
+                  stereoPhase: phaser.stereoPhase,
+                  baseModulationFrequency: phaser.baseModulationFrequency,
+                  bypass: phaser.bypass,
                 })
               }
             />
-            <label className="col-span-1 text-sm">OCTAVES</label>
+            <label className="col-span-1 text-sm">DEPTH</label>
           </div>
           <div className="field col-12 md:col-4 p-1 grid place-items-center">
             <Knob
               size={60}
-              min={100}
-              max={1000}
+              min={0}
+              max={100}
               valueColor={"MediumPurple"}
               rangeColor={"White"}
               textColor={"WHITE"}
-              value={phaser.baseFrequency}
+              value={Math.round(phaser.feedback * 100)}
               onChange={(e) =>
                 setPhaser({
-                  frequency: phaser.frequency,
-                  octaves: phaser.octaves,
-                  baseFrequency: e.value,
+                  rate: phaser.rate,
+                  depth: phaser.depth,
+                  feedback: e.value / 100,
+                  stereoPhase: phaser.stereoPhase,
+                  baseModulationFrequency: phaser.baseModulationFrequency,
+                  bypass: phaser.bypass,
+                })
+              }
+            />
+            <label className="col-span-1 text-sm">FEEDBACK</label>
+          </div>
+          <div className="field col-12 md:col-4 p-1 grid place-items-center">
+            <Knob
+              size={60}
+              min={0}
+              max={180}
+              valueColor={"MediumPurple"}
+              rangeColor={"White"}
+              textColor={"WHITE"}
+              value={phaser.stereoPhase}
+              onChange={(e) =>
+                setPhaser({
+                  rate: phaser.rate,
+                  depth: phaser.depth,
+                  feedback: phaser.feedback,
+                  stereoPhase: e.value,
+                  baseModulationFrequency: phaser.baseModulationFrequency,
+                  bypass: phaser.bypass,
+                })
+              }
+            />
+            <label className="col-span-1 text-sm">STEREO PHASE</label>
+          </div>
+          <div className="field col-12 md:col-4 p-1 grid place-items-center">
+            <Knob
+              size={60}
+              min={500}
+              max={1500}
+              valueColor={"MediumPurple"}
+              rangeColor={"White"}
+              textColor={"WHITE"}
+              value={phaser.baseModulationFrequency}
+              onChange={(e) =>
+                setPhaser({
+                  rate: phaser.rate,
+                  depth: phaser.depth,
+                  feedback: phaser.feedback,
+                  stereoPhase: phaser.stereoPhase,
+                  baseModulationFrequency: e.value,
+                  bypass: phaser.bypass,
                 })
               }
             />

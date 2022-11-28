@@ -81,9 +81,12 @@ const Board = () => {
   });
   const [reverb, setReverb] = useState({ decay: 1 });
   const [phaser, setPhaser] = useState({
-    frequency: 0,
-    octaves: 0,
-    baseFrequency: 0,
+    rate: 0.1, //0.01 to 8 is a decent range, but higher values are possible
+    depth: 0.6, //0 to 1
+    feedback: 0.7, //0 to 1+
+    stereoPhase: 40, //0 to 180
+    baseModulationFrequency: 700, //500 to 1500
+    bypass: 0,
   });
   const [tremolo, setTremolo] = useState({ frequency: 0, depth: 0 });
 
@@ -262,6 +265,7 @@ const Board = () => {
                       masterVolume={masterVolume}
                       soundArray={soundArray}
                       chorus={chorus}
+                      phaser={phaser}
                     />
                   </div>
                 </>
