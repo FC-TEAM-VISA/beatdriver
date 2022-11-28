@@ -100,7 +100,7 @@ const Board = () => {
         collaboratorIds: [],
         username: currentUser.name,
         name: name,
-        objectSounds: objectSounds,
+        soundArray: soundArray,
         beat,
         selected,
         selectedInstrument,

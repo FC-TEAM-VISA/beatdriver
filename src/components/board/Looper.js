@@ -24,7 +24,10 @@ const Looper = ({
   //audio things
   let audioContext = new AudioContext();
   //   let tuna = new Tuna(audioContext);
-
+  const source = audioContext.createBufferSource();
+  const volume = audioContext.createGain();
+  volume.gain.value = 0;
+  source.connect(volume);
   const [samples, setSamples] = useState([]);
 
   const getSample = async (filepath) => {
@@ -56,10 +59,6 @@ const Looper = ({
   }, [soundArray, beat]);
 
   const playAudio = (audioBuffer, startTime) => {
-    const source = audioContext.createBufferSource();
-    // const volume = audioContext.createGain();
-    // volume.gain.value = 1;
-    // source.connect(volume);
     source.buffer = audioBuffer;
     source.connect(audioContext.destination);
     source.start(startTime);
@@ -100,7 +99,6 @@ const Looper = ({
           console.log("index", samples[grid[i][j].audio]);
           console.log("button", grid[i][j].audio);
           playAudio(samples[grid[i][j].audio], 0);
-          //   playAudio(samples[0], 0);
         }
       }
     }
