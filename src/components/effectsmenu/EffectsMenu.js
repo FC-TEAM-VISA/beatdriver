@@ -11,6 +11,10 @@ function EffectsMenu({
   setPhaser,
   setChorus,
   setTremolo,
+  moog,
+  setMoog,
+  wahWah,
+  setWahWah,
 }) {
   return (
     <div className="grid grid-cols-2 place-items-center p-5 scrollbar scrollbar-thumb-red-800 scrollbar-track-mint_cream overflow-y-scroll h-4/5">
@@ -247,48 +251,48 @@ function EffectsMenu({
        */}
       <div className="grid col-span-2 bg-blue-500 py-5 px-5 mt-5 ml-6 justify-self-start">
         <div>
-          <h1>BITCRUSHER</h1>
+          <h1>MOOG</h1>
         </div>
         <div className="flex">
           <div className="field col-12 md:col-4 p-1 grid place-items-center">
             <Knob
               size={60}
-              min={1}
-              max={16}
-              valueColor={"MediumPurple"}
-              rangeColor={"White"}
-              textColor={"WHITE"}
-              value={bitcrusher.bits}
-              onChange={(e) =>
-                setBitcrusher({
-                  bits: e.value,
-                  normfreq: bitcrusher.normfreq,
-                  bufferSize: bitcrusher.bufferSize,
-                })
-              }
-            />
-            <label className="col-span-1 text-sm ">BITS</label>
-          </div>
-          <div className="field col-12 md:col-4 p-1 grid place-items-center">
-            <Knob
-              size={60}
-              min={1}
+              min={0}
               max={100}
               valueColor={"MediumPurple"}
               rangeColor={"White"}
               textColor={"WHITE"}
-              value={Math.round(bitcrusher.normfreq * 100)}
+              value={Math.round(moog.cutoff * 1000)}
               onChange={(e) =>
-                setBitcrusher({
-                  bits: bitcrusher.bits,
-                  normfreq: e.value / 100,
-                  bufferSize: bitcrusher.bufferSize,
+                setMoog({
+                  cutoff: e.value / 1000,
+                  resonance: moog.resonance,
+                  bufferSize: moog.bufferSize,
                 })
               }
             />
-            <label className="col-span-1 text-sm ">FREQUENCY</label>
+            <label className="col-span-1 text-sm ">CUTOFF</label>
           </div>
           <div className="field col-12 md:col-4 p-1 grid place-items-center">
+            <Knob
+              size={60}
+              min={0}
+              max={400}
+              valueColor={"MediumPurple"}
+              rangeColor={"White"}
+              textColor={"WHITE"}
+              value={Math.round(moog.resonance * 100)}
+              onChange={(e) =>
+                setMoog({
+                  cutoff: moog.cutoff,
+                  resonance: e.value / 100,
+                  bufferSize: moog.bufferSize,
+                })
+              }
+            />
+            <label className="col-span-1 text-sm ">resonance</label>
+          </div>
+          {/* <div className="field col-12 md:col-4 p-1 grid place-items-center">
             <Knob
               size={60}
               min={256}
@@ -306,7 +310,7 @@ function EffectsMenu({
               }
             />
             <label className="col-span-1 text-sm ">BUFFER</label>
-          </div>
+          </div> */}
         </div>
       </div>
       {/* 
@@ -385,6 +389,131 @@ function EffectsMenu({
               }
             />
             <label className="col-span-1 text-sm">STEREO PHASE</label>
+          </div>
+        </div>
+      </div>
+
+      {/* WAHHHHHHH WAHHHHHHHHHHHHHH WAHHHHH */}
+
+      <div className="grid col-span-2 bg-red-700 px-5 py-5 mt-5 -ml-12">
+        <div>
+          <h1>WAHWAH</h1>
+        </div>
+        <div className="flex space-x-5">
+          <div className="field col-12 md:col-4 p-1 grid place-items-center">
+            <Knob
+              size={60}
+              min={0}
+              max={100}
+              valueColor={"MediumPurple"}
+              rangeColor={"White"}
+              textColor={"WHITE"}
+              value={Math.round(wahWah.baseFrequency * 100)}
+              onChange={(e) =>
+                setWahWah({
+                  automode: wahWah.automode, //true/false
+                  baseFrequency: e.value / 100, //0 to 1
+                  excursionOctaves: wahWah.excursionOctaves, //1 to 6
+                  sweep: wahWah.sweep, //0 to 1
+                  resonance: wahWah.resonance, //1 to 100
+                  sensitivity: wahWah.sensitivity, //-1 to 1
+                  bypass: wahWah.bypass, //-1 to 100,
+                })
+              }
+            />
+            <label className="col-span-1 text-sm ">Base Frequency</label>
+          </div>
+          <div className="field col-12 md:col-4 p-1 grid place-items-center">
+            <Knob
+              size={60}
+              min={1}
+              max={6}
+              valueColor={"MediumPurple"}
+              rangeColor={"White"}
+              textColor={"WHITE"}
+              value={wahWah.excursionOctaves}
+              onChange={(e) =>
+                setWahWah({
+                  automode: wahWah.automode, //true/false
+                  baseFrequency: wahWah.baseFrequency, //0 to 1
+                  excursionOctaves: e.value, //1 to 6
+                  sweep: wahWah.sweep, //0 to 1
+                  resonance: wahWah.resonance, //1 to 100
+                  sensitivity: wahWah.sensitivity, //-1 to 1
+                  bypass: wahWah.bypass, //-1 to 100,
+                })
+              }
+            />
+            <label className="col-span-1 text-sm">EXCURSION OCTAVES</label>
+          </div>
+          <div className="field col-12 md:col-4 p-1 grid place-items-center">
+            <Knob
+              size={60}
+              min={0}
+              max={100}
+              valueColor={"MediumPurple"}
+              rangeColor={"White"}
+              textColor={"WHITE"}
+              value={Math.round(wahWah.sweep * 100)}
+              onChange={(e) =>
+                setWahWah({
+                  automode: wahWah.automode, //true/false
+                  baseFrequency: wahWah.baseFrequency, //0 to 1
+                  excursionOctaves: wahWah.excursionOctaves, //1 to 6
+                  sweep: e.value / 100, //0 to 1
+                  resonance: wahWah.resonance, //1 to 100
+                  sensitivity: wahWah.sensitivity, //-1 to 1
+                  bypass: wahWah.bypass, //-1 to 100,
+                })
+              }
+            />
+            <label className="col-span-1 text-sm">SWEEP</label>
+          </div>
+          <div className="field col-12 md:col-4 p-1 grid place-items-center">
+            <Knob
+              size={60}
+              min={1}
+              max={100}
+              valueColor={"MediumPurple"}
+              rangeColor={"White"}
+              textColor={"WHITE"}
+              value={wahWah.resonance}
+              onChange={(e) =>
+                setWahWah({
+                  automode: wahWah.automode, //true/false
+                  baseFrequency: wahWah.baseFrequency, //0 to 1
+                  excursionOctaves: wahWah.excursionOctaves, //1 to 6
+                  sweep: wahWah.sweep, //0 to 1
+                  resonance: e.value, //1 to 100
+                  sensitivity: wahWah.sensitivity, //-1 to 1
+                  bypass: wahWah.bypass, //-1 to 100,
+                })
+              }
+            />
+            <label className="col-span-1 text-sm">RESONANCE</label>
+          </div>
+          <div className="field col-12 md:col-4 p-1 grid place-items-center">
+            <Knob
+              size={60}
+              min={-1}
+              max={1}
+              valueColor={"MediumPurple"}
+              rangeColor={"White"}
+              textColor={"WHITE"}
+              value={Math.round(wahWah.sensitivity * 100)}
+              onChange={(e) =>
+                setWahWah({
+                  automode: wahWah.automode, //true/false
+                  baseFrequency: wahWah.baseFrequency, //0 to 1
+                  excursionOctaves: wahWah.excursionOctaves, //1 to 6
+                  sweep: wahWah.sweep, //0 to 1
+                  resonance: wahWah.resonance, //1 to 100
+                  sensitivity: e.value / 100, //-1 to 1
+                  bypass: wahWah.bypass, //-1 to 100,
+                })
+              }
+            />
+            <label className="col-span-1 text-sm">SENSITIVITY</label>
           </div>
         </div>
       </div>

@@ -79,23 +79,37 @@ const Board = () => {
     feedback: 0,
     bypass: 0,
   });
-  const [bitcrusher, setBitcrusher] = useState({
-    bits: 4, //1 to 16
-    normfreq: 0.1, //0 to 1
-    bufferSize: 4096, //256 to 16384
-  });
+  // const [bitcrusher, setBitcrusher] = useState({
+  //   bits: 1, //1 to 16
+  //   normfreq: 0, //0 to 1
+  //   bufferSize: 4096, //256 to 16384
+  // });
   const [phaser, setPhaser] = useState({
     rate: 0.1, //0.01 to 8 is a decent range, but higher values are possible
-    depth: 0.6, //0 to 1
-    feedback: 0.7, //0 to 1+
-    stereoPhase: 40, //0 to 180
-    baseModulationFrequency: 700, //500 to 1500
+    depth: 0, //0 to 1
+    feedback: 0, //0 to 1+
+    stereoPhase: 0, //0 to 180
+    baseModulationFrequency: 500, //500 to 1500
     bypass: 0,
   });
   const [tremolo, setTremolo] = useState({
-    intensity: 0.3, //0 to 1
-    rate: 5, //0.001 to 8
+    intensity: 0, //0 to 1
+    rate: 0.001, //0.001 to 8
     stereoPhase: 0, //0 to 180
+    bypass: 0,
+  });
+  const [moog, setMoog] = useState({
+    cutoff: 0, //0 to 1
+    resonance: 0, //0 to 4
+    bufferSize: 4096, //256 to 16384
+  });
+  const [wahWah, setWahWah] = useState({
+    automode: true, //true/false
+    baseFrequency: 0, //0 to 1
+    excursionOctaves: 1, //1 to 6
+    sweep: 0, //0 to 1
+    resonance: 1, //1 to 100
+    sensitivity: -1, //-1 to 1
     bypass: 0,
   });
 
@@ -276,7 +290,8 @@ const Board = () => {
                       chorus={chorus}
                       phaser={phaser}
                       tremolo={tremolo}
-                      bitcrusher={bitcrusher}
+                      moog={moog}
+                      wahWah={wahWah}
                     />
                   </div>
                 </>
@@ -287,14 +302,16 @@ const Board = () => {
 
         <div className="col-span-4 ml-4 bg-prussian_blue">
           <EffectsMenu
-            bitcrusher={bitcrusher}
             chorus={chorus}
             phaser={phaser}
             tremolo={tremolo}
-            setBitcrusher={setBitcrusher}
             setChorus={setChorus}
             setPhaser={setPhaser}
             setTremolo={setTremolo}
+            moog={moog}
+            setMoog={setMoog}
+            wahWah={wahWah}
+            setWahWah={setWahWah}
           />
         </div>
       </div>

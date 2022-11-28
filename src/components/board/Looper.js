@@ -29,7 +29,8 @@ const Looper = ({
   chorus,
   phaser,
   tremolo,
-  bitcrusher,
+  moog,
+  wahWah,
 }) => {
   const [currButton, setCurrButton] = useState(0);
   const [open, setOpen] = useState(false);
@@ -86,10 +87,20 @@ const Looper = ({
     bypass: 0,
   });
 
-  const tunaBitcrusher = new tuna.Bitcrusher({
-    bits: bitcrusher.bits, //1 to 16
-    normfreq: bitcrusher.normfreq, //0 to 1
-    // bufferSize: bitcrusher.bufferSize, //256 to 16384
+  const tunaMoog = new tuna.MoogFilter({
+    cutoff: moog.cutoff, //0 to 1
+    resonance: moog.resonance, //0 to 4
+    bufferSize: 4096, //256 to 16384
+  });
+
+  const tunaWah = new tuna.WahWah({
+    automode: true, //true/false
+    baseFrequency: wahWah.baseFrequency, //0 to 1
+    excursionOctaves: wahWah.excursionOctaves, //1 to 6
+    sweep: wahWah.sweep, //0 to 1
+    resonance: wahWah.resonance, //1 to 100
+    sensitivity: wahWah.sensitivity, //-1 to 1
+    bypass: 0,
   });
 
   const playAudio = (audioBuffer, startTime) => {
@@ -102,8 +113,9 @@ const Looper = ({
     volume.connect(tunaChorus);
     tunaChorus.connect(tunaPhaser);
     tunaPhaser.connect(tunaTremolo);
-    // tunaTremolo.connect(tunaBitcrusher);
-    tunaTremolo.connect(audioContext.destination);
+    tunaTremolo.connect(tunaMoog);
+    tunaMoog.connect(tunaWah);
+    tunaWah.connect(audioContext.destination);
     source.start(startTime);
   };
 
