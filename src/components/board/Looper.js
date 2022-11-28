@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import Grid from "./Grid";
 import Popup from "reactjs-popup";
 import "reactjs-popup/dist/index.css";
+import { useFormControlStyles } from "@chakra-ui/react";
 
 const Looper = ({
 	player,
@@ -17,16 +18,44 @@ const Looper = ({
 	masterVolume,
 }) => {
 	const [currButton, setCurrButton] = useState(0);
+	const [instrument, setInstrument] = useState("");
 	const [open, setOpen] = useState(false);
 	const closeModal = () => setOpen(false);
 
+	// if button.instrument is selected,
 	const toggleActivation = (row, col) => {
 		if (selected === "SELECTED") {
 			setOpen(true);
 		} else {
 			const gridCopy = [...grid];
 			const { triggered, activated } = gridCopy[row][col];
-			gridCopy[row][col] = { triggered, activated: !activated, audio: beat };
+			let button = gridCopy[row][col];
+			button = {
+				triggered,
+				activated,
+				audio: beat,
+			};
+			if (!button.instrument && !button.activated) {
+				setInstrument(selectedInstrument);
+				button.instrument = instrument; // why is this not being retained
+				button.activated = !activated; // true
+				console.log("THIS IS instrument", instrument);
+			} else if (instrument === selectedInstrument) {
+				console.log("activated and same instrument");
+				console.log("!button.activated", !button.activated);
+				button.activated = !button.activated;
+			} else if (instrument !== selectedInstrument) {
+				console.log(
+					"instrument",
+					instrument,
+					"selectedInstrument",
+					selectedInstrument
+				);
+				console.log("activated and change instrument");
+				button.activated = activated;
+			}
+			gridCopy[row][col] = button;
+			// setCurrButton(button);
 			setGrid(gridCopy);
 		}
 	};

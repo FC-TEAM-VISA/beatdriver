@@ -93,21 +93,18 @@ const Board = () => {
 	}, []);
 
 	// compare instrument selection values
-	useEffect(() => {
-		if (
-			!oldSelectedInstrument ||
-			(oldSelectedInstrument && oldSelectedInstrument !== selectedInstrument)
-		) {
-			setIfChangedInstrument(true);
-		} else {
-			console.log("selectedInstrument THIS IS IN INDEX", selectedInstrument); // not even getting here
-			setOldSelectedInstrument(selectedInstrument);
-			setIfChangedInstrument(false);
-		}
-	}, [selectedInstrument, oldSelectedInstrument]);
-
-	console.log("selectedInstrument", selectedInstrument);
-	console.log("oldSelectedInstrument", oldSelectedInstrument);
+	// useEffect(() => {
+	// 	if (
+	// 		!oldSelectedInstrument ||
+	// 		(oldSelectedInstrument && oldSelectedInstrument !== selectedInstrument)
+	// 	) {
+	// 		setIfChangedInstrument(true);
+	// 	} else {
+	// 		console.log("selectedInstrument THIS IS IN INDEX", selectedInstrument); // not even getting here
+	// 		setOldSelectedInstrument(selectedInstrument);
+	// 		setIfChangedInstrument(false);
+	// 	}
+	// }, [selectedInstrument, oldSelectedInstrument]);
 
 	const handleSave = async () => {
 		const image = await takeScreenShot(ref.current);
