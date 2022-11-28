@@ -13,7 +13,7 @@ function EffectsMenu({
   setMoog,
 }) {
   return (
-    <div className="grid grid-cols-2 place-items-center p-5 scrollbar scrollbar-thumb-red-800 scrollbar-track-mint_cream overflow-y-scroll h-4/5">
+    <div className="grid grid-cols-2 place-items-center p-5">
       {/* 
         ▄▄▄▄▄▄▄▄▄▄▄  ▄         ▄  ▄▄▄▄▄▄▄▄▄▄▄  ▄▄▄▄▄▄▄▄▄▄▄  ▄         ▄  ▄▄▄▄▄▄▄▄▄▄▄ 
         ▐░░░░░░░░░░░▌▐░▌       ▐░▌▐░░░░░░░░░░░▌▐░░░░░░░░░░░▌▐░▌       ▐░▌▐░░░░░░░░░░░▌
@@ -74,10 +74,6 @@ function EffectsMenu({
             />
             <label className="col-span-1 text-sm">DELAY</label>
           </div>
-        </div>
-        <div className="flex place-items-center space-x-5">
-          {" "}
-          {/* BOTTOM ROW OF KNOBS!!! */}
           <div className="field col-12 md:col-4 p-1 grid place-items-center">
             <Knob
               size={60}
@@ -185,6 +181,8 @@ function EffectsMenu({
             />
             <label className="col-span-1 text-sm">FEEDBACK</label>
           </div>
+        </div>
+        <div className="flex space-x-5 place-items-center">
           <div className="field col-12 md:col-4 p-1 grid place-items-center">
             <Knob
               size={60}
