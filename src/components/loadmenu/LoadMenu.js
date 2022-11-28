@@ -27,16 +27,14 @@ function LoadMenu({ projects, setGrid, setUniqueID, setName }) {
       )}
     >
       {projects?.map((project, i) => (
-        <>
-          <MenuItem
-            onClick={() => {
-              handleLoad(project);
-            }}
-            key={i}
-          >
-            {project.name}
-          </MenuItem>
-        </>
+        <MenuItem
+          onClick={() => {
+            handleLoad(project);
+          }}
+          key={i}
+        >
+          {project.name}
+        </MenuItem>
       ))}
     </Menu>
   );

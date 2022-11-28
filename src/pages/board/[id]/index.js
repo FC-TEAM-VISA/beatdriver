@@ -63,13 +63,11 @@ const Board = ({ data }) => {
   );
   const [selected, setSelected] = useState(data.selected);
   const [beat, setBeat] = useState(data.beat);
-  const [objectSounds, setObjectSounds] = useState(
-    data.objectSounds || {
-      "https://firebasestorage.googleapis.com/v0/b/music-collaboration-app.appspot.com/o/built-in-instruments%2Fdrums%2Fclap%2Fclap-808.wav?alt=media&token=1e2bd7d8-dad2-49b6-a6db-9959a06f1520":
-        "https://firebasestorage.googleapis.com/v0/b/music-collaboration-app.appspot.com/o/built-in-instruments%2Fdrums%2Fclap%2Fclap-808.wav?alt=media&token=1e2bd7d8-dad2-49b6-a6db-9959a06f1520",
-    }
-  );
   const [soundArray, setSoundArray] = useState(data.soundArray);
+  const [chorus, setChorus] = useState(data.chorus);
+  const [phaser, setPhaser] = useState(data.phaser);
+  const [tremolo, setTremolo] = useState(data.tremolo);
+  const [moog, setMoog] = useState(data.moog);
   //project info
   const orderedKeys = Object.keys(data.grid).sort();
   const dataGrid = orderedKeys.map((row) => data.grid[row]);
@@ -79,15 +77,10 @@ const Board = ({ data }) => {
   const [name, setName] = useState(data.name); //project name
   const [isPublic, setIsPublic] = useState(true); //collab or solo
   const [bpm, setBpm] = useState(data.bpm || 120); //tempo
-  const [mute, setMute] = useState(false); //mute button
   const [masterVolume, setMasterVolume] = useState(data.masterVolume); //master volume
   //popup
   const [open, setOpen] = useState(false);
   const closeModal = () => setOpen(false);
-  const [chorus, setChorus] = useState(data.chorus);
-  const [phaser, setPhaser] = useState(data.phaser);
-  const [tremolo, setTremolo] = useState(data.tremolo);
-  const [moog, setMoog] = useState(data.moog);
 
   const ref = createRef(null);
   const dbInstance = query(
@@ -192,7 +185,6 @@ const Board = ({ data }) => {
   useEffect(() => {
     const idx = soundArray.indexOf(val);
     setBeat(idx);
-    console.log(val, soundArray, beat);
   }, [soundArray, val, beat]);
 
   const togglePlaying = () => {

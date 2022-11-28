@@ -4,10 +4,6 @@ import "reactjs-popup/dist/index.css";
 import { doc, updateDoc, getDoc, arrayUnion } from "firebase/firestore";
 import { database, auth } from "../../../../utils/firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
-import {
-  useCollection,
-  useCollectionData,
-} from "react-firebase-hooks/firestore";
 import { useRouter } from "next/router";
 
 export const getServerSideProps = async (context) => {

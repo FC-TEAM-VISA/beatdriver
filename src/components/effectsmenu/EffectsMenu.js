@@ -182,7 +182,7 @@ function EffectsMenu({
             <label className="col-span-1 text-sm">FEEDBACK</label>
           </div>
         </div>
-        <div className="flex space-x-5 place-items-center">
+        <div className="flex space-x-5 justify-center">
           <div className="field col-12 md:col-4 p-1 grid place-items-center">
             <Knob
               size={60}
@@ -229,84 +229,7 @@ function EffectsMenu({
           </div>
         </div>
       </div>
-      {/* 
-        ▄▄▄▄▄▄▄▄▄▄▄  ▄▄▄▄▄▄▄▄▄▄▄  ▄               ▄  ▄▄▄▄▄▄▄▄▄▄▄  ▄▄▄▄▄▄▄▄▄▄▄  ▄▄▄▄▄▄▄▄▄▄  
-        ▐░░░░░░░░░░░▌▐░░░░░░░░░░░▌▐░▌             ▐░▌▐░░░░░░░░░░░▌▐░░░░░░░░░░░▌▐░░░░░░░░░░▌ 
-        ▐░█▀▀▀▀▀▀▀█░▌▐░█▀▀▀▀▀▀▀▀▀  ▐░▌           ▐░▌ ▐░█▀▀▀▀▀▀▀▀▀ ▐░█▀▀▀▀▀▀▀█░▌▐░█▀▀▀▀▀▀▀█░▌
-        ▐░▌       ▐░▌▐░▌            ▐░▌         ▐░▌  ▐░▌          ▐░▌       ▐░▌▐░▌       ▐░▌
-        ▐░█▄▄▄▄▄▄▄█░▌▐░█▄▄▄▄▄▄▄▄▄    ▐░▌       ▐░▌   ▐░█▄▄▄▄▄▄▄▄▄ ▐░█▄▄▄▄▄▄▄█░▌▐░█▄▄▄▄▄▄▄█░▌
-        ▐░░░░░░░░░░░▌▐░░░░░░░░░░░▌    ▐░▌     ▐░▌    ▐░░░░░░░░░░░▌▐░░░░░░░░░░░▌▐░░░░░░░░░░▌ 
-        ▐░█▀▀▀▀█░█▀▀ ▐░█▀▀▀▀▀▀▀▀▀      ▐░▌   ▐░▌     ▐░█▀▀▀▀▀▀▀▀▀ ▐░█▀▀▀▀█░█▀▀ ▐░█▀▀▀▀▀▀▀█░▌
-        ▐░▌     ▐░▌  ▐░▌                ▐░▌ ▐░▌      ▐░▌          ▐░▌     ▐░▌  ▐░▌       ▐░▌
-        ▐░▌      ▐░▌ ▐░█▄▄▄▄▄▄▄▄▄        ▐░▐░▌       ▐░█▄▄▄▄▄▄▄▄▄ ▐░▌      ▐░▌ ▐░█▄▄▄▄▄▄▄█░▌
-        ▐░▌       ▐░▌▐░░░░░░░░░░░▌        ▐░▌        ▐░░░░░░░░░░░▌▐░▌       ▐░▌▐░░░░░░░░░░▌ 
-        ▀         ▀  ▀▀▀▀▀▀▀▀▀▀▀          ▀          ▀▀▀▀▀▀▀▀▀▀▀  ▀         ▀  ▀▀▀▀▀▀▀▀▀▀ 
-                                                      
-       */}
-      <div className="grid col-span-2 bg-blue-500 py-5 px-5 mt-5 ml-6 justify-self-start">
-        <div>
-          <h1>MOOG</h1>
-        </div>
-        <div className="flex">
-          <div className="field col-12 md:col-4 p-1 grid place-items-center">
-            <Knob
-              size={60}
-              min={0}
-              max={100}
-              valueColor={"MediumPurple"}
-              rangeColor={"White"}
-              textColor={"WHITE"}
-              value={Math.round(moog.cutoff * 1000)}
-              onChange={(e) =>
-                setMoog({
-                  cutoff: e.value / 1000,
-                  resonance: moog.resonance,
-                  bufferSize: moog.bufferSize,
-                })
-              }
-            />
-            <label className="col-span-1 text-sm ">CUTOFF</label>
-          </div>
-          <div className="field col-12 md:col-4 p-1 grid place-items-center">
-            <Knob
-              size={60}
-              min={0}
-              max={400}
-              valueColor={"MediumPurple"}
-              rangeColor={"White"}
-              textColor={"WHITE"}
-              value={Math.round(moog.resonance * 100)}
-              onChange={(e) =>
-                setMoog({
-                  cutoff: moog.cutoff,
-                  resonance: e.value / 100,
-                  bufferSize: moog.bufferSize,
-                })
-              }
-            />
-            <label className="col-span-1 text-sm ">resonance</label>
-          </div>
-          {/* <div className="field col-12 md:col-4 p-1 grid place-items-center">
-            <Knob
-              size={60}
-              min={256}
-              max={16384}
-              valueColor={"MediumPurple"}
-              rangeColor={"White"}
-              textColor={"WHITE"}
-              value={bitcrusher.bufferSize}
-              onChange={(e) =>
-                setBitcrusher({
-                  bits: bitcrusher.bits,
-                  normfreq: bitcrusher.normfreq,
-                  bufferSize: e.value,
-                })
-              }
-            />
-            <label className="col-span-1 text-sm ">BUFFER</label>
-          </div> */}
-        </div>
-      </div>
+
       {/* 
         ▄▄▄▄▄▄▄▄▄▄▄  ▄▄▄▄▄▄▄▄▄▄▄  ▄▄▄▄▄▄▄▄▄▄▄  ▄▄       ▄▄  ▄▄▄▄▄▄▄▄▄▄▄  ▄            ▄▄▄▄▄▄▄▄▄▄▄ 
         ▐░░░░░░░░░░░▌▐░░░░░░░░░░░▌▐░░░░░░░░░░░▌▐░░▌     ▐░░▌▐░░░░░░░░░░░▌▐░▌          ▐░░░░░░░░░░░▌
@@ -319,7 +242,7 @@ function EffectsMenu({
             ▐░▌     ▐░▌      ▐░▌ ▐░█▄▄▄▄▄▄▄▄▄ ▐░▌       ▐░▌▐░█▄▄▄▄▄▄▄█░▌▐░█▄▄▄▄▄▄▄▄▄ ▐░█▄▄▄▄▄▄▄█░▌
             ▐░▌     ▐░▌       ▐░▌▐░░░░░░░░░░░▌▐░▌       ▐░▌▐░░░░░░░░░░░▌▐░░░░░░░░░░░▌▐░░░░░░░░░░░▌                                          
        */}
-      <div className="grid col-span-2 bg-red-700 px-5 py-5 mt-5 -ml-12">
+      <div className="grid col-span-2 bg-red-700 px-5 py-5 mt-5">
         <div>
           <h1>TREMOLO</h1>
         </div>
@@ -384,6 +307,85 @@ function EffectsMenu({
             />
             <label className="col-span-1 text-sm">STEREO PHASE</label>
           </div>
+        </div>
+      </div>
+
+      {/* 
+        ▄▄▄▄▄▄▄▄▄▄▄  ▄▄▄▄▄▄▄▄▄▄▄  ▄               ▄  ▄▄▄▄▄▄▄▄▄▄▄  ▄▄▄▄▄▄▄▄▄▄▄  ▄▄▄▄▄▄▄▄▄▄  
+        ▐░░░░░░░░░░░▌▐░░░░░░░░░░░▌▐░▌             ▐░▌▐░░░░░░░░░░░▌▐░░░░░░░░░░░▌▐░░░░░░░░░░▌ 
+        ▐░█▀▀▀▀▀▀▀█░▌▐░█▀▀▀▀▀▀▀▀▀  ▐░▌           ▐░▌ ▐░█▀▀▀▀▀▀▀▀▀ ▐░█▀▀▀▀▀▀▀█░▌▐░█▀▀▀▀▀▀▀█░▌
+        ▐░▌       ▐░▌▐░▌            ▐░▌         ▐░▌  ▐░▌          ▐░▌       ▐░▌▐░▌       ▐░▌
+        ▐░█▄▄▄▄▄▄▄█░▌▐░█▄▄▄▄▄▄▄▄▄    ▐░▌       ▐░▌   ▐░█▄▄▄▄▄▄▄▄▄ ▐░█▄▄▄▄▄▄▄█░▌▐░█▄▄▄▄▄▄▄█░▌
+        ▐░░░░░░░░░░░▌▐░░░░░░░░░░░▌    ▐░▌     ▐░▌    ▐░░░░░░░░░░░▌▐░░░░░░░░░░░▌▐░░░░░░░░░░▌ 
+        ▐░█▀▀▀▀█░█▀▀ ▐░█▀▀▀▀▀▀▀▀▀      ▐░▌   ▐░▌     ▐░█▀▀▀▀▀▀▀▀▀ ▐░█▀▀▀▀█░█▀▀ ▐░█▀▀▀▀▀▀▀█░▌
+        ▐░▌     ▐░▌  ▐░▌                ▐░▌ ▐░▌      ▐░▌          ▐░▌     ▐░▌  ▐░▌       ▐░▌
+        ▐░▌      ▐░▌ ▐░█▄▄▄▄▄▄▄▄▄        ▐░▐░▌       ▐░█▄▄▄▄▄▄▄▄▄ ▐░▌      ▐░▌ ▐░█▄▄▄▄▄▄▄█░▌
+        ▐░▌       ▐░▌▐░░░░░░░░░░░▌        ▐░▌        ▐░░░░░░░░░░░▌▐░▌       ▐░▌▐░░░░░░░░░░▌ 
+        ▀         ▀  ▀▀▀▀▀▀▀▀▀▀▀          ▀          ▀▀▀▀▀▀▀▀▀▀▀  ▀         ▀  ▀▀▀▀▀▀▀▀▀▀ 
+                                                      
+       */}
+      <div className="grid col-span-2 bg-blue-500 py-5 px-5 mt-5 ml-6 justify-self-center">
+        <div>
+          <h1>MOOG</h1>
+        </div>
+        <div className="flex">
+          <div className="field col-12 md:col-4 p-1 grid place-items-center">
+            <Knob
+              size={60}
+              min={0}
+              max={100}
+              valueColor={"MediumPurple"}
+              rangeColor={"White"}
+              textColor={"WHITE"}
+              value={Math.round(moog.cutoff * 1000)}
+              onChange={(e) =>
+                setMoog({
+                  cutoff: e.value / 1000,
+                  resonance: moog.resonance,
+                  bufferSize: moog.bufferSize,
+                })
+              }
+            />
+            <label className="col-span-1 text-sm ">CUTOFF</label>
+          </div>
+          <div className="field col-12 md:col-4 p-1 grid place-items-center">
+            <Knob
+              size={60}
+              min={0}
+              max={400}
+              valueColor={"MediumPurple"}
+              rangeColor={"White"}
+              textColor={"WHITE"}
+              value={Math.round(moog.resonance * 100)}
+              onChange={(e) =>
+                setMoog({
+                  cutoff: moog.cutoff,
+                  resonance: e.value / 100,
+                  bufferSize: moog.bufferSize,
+                })
+              }
+            />
+            <label className="col-span-1 text-sm ">resonance</label>
+          </div>
+          {/* <div className="field col-12 md:col-4 p-1 grid place-items-center">
+            <Knob
+              size={60}
+              min={256}
+              max={16384}
+              valueColor={"MediumPurple"}
+              rangeColor={"White"}
+              textColor={"WHITE"}
+              value={bitcrusher.bufferSize}
+              onChange={(e) =>
+                setBitcrusher({
+                  bits: bitcrusher.bits,
+                  normfreq: bitcrusher.normfreq,
+                  bufferSize: e.value,
+                })
+              }
+            />
+            <label className="col-span-1 text-sm ">BUFFER</label>
+          </div> */}
         </div>
       </div>
     </div>
