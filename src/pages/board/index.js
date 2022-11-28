@@ -45,26 +45,8 @@ const Board = () => {
   //instruments
   const [selectedInstrument, setSelectedInstrument] = useState("selected");
   const [selected, setSelected] = useState("SELECTED");
-  const [objectSounds, setObjectSounds] = useState({
-    "https://firebasestorage.googleapis.com/v0/b/music-collaboration-app.appspot.com/o/built-in-instruments%2Fdrums%2Fclap%2Fclap-808.wav?alt=media&token=1e2bd7d8-dad2-49b6-a6db-9959a06f1520":
-      "https://firebasestorage.googleapis.com/v0/b/music-collaboration-app.appspot.com/o/built-in-instruments%2Fdrums%2Fclap%2Fclap-808.wav?alt=media&token=1e2bd7d8-dad2-49b6-a6db-9959a06f1520",
-  });
   const [beat, setBeat] = useState(0);
   const [soundArray, setSoundArray] = useState([]);
-  //project info
-  const [grid, setGrid] = useState(initialGrid); //project board
-  const [uniqueID, setUniqueID] = useState(null); //project id
-  const [playing, setPlaying] = useState(false); //audio player
-  const [name, setName] = useState("Untitled"); //project name
-  const [bpm, setBpm] = useState(120); //tempo
-  const [mute] = useState(false); //mute button
-  const [masterVolume, setMasterVolume] = useState(1); //master vol
-  const ref = createRef(null);
-  const dbInstance = query(
-    collection(database, "projects"),
-    where(`ownerId`, "==", `${user?.uid}`)
-  );
-  const [projects] = useCollectionData(dbInstance);
   const [chorus, setChorus] = useState({
     rate: 0,
     delay: 0,
@@ -90,6 +72,20 @@ const Board = () => {
     resonance: 3.5, //0 to 4
     bufferSize: 4096, //256 to 16384
   });
+  //project info
+  const [grid, setGrid] = useState(initialGrid); //project board
+  const [uniqueID, setUniqueID] = useState(null); //project id
+  const [playing, setPlaying] = useState(false); //audio player
+  const [name, setName] = useState("Untitled"); //project name
+  const [bpm, setBpm] = useState(120); //tempo
+  const [mute] = useState(false); //mute button
+  const [masterVolume, setMasterVolume] = useState(1); //master vol
+  const ref = createRef(null);
+  const dbInstance = query(
+    collection(database, "projects"),
+    where(`ownerId`, "==", `${user?.uid}`)
+  );
+  const [projects] = useCollectionData(dbInstance);
 
   useEffect(() => {
     // handleClear
@@ -104,7 +100,6 @@ const Board = () => {
       }
     }
     setGrid(gridCopy);
-    console.log("set grid!");
   }, []);
 
   const handleSave = async () => {
@@ -176,7 +171,6 @@ const Board = () => {
   useEffect(() => {
     const idx = soundArray.indexOf(val);
     setBeat(idx);
-    console.log(val, soundArray, beat);
   }, [soundArray, val, beat]);
 
   const togglePlaying = () => {
@@ -220,7 +214,6 @@ const Board = () => {
               bpm={bpm}
               playing={playing}
               beat={beat}
-              objectSounds={objectSounds}
               steps={steps}
               grid={grid}
               setGrid={setGrid}

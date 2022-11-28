@@ -14,11 +14,9 @@ if (typeof window !== "undefined") {
 }
 
 const Looper = ({
-  player,
   bpm,
   playing,
   beat,
-  objectSounds,
   grid,
   setGrid,
   steps,
@@ -45,21 +43,17 @@ const Looper = ({
   };
 
   const setupSamples = async (paths) => {
-    console.log("context created");
-    console.log("setting up samples");
     const audioBuffers = [];
     for (const path of paths) {
       const sample = await getSample(path);
       audioBuffers.push(sample);
     }
-    console.log("setup complete");
     return audioBuffers;
   };
 
   useEffect(() => {
     setupSamples(soundArray).then((res) => {
       setSamples(res);
-      console.log("samples created", samples);
     });
   }, [soundArray, beat]);
 
@@ -110,11 +104,9 @@ const Looper = ({
     tunaChorus.connect(tunaPhaser);
     tunaPhaser.connect(tunaTremolo);
     // tunaTremolo.connect(tunaMoog);
-    // tunaMoog.connect(tunaWah);
     tunaTremolo.connect(audioContext.destination);
     source.start(startTime);
   };
-
   //end audio things
 
   const toggleActivation = (row, col) => {
@@ -127,8 +119,6 @@ const Looper = ({
       setGrid(gridCopy);
     }
   };
-
-  // player.volume.value = masterVolume;
 
   //this is what goes through the loop and triggers each row
   //if a button is triggered and already activated (by user) then it plays the sample
@@ -144,11 +134,6 @@ const Looper = ({
           grid[i][j].audio !== ""
         ) {
           //plays the sound associated with the button
-          //   player.player(objectSounds[grid[i][j].audio]).start();
-          console.log("audioContext", audioContext);
-          console.log("samples", samples);
-          console.log("index", samples[grid[i][j].audio]);
-          console.log("button", grid[i][j].audio);
           playAudio(samples[grid[i][j].audio], 0);
         }
       }
