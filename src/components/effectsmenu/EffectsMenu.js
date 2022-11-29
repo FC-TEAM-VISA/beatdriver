@@ -1,318 +1,391 @@
 import React, { useState } from "react";
 import { Knob } from "primereact/knob";
+// chorus, phaser, reverb, tremolo + mute effect button
 
-function EffectsMenu() {
-  const [value, setValue] = useState(0);
+function EffectsMenu({
+  chorus,
+  phaser,
+  tremolo,
+  setPhaser,
+  setChorus,
+  setTremolo,
+  moog,
+  setMoog,
+}) {
   return (
-    <div className="grid col-span-4 place-items-center p-5 scrollbar scrollbar-thumb-red-800 scrollbar-track-mint_cream overflow-y-scroll h-4/5">
-      {/* ROW 1 */}
-      <div className="grid bg-violet-600 p-5">
-        <div className="mb-2">
-          <label className="text-sm mr-2">ROW 1</label>
-          <select name="node" id="row1" className="text-sm">
-            <option value="row1node1">1</option>
-            <option value="row1node2">2</option>
-            <option value="row1node3">3</option>
-            <option value="row1node4">4</option>
-            <option value="row1node5">5</option>
-            <option value="row1node6">6</option>
-            <option value="row1node7">7</option>
-            <option value="row1node8">8</option>
-          </select>
+    <div className="grid grid-cols-2 place-items-center p-5">
+      {/* 
+        ▄▄▄▄▄▄▄▄▄▄▄  ▄         ▄  ▄▄▄▄▄▄▄▄▄▄▄  ▄▄▄▄▄▄▄▄▄▄▄  ▄         ▄  ▄▄▄▄▄▄▄▄▄▄▄ 
+        ▐░░░░░░░░░░░▌▐░▌       ▐░▌▐░░░░░░░░░░░▌▐░░░░░░░░░░░▌▐░▌       ▐░▌▐░░░░░░░░░░░▌
+        ▐░█▀▀▀▀▀▀▀▀▀ ▐░▌       ▐░▌▐░█▀▀▀▀▀▀▀█░▌▐░█▀▀▀▀▀▀▀█░▌▐░▌       ▐░▌▐░█▀▀▀▀▀▀▀▀▀ 
+        ▐░▌          ▐░▌       ▐░▌▐░▌       ▐░▌▐░▌       ▐░▌▐░▌       ▐░▌▐░▌          
+        ▐░▌          ▐░█▄▄▄▄▄▄▄█░▌▐░▌       ▐░▌▐░█▄▄▄▄▄▄▄█░▌▐░▌       ▐░▌▐░█▄▄▄▄▄▄▄▄▄ 
+        ▐░▌          ▐░░░░░░░░░░░▌▐░▌       ▐░▌▐░░░░░░░░░░░▌▐░▌       ▐░▌▐░░░░░░░░░░░▌
+        ▐░▌          ▐░█▀▀▀▀▀▀▀█░▌▐░▌       ▐░▌▐░█▀▀▀▀█░█▀▀ ▐░▌       ▐░▌ ▀▀▀▀▀▀▀▀▀█░▌
+        ▐░▌          ▐░▌       ▐░▌▐░▌       ▐░▌▐░▌     ▐░▌  ▐░▌       ▐░▌          ▐░▌
+        ▐░█▄▄▄▄▄▄▄▄▄ ▐░▌       ▐░▌▐░█▄▄▄▄▄▄▄█░▌▐░▌      ▐░▌ ▐░█▄▄▄▄▄▄▄█░▌ ▄▄▄▄▄▄▄▄▄█░▌
+        ▐░░░░░░░░░░░▌▐░▌       ▐░▌▐░░░░░░░░░░░▌▐░▌       ▐░▌▐░░░░░░░░░░░▌▐░░░░░░░░░░░▌
+        ▀▀▀▀▀▀▀▀▀▀▀  ▀         ▀  ▀▀▀▀▀▀▀▀▀▀▀  ▀         ▀  ▀▀▀▀▀▀▀▀▀▀▀  ▀▀▀▀▀▀▀▀▀▀▀ 
+                                                      
+       */}
+      <div className="grid col-span-2 bg-violet-600 px-10 py-5">
+        <div className="grid place-items-center">
+          <h1>CHORUS</h1>
         </div>
-        <div className="flex place-items-center">
+        <div className="flex place-items-center space-x-5">
+          {/* TOP ROW OF KNOBS!!! */}
           <div className="field col-12 md:col-4 p-1 grid place-items-center">
             <Knob
               size={60}
+              min={0}
+              max={10}
               valueColor={"MediumPurple"}
               rangeColor={"White"}
               textColor={"WHITE"}
-              value={value}
-              onChange={(e) => setValue(e.value)}
+              value={chorus.rate}
+              onChange={(e) =>
+                setChorus({
+                  rate: e.value,
+                  delay: chorus.delay,
+                  feedback: chorus.feedback,
+                  bypass: chorus.bypass,
+                })
+              }
             />
-            <label className="col-span-1 text-sm ">REVERB</label>
+            <label className="col-span-1 text-sm ">RATE</label>
           </div>
           <div className="field col-12 md:col-4 p-1 grid place-items-center">
             <Knob
               size={60}
+              min={0}
+              max={100}
               valueColor={"MediumPurple"}
               rangeColor={"White"}
               textColor={"WHITE"}
-              value={value}
-              onChange={(e) => setValue(e.value)}
+              value={Math.round(chorus.delay * 1000)}
+              onChange={(e) =>
+                setChorus({
+                  rate: chorus.rate,
+                  delay: e.value / 1000,
+                  feedback: chorus.feedback,
+                  bypass: chorus.bypass,
+                })
+              }
             />
-            <label className="col-span-1 text-sm">GAIN</label>
+            <label className="col-span-1 text-sm">DELAY</label>
           </div>
           <div className="field col-12 md:col-4 p-1 grid place-items-center">
             <Knob
               size={60}
+              min={0}
+              max={100}
               valueColor={"MediumPurple"}
               rangeColor={"White"}
               textColor={"WHITE"}
-              value={value}
-              onChange={(e) => setValue(e.value)}
+              value={Math.round(chorus.feedback * 100)}
+              onChange={(e) =>
+                setChorus({
+                  rate: chorus.rate,
+                  delay: chorus.delay,
+                  feedback: chorus.feedback,
+                  bypass: e.value / 100,
+                })
+              }
             />
-            <label className="col-span-1 text-sm">CHORUS</label>
-          </div>
-          <div className="field col-12 md:col-4 p-1 grid place-items-center">
-            <Knob
-              size={60}
-              valueColor={"MediumPurple"}
-              rangeColor={"White"}
-              textColor={"WHITE"}
-              value={value}
-              onChange={(e) => setValue(e.value)}
-            />
-            <label className="col-span-1 text-sm">VOLUME</label>
-          </div>
-        </div>
-      </div>
-      {/* ROW 2 */}
-      <div className="grid bg-green-700 p-5 mt-5">
-        <div className="mb-2">
-          <label className="text-sm mr-2">ROW 2</label>
-          <select name="node" id="row1" className="text-sm">
-            <option value="row1node1">1</option>
-            <option value="row1node2">1</option>
-            <option value="row1node3">1</option>
-            <option value="row1node4">1</option>
-            <option value="row1node5">1</option>
-            <option value="row1node6">1</option>
-            <option value="row1node7">1</option>
-            <option value="row1node8">1</option>
-          </select>
-        </div>
-        <div className="flex">
-          <div className="field col-12 md:col-4 p-1 grid place-items-center">
-            <Knob
-              size={60}
-              valueColor={"MediumPurple"}
-              rangeColor={"White"}
-              textColor={"WHITE"}
-              value={value}
-              onChange={(e) => setValue(e.value)}
-            />
-            <label className="col-span-1 text-sm ">REVERB</label>
-          </div>
-          <div className="field col-12 md:col-4 p-1 grid place-items-center">
-            <Knob
-              size={60}
-              valueColor={"MediumPurple"}
-              rangeColor={"White"}
-              textColor={"WHITE"}
-              value={value}
-              onChange={(e) => setValue(e.value)}
-            />
-            <label className="col-span-1 text-sm">GAIN</label>
-          </div>
-          <div className="field col-12 md:col-4 p-1 grid place-items-center">
-            <Knob
-              size={60}
-              valueColor={"MediumPurple"}
-              rangeColor={"White"}
-              textColor={"WHITE"}
-              value={value}
-              onChange={(e) => setValue(e.value)}
-            />
-            <label className="col-span-1 text-sm">CHORUS</label>
-          </div>
-          <div className="field col-12 md:col-4 p-1 grid place-items-center">
-            <Knob
-              size={60}
-              valueColor={"MediumPurple"}
-              rangeColor={"White"}
-              textColor={"WHITE"}
-              value={value}
-              onChange={(e) => setValue(e.value)}
-            />
-            <label className="col-span-1 text-sm">BPM</label>
+            <label className="col-span-1 text-sm">FEEDBACK</label>
           </div>
         </div>
       </div>
-      {/* ROW 3 */}
-      <div className="grid bg-blue-500 p-5 mt-5">
-        <div className="mb-2">
-          <label className="text-sm mr-2">ROW 3</label>
-          <select name="node" id="row1" className="text-sm">
-            <option value="row1node1">1</option>
-            <option value="row1node2">1</option>
-            <option value="row1node3">1</option>
-            <option value="row1node4">1</option>
-            <option value="row1node5">1</option>
-            <option value="row1node6">1</option>
-            <option value="row1node7">1</option>
-            <option value="row1node8">1</option>
-          </select>
+      {/* 
+        ▄▄▄▄▄▄▄▄▄▄▄  ▄         ▄  ▄▄▄▄▄▄▄▄▄▄▄  ▄▄▄▄▄▄▄▄▄▄▄  ▄▄▄▄▄▄▄▄▄▄▄  ▄▄▄▄▄▄▄▄▄▄▄ 
+        ▐░░░░░░░░░░░▌▐░▌       ▐░▌▐░░░░░░░░░░░▌▐░░░░░░░░░░░▌▐░░░░░░░░░░░▌▐░░░░░░░░░░░▌
+        ▐░█▀▀▀▀▀▀▀█░▌▐░▌       ▐░▌▐░█▀▀▀▀▀▀▀█░▌▐░█▀▀▀▀▀▀▀▀▀ ▐░█▀▀▀▀▀▀▀▀▀ ▐░█▀▀▀▀▀▀▀█░▌
+        ▐░▌       ▐░▌▐░▌       ▐░▌▐░▌       ▐░▌▐░▌          ▐░▌          ▐░▌       ▐░▌
+        ▐░█▄▄▄▄▄▄▄█░▌▐░█▄▄▄▄▄▄▄█░▌▐░█▄▄▄▄▄▄▄█░▌▐░█▄▄▄▄▄▄▄▄▄ ▐░█▄▄▄▄▄▄▄▄▄ ▐░█▄▄▄▄▄▄▄█░▌
+        ▐░░░░░░░░░░░▌▐░░░░░░░░░░░▌▐░░░░░░░░░░░▌▐░░░░░░░░░░░▌▐░░░░░░░░░░░▌▐░░░░░░░░░░░▌
+        ▐░█▀▀▀▀▀▀▀▀▀ ▐░█▀▀▀▀▀▀▀█░▌▐░█▀▀▀▀▀▀▀█░▌ ▀▀▀▀▀▀▀▀▀█░▌▐░█▀▀▀▀▀▀▀▀▀ ▐░█▀▀▀▀█░█▀▀ 
+        ▐░▌          ▐░▌       ▐░▌▐░▌       ▐░▌          ▐░▌▐░▌          ▐░▌     ▐░▌  
+        ▐░▌          ▐░▌       ▐░▌▐░▌       ▐░▌ ▄▄▄▄▄▄▄▄▄█░▌▐░█▄▄▄▄▄▄▄▄▄ ▐░▌      ▐░▌ 
+        ▐░▌          ▐░▌       ▐░▌▐░▌       ▐░▌▐░░░░░░░░░░░▌▐░░░░░░░░░░░▌▐░▌       ▐░▌
+        ▀            ▀         ▀  ▀         ▀  ▀▀▀▀▀▀▀▀▀▀▀  ▀▀▀▀▀▀▀▀▀▀▀  ▀         ▀ 
+                                                      
+       */}
+      <div className="grid col-span-2 bg-green-700 px-10 py-5 mt-5">
+        <div className="grid place-items-center">
+          <h1>PHASER</h1>
         </div>
-        <div className="flex">
+        <div className="flex space-x-5">
           <div className="field col-12 md:col-4 p-1 grid place-items-center">
             <Knob
               size={60}
+              min={0}
+              max={8}
               valueColor={"MediumPurple"}
               rangeColor={"White"}
               textColor={"WHITE"}
-              value={value}
-              onChange={(e) => setValue(e.value)}
+              value={phaser.rate}
+              onChange={(e) =>
+                setPhaser({
+                  rate: e.value,
+                  depth: phaser.depth,
+                  feedback: phaser.feedback,
+                  stereoPhase: phaser.stereoPhase,
+                  baseModulationFrequency: phaser.baseModulationFrequency,
+                  bypass: phaser.bypass,
+                })
+              }
             />
-            <label className="col-span-1 text-sm ">REVERB</label>
+            <label className="col-span-1 text-sm ">RATE</label>
           </div>
           <div className="field col-12 md:col-4 p-1 grid place-items-center">
             <Knob
               size={60}
+              min={0}
+              max={100}
               valueColor={"MediumPurple"}
               rangeColor={"White"}
               textColor={"WHITE"}
-              value={value}
-              onChange={(e) => setValue(e.value)}
+              value={Math.round(phaser.depth * 100)}
+              onChange={(e) =>
+                setPhaser({
+                  rate: phaser.rate,
+                  depth: e.value / 100,
+                  feedback: phaser.feedback,
+                  stereoPhase: phaser.stereoPhase,
+                  baseModulationFrequency: phaser.baseModulationFrequency,
+                  bypass: phaser.bypass,
+                })
+              }
             />
-            <label className="col-span-1 text-sm">GAIN</label>
+            <label className="col-span-1 text-sm">DEPTH</label>
           </div>
           <div className="field col-12 md:col-4 p-1 grid place-items-center">
             <Knob
               size={60}
+              min={0}
+              max={100}
               valueColor={"MediumPurple"}
               rangeColor={"White"}
               textColor={"WHITE"}
-              value={value}
-              onChange={(e) => setValue(e.value)}
+              value={Math.round(phaser.feedback * 100)}
+              onChange={(e) =>
+                setPhaser({
+                  rate: phaser.rate,
+                  depth: phaser.depth,
+                  feedback: e.value / 100,
+                  stereoPhase: phaser.stereoPhase,
+                  baseModulationFrequency: phaser.baseModulationFrequency,
+                  bypass: phaser.bypass,
+                })
+              }
             />
-            <label className="col-span-1 text-sm">CHORUS</label>
+            <label className="col-span-1 text-sm">FEEDBACK</label>
+          </div>
+        </div>
+        <div className="flex space-x-5 justify-center">
+          <div className="field col-12 md:col-4 p-1 grid place-items-center">
+            <Knob
+              size={60}
+              min={0}
+              max={180}
+              valueColor={"MediumPurple"}
+              rangeColor={"White"}
+              textColor={"WHITE"}
+              value={phaser.stereoPhase}
+              onChange={(e) =>
+                setPhaser({
+                  rate: phaser.rate,
+                  depth: phaser.depth,
+                  feedback: phaser.feedback,
+                  stereoPhase: e.value,
+                  baseModulationFrequency: phaser.baseModulationFrequency,
+                  bypass: phaser.bypass,
+                })
+              }
+            />
+            <label className="col-span-1 text-sm">STEREO PHASE</label>
           </div>
           <div className="field col-12 md:col-4 p-1 grid place-items-center">
             <Knob
               size={60}
+              min={500}
+              max={1500}
               valueColor={"MediumPurple"}
               rangeColor={"White"}
               textColor={"WHITE"}
-              value={value}
-              onChange={(e) => setValue(e.value)}
+              value={phaser.baseModulationFrequency}
+              onChange={(e) =>
+                setPhaser({
+                  rate: phaser.rate,
+                  depth: phaser.depth,
+                  feedback: phaser.feedback,
+                  stereoPhase: phaser.stereoPhase,
+                  baseModulationFrequency: e.value,
+                  bypass: phaser.bypass,
+                })
+              }
             />
-            <label className="col-span-1 text-sm">BPM</label>
+            <label className="col-span-1 text-sm">BASE FREQ</label>
           </div>
         </div>
       </div>
-      {/* ROW 4 */}
-      <div className="grid bg-red-700 p-5 mt-5">
-        <div className="mb-2">
-          <label className="text-sm mr-2">ROW 4</label>
-          <select name="node" id="row1" className="text-sm">
-            <option value="row1node1">1</option>
-            <option value="row1node2">1</option>
-            <option value="row1node3">1</option>
-            <option value="row1node4">1</option>
-            <option value="row1node5">1</option>
-            <option value="row1node6">1</option>
-            <option value="row1node7">1</option>
-            <option value="row1node8">1</option>
-          </select>
+
+      {/* 
+        ▄▄▄▄▄▄▄▄▄▄▄  ▄▄▄▄▄▄▄▄▄▄▄  ▄▄▄▄▄▄▄▄▄▄▄  ▄▄       ▄▄  ▄▄▄▄▄▄▄▄▄▄▄  ▄            ▄▄▄▄▄▄▄▄▄▄▄ 
+        ▐░░░░░░░░░░░▌▐░░░░░░░░░░░▌▐░░░░░░░░░░░▌▐░░▌     ▐░░▌▐░░░░░░░░░░░▌▐░▌          ▐░░░░░░░░░░░▌
+        ▀▀▀▀█░█▀▀▀▀ ▐░█▀▀▀▀▀▀▀█░▌▐░█▀▀▀▀▀▀▀▀▀ ▐░▌░▌   ▐░▐░▌▐░█▀▀▀▀▀▀▀█░▌▐░▌          ▐░█▀▀▀▀▀▀▀█░▌
+            ▐░▌     ▐░▌       ▐░▌▐░▌          ▐░▌▐░▌ ▐░▌▐░▌▐░▌       ▐░▌▐░▌          ▐░▌       ▐░▌
+            ▐░▌     ▐░█▄▄▄▄▄▄▄█░▌▐░█▄▄▄▄▄▄▄▄▄ ▐░▌ ▐░▐░▌ ▐░▌▐░▌       ▐░▌▐░▌          ▐░▌       ▐░▌
+            ▐░▌     ▐░░░░░░░░░░░▌▐░░░░░░░░░░░▌▐░▌  ▐░▌  ▐░▌▐░▌       ▐░▌▐░▌          ▐░▌       ▐░▌
+            ▐░▌     ▐░█▀▀▀▀█░█▀▀ ▐░█▀▀▀▀▀▀▀▀▀ ▐░▌   ▀   ▐░▌▐░▌       ▐░▌▐░▌          ▐░▌       ▐░▌
+            ▐░▌     ▐░▌     ▐░▌  ▐░▌          ▐░▌       ▐░▌▐░▌       ▐░▌▐░▌          ▐░▌       ▐░▌
+            ▐░▌     ▐░▌      ▐░▌ ▐░█▄▄▄▄▄▄▄▄▄ ▐░▌       ▐░▌▐░█▄▄▄▄▄▄▄█░▌▐░█▄▄▄▄▄▄▄▄▄ ▐░█▄▄▄▄▄▄▄█░▌
+            ▐░▌     ▐░▌       ▐░▌▐░░░░░░░░░░░▌▐░▌       ▐░▌▐░░░░░░░░░░░▌▐░░░░░░░░░░░▌▐░░░░░░░░░░░▌                                          
+       */}
+      <div className="grid col-span-2 bg-red-700 px-10 py-5 mt-5">
+        <div className="grid place-items-center">
+          <h1>TREMOLO</h1>
         </div>
-        <div className="flex">
+        <div className="flex space-x-5">
           <div className="field col-12 md:col-4 p-1 grid place-items-center">
             <Knob
               size={60}
+              min={0}
+              max={100}
               valueColor={"MediumPurple"}
               rangeColor={"White"}
               textColor={"WHITE"}
-              value={value}
-              onChange={(e) => setValue(e.value)}
+              value={Math.round(tremolo.intensity * 100)}
+              onChange={(e) =>
+                setTremolo({
+                  intensity: e.value / 100,
+                  rate: tremolo.rate,
+                  stereoPhase: tremolo.stereoPhase,
+                  bypass: tremolo.bypass,
+                })
+              }
             />
-            <label className="col-span-1 text-sm ">REVERB</label>
+            <label className="col-span-1 text-sm ">INTENSITY</label>
           </div>
           <div className="field col-12 md:col-4 p-1 grid place-items-center">
             <Knob
               size={60}
+              min={0}
+              max={8}
               valueColor={"MediumPurple"}
               rangeColor={"White"}
               textColor={"WHITE"}
-              value={value}
-              onChange={(e) => setValue(e.value)}
+              value={tremolo.rate}
+              onChange={(e) =>
+                setTremolo({
+                  intensity: tremolo.intensity,
+                  rate: e.value,
+                  stereoPhase: tremolo.stereoPhase,
+                  bypass: tremolo.bypass,
+                })
+              }
             />
-            <label className="col-span-1 text-sm">GAIN</label>
+            <label className="col-span-1 text-sm">RATE</label>
           </div>
           <div className="field col-12 md:col-4 p-1 grid place-items-center">
             <Knob
               size={60}
+              min={0}
+              max={180}
               valueColor={"MediumPurple"}
               rangeColor={"White"}
               textColor={"WHITE"}
-              value={value}
-              onChange={(e) => setValue(e.value)}
+              value={tremolo.stereoPhase}
+              onChange={(e) =>
+                setTremolo({
+                  intensity: tremolo.intensity,
+                  rate: tremolo.rate,
+                  stereoPhase: tremolo.stereoPhase,
+                  bypass: tremolo.bypass,
+                })
+              }
             />
-            <label className="col-span-1 text-sm">CHORUS</label>
-          </div>
-          <div className="field col-12 md:col-4 p-1 grid place-items-center">
-            <Knob
-              size={60}
-              valueColor={"MediumPurple"}
-              rangeColor={"White"}
-              textColor={"WHITE"}
-              value={value}
-              onChange={(e) => setValue(e.value)}
-            />
-            <label className="col-span-1 text-sm">BPM</label>
+            <label className="col-span-1 text-sm">STEREO PHASE</label>
           </div>
         </div>
       </div>
-      {/* ROW 5 */}
-      <div className="grid bg-cyan-900 p-5 mt-5">
-        <div className="mb-2">
-          <label className="text-sm mr-2">ROW 5</label>
-          <select name="node" id="row1" className="text-sm">
-            <option value="row1node1">1</option>
-            <option value="row1node2">1</option>
-            <option value="row1node3">1</option>
-            <option value="row1node4">1</option>
-            <option value="row1node5">1</option>
-            <option value="row1node6">1</option>
-            <option value="row1node7">1</option>
-            <option value="row1node8">1</option>
-          </select>
+
+      {/* 
+        ▄▄▄▄▄▄▄▄▄▄▄  ▄▄▄▄▄▄▄▄▄▄▄  ▄               ▄  ▄▄▄▄▄▄▄▄▄▄▄  ▄▄▄▄▄▄▄▄▄▄▄  ▄▄▄▄▄▄▄▄▄▄  
+        ▐░░░░░░░░░░░▌▐░░░░░░░░░░░▌▐░▌             ▐░▌▐░░░░░░░░░░░▌▐░░░░░░░░░░░▌▐░░░░░░░░░░▌ 
+        ▐░█▀▀▀▀▀▀▀█░▌▐░█▀▀▀▀▀▀▀▀▀  ▐░▌           ▐░▌ ▐░█▀▀▀▀▀▀▀▀▀ ▐░█▀▀▀▀▀▀▀█░▌▐░█▀▀▀▀▀▀▀█░▌
+        ▐░▌       ▐░▌▐░▌            ▐░▌         ▐░▌  ▐░▌          ▐░▌       ▐░▌▐░▌       ▐░▌
+        ▐░█▄▄▄▄▄▄▄█░▌▐░█▄▄▄▄▄▄▄▄▄    ▐░▌       ▐░▌   ▐░█▄▄▄▄▄▄▄▄▄ ▐░█▄▄▄▄▄▄▄█░▌▐░█▄▄▄▄▄▄▄█░▌
+        ▐░░░░░░░░░░░▌▐░░░░░░░░░░░▌    ▐░▌     ▐░▌    ▐░░░░░░░░░░░▌▐░░░░░░░░░░░▌▐░░░░░░░░░░▌ 
+        ▐░█▀▀▀▀█░█▀▀ ▐░█▀▀▀▀▀▀▀▀▀      ▐░▌   ▐░▌     ▐░█▀▀▀▀▀▀▀▀▀ ▐░█▀▀▀▀█░█▀▀ ▐░█▀▀▀▀▀▀▀█░▌
+        ▐░▌     ▐░▌  ▐░▌                ▐░▌ ▐░▌      ▐░▌          ▐░▌     ▐░▌  ▐░▌       ▐░▌
+        ▐░▌      ▐░▌ ▐░█▄▄▄▄▄▄▄▄▄        ▐░▐░▌       ▐░█▄▄▄▄▄▄▄▄▄ ▐░▌      ▐░▌ ▐░█▄▄▄▄▄▄▄█░▌
+        ▐░▌       ▐░▌▐░░░░░░░░░░░▌        ▐░▌        ▐░░░░░░░░░░░▌▐░▌       ▐░▌▐░░░░░░░░░░▌ 
+        ▀         ▀  ▀▀▀▀▀▀▀▀▀▀▀          ▀          ▀▀▀▀▀▀▀▀▀▀▀  ▀         ▀  ▀▀▀▀▀▀▀▀▀▀ 
+                                                      
+       */}
+      <div className="grid col-span-2 bg-blue-500 py-5 mt-5 px-20">
+        <div className="grid place-items-center">
+          <h1>MOOG</h1>
         </div>
-        <div className="flex">
+        <div className="flex space-x-7">
           <div className="field col-12 md:col-4 p-1 grid place-items-center">
             <Knob
               size={60}
+              min={0}
+              max={100}
               valueColor={"MediumPurple"}
               rangeColor={"White"}
               textColor={"WHITE"}
-              value={value}
-              onChange={(e) => setValue(e.value)}
+              value={Math.round(moog.cutoff * 1000)}
+              onChange={(e) =>
+                setMoog({
+                  cutoff: e.value / 1000,
+                  resonance: moog.resonance,
+                  bufferSize: moog.bufferSize,
+                })
+              }
             />
-            <label className="col-span-1 text-sm ">REVERB</label>
+            <label className="col-span-1 text-sm ">CUTOFF</label>
           </div>
           <div className="field col-12 md:col-4 p-1 grid place-items-center">
             <Knob
               size={60}
+              min={0}
+              max={400}
               valueColor={"MediumPurple"}
               rangeColor={"White"}
               textColor={"WHITE"}
-              value={value}
-              onChange={(e) => setValue(e.value)}
+              value={Math.round(moog.resonance * 100)}
+              onChange={(e) =>
+                setMoog({
+                  cutoff: moog.cutoff,
+                  resonance: e.value / 100,
+                  bufferSize: moog.bufferSize,
+                })
+              }
             />
-            <label className="col-span-1 text-sm">GAIN</label>
+            <label className="col-span-1 text-sm ">resonance</label>
           </div>
-          <div className="field col-12 md:col-4 p-1 grid place-items-center">
+          {/* <div className="field col-12 md:col-4 p-1 grid place-items-center">
             <Knob
               size={60}
+              min={256}
+              max={16384}
               valueColor={"MediumPurple"}
               rangeColor={"White"}
               textColor={"WHITE"}
-              value={value}
-              onChange={(e) => setValue(e.value)}
+              value={bitcrusher.bufferSize}
+              onChange={(e) =>
+                setBitcrusher({
+                  bits: bitcrusher.bits,
+                  normfreq: bitcrusher.normfreq,
+                  bufferSize: e.value,
+                })
+              }
             />
-            <label className="col-span-1 text-sm">CHORUS</label>
-          </div>
-          <div className="field col-12 md:col-4 p-1 grid place-items-center">
-            <Knob
-              size={60}
-              valueColor={"MediumPurple"}
-              rangeColor={"White"}
-              textColor={"WHITE"}
-              value={value}
-              onChange={(e) => setValue(e.value)}
-            />
-            <label className="col-span-1 text-sm">BPM</label>
-          </div>
+            <label className="col-span-1 text-sm ">BUFFER</label>
+          </div> */}
         </div>
       </div>
     </div>

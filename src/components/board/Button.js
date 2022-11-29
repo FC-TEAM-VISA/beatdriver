@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 const Button = ({
   activated,
@@ -6,36 +6,25 @@ const Button = ({
   toggleActivation,
   selectedInstrument,
 }) => {
-  const triggeredInstrumentColor =
-    selectedInstrument === "DRUMS"
-      ? "bg-drums_dark"
-      : selectedInstrument === "GUITAR"
-      ? "bg-guitar_dark"
-      : selectedInstrument === "VOCALS"
-      ? "bg-vocals_dark"
-      : selectedInstrument === "BASS"
-      ? "bg-bass_dark"
-      : "bg-keys_dark";
-
-  const instrumentColor =
-    selectedInstrument === "DRUMS"
-      ? "bg-drums"
-      : selectedInstrument === "GUITAR"
-      ? "bg-guitar"
-      : selectedInstrument === "VOCALS"
-      ? "bg-vocals"
-      : selectedInstrument === "BASS"
-      ? "bg-bass"
-      : "bg-keys";
-
-  const drumButton = (activated, triggered) => {
-    return activated && triggered
-      ? `bg-red-800 rounded-sm shadow-xl animate-pulse pulsed w-20`
-      : activated && !triggered
-      ? `bg-red-400 rounded-sm shadow-xl w-20`
-      : !activated && triggered
-      ? `bg-sky-500 rounded-sm shadow-xl animate-pulse w-20`
-      : `bg-purple-100 rounded-sm shadow-xl w-20`;
+  const [triggeredInstrumentColor, setTriggeredInstrumentColor] = useState("");
+  const [instrumentColor, setInstrumentColor] = useState("");
+  const setColors = () => {
+    if (selectedInstrument === "DRUMS") {
+      setTriggeredInstrumentColor("bg-drums_dark");
+      setInstrumentColor("bg-drums");
+    } else if (selectedInstrument === "GUITAR") {
+      setTriggeredInstrumentColor("bg-guitar_dark");
+      setInstrumentColor("bg-guitar");
+    } else if (selectedInstrument === "VOCALS") {
+      setTriggeredInstrumentColor("bg-vocals_dark");
+      setInstrumentColor("bg-vocals");
+    } else if (selectedInstrument === "BASS") {
+      setTriggeredInstrumentColor("bg-bass_dark");
+      setInstrumentColor("bg-bass");
+    } else {
+      setTriggeredInstrumentColor("bg-keys_dark");
+      setInstrumentColor("bg-keys");
+    }
   };
 
   const changeColor = (activated, triggered) => {
@@ -50,18 +39,17 @@ const Button = ({
     }
   };
 
-  let drumColor = drumButton(activated, triggered);
   let color = changeColor(activated, triggered);
 
   return (
-    // <button
-    //   className={selectedInstrument === "DRUM" ? `${drumColor}` : `${color}`}
-    //   onClick={toggleActivation}
-    // >
-    //   <div className="h-24"></div>
-    // </button>
-
-    <button className={`${color} w-20`} onClick={toggleActivation}>
+    // every button renders with the same color
+    <button
+      className={`${color} w-20`}
+      onClick={() => {
+        toggleActivation();
+        setColors();
+      }}
+    >
       <div className="h-24"></div>
     </button>
   );

@@ -6,18 +6,18 @@ import { arrayUnion, updateDoc, doc } from "firebase/firestore";
 const Admin = () => {
   const [file, setFile] = useState("");
   const [percent, setPercent] = useState(0);
-  const dbRef = doc(database, "built_in_guitar", `guitar`);
 
   function handleChange(event) {
     setFile(event.target.files[0]);
   }
 
   const handleUpload = async (event) => {
+    const dbRef = doc(database, "built_in_bass", `bass`);
     if (!database) return;
 
     if (!file) return;
 
-    const storageRef = ref(storage, `built-in-instruments/guitar/${file.name}`);
+    const storageRef = ref(storage, `built-in-instruments/bass/${file.name}`);
     const uploadTask = uploadBytesResumable(storageRef, file);
 
     uploadTask.on(
@@ -28,7 +28,11 @@ const Admin = () => {
         );
         setPercent(percent);
       },
+      (error) => {
+        console.log(error);
+      },
       () => {
+        // download url
         getDownloadURL(uploadTask.snapshot.ref).then((url) => {
           updateDoc(dbRef, {
             sounds: arrayUnion({ name: file.name, url }),

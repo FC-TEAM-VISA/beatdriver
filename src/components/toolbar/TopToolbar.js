@@ -56,7 +56,7 @@ function TopToolbar({
   const notLoggedIn = () => (user ? handleSave() : setOpen(true));
 
   return (
-    <div className="flex flex-grow cursor-pointer place-items-center space-x-6">
+    <div className="flex flex-grow cursor-pointer place-items-center space-x-6 py-2">
       {/* PROJECT TITLE */}
       <div>
         <button data-tip data-for="title" className="hover:scale-110">
@@ -156,14 +156,14 @@ function TopToolbar({
       <div className="grid grid-cols-1 m-2 place-items-center hover:scale-110">
         <Knob
           size={60}
-          value={masterVolume}
+          value={Math.round(masterVolume * 100)}
           valueTemplate={"{value}%"}
-          min={-60}
-          max={20}
+          min={0}
+          max={100}
           valueColor={"MediumPurple"}
           rangeColor={"White"}
           textColor={"White"}
-          onChange={(e) => setMasterVolume(e.value)}
+          onChange={(e) => setMasterVolume(e.value / 100)}
         />
         <label className="col-span-1 text-sm">MASTER</label>
       </div>
