@@ -69,6 +69,7 @@ const Board = ({ data }) => {
   const [tremolo, setTremolo] = useState(data.tremolo);
   const [moog, setMoog] = useState(data.moog);
   //project info
+
   const orderedKeys = Object.keys(data.grid).sort();
   const dataGrid = orderedKeys.map((row) => data.grid[row]);
   const [grid, setGrid] = useState(dataGrid || initialGrid); //project board
