@@ -1,5 +1,5 @@
 import Tuna from "tunajs";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Grid from "./Grid";
 import Popup from "reactjs-popup";
 import "reactjs-popup/dist/index.css";
@@ -21,6 +21,7 @@ const Looper = ({
   setGrid,
   steps,
   selectedInstrument,
+  colorInstrument,
   selected,
   masterVolume,
   soundArray,
@@ -57,41 +58,55 @@ const Looper = ({
     });
   }, [soundArray, beat]);
 
-  let tunaPhaser;
-  let tunaChorus;
-  let tunaMoog;
-  let tunaTremolo;
+  const tunaChorus = useRef();
+  const tunaPhaser = useRef();
+  const tunaTremolo = useRef();
+  const tunaMoog = useRef();
 
-  if (tuna) {
-    tunaChorus = new tuna.Chorus({
-      rate: chorus.rate,
-      feedback: chorus.feedback,
-      delay: chorus.delay,
-      bypass: 0,
-    });
+  useEffect(() => {
+    if (tuna) {
+      tunaChorus.current = new tuna.Chorus({
+        rate: chorus.rate,
+        feedback: chorus.feedback,
+        delay: chorus.delay,
+        bypass: 0,
+      });
+    }
+  }, [chorus]);
 
-    tunaPhaser = new tuna.Phaser({
-      rate: phaser.rate, //0.01 to 8 is a decent range, but higher values are possible
-      depth: phaser.depth, //0 to 1
-      feedback: phaser.feedback, //0 to 1+
-      stereoPhase: phaser.stereoPhase, //0 to 180
-      baseModulationFrequency: phaser.baseModulationFrequency, //500 to 1500
-      bypass: 0,
-    });
+  useEffect(() => {
+    if (tuna) {
+      tunaPhaser.current = new tuna.Phaser({
+        rate: phaser.rate, //0.01 to 8 is a decent range, but higher values are possible
+        depth: phaser.depth, //0 to 1
+        feedback: phaser.feedback, //0 to 1+
+        stereoPhase: phaser.stereoPhase, //0 to 180
+        baseModulationFrequency: phaser.baseModulationFrequency, //500 to 1500
+        bypass: 0,
+      });
+    }
+  }, [phaser]);
 
-    tunaTremolo = new tuna.Tremolo({
-      intensity: tremolo.intensity, //0 to 1
-      rate: tremolo.rate, //0.001 to 8
-      stereoPhase: tremolo.stereoPhase, //0 to 180
-      bypass: 0,
-    });
+  useEffect(() => {
+    if (tuna) {
+      tunaTremolo.current = new tuna.Tremolo({
+        intensity: tremolo.intensity, //0 to 1
+        rate: tremolo.rate, //0.001 to 8
+        stereoPhase: tremolo.stereoPhase, //0 to 180
+        bypass: 0,
+      });
+    }
+  }, [tremolo]);
 
-    tunaMoog = new tuna.MoogFilter({
-      cutoff: moog.cutoff, //0 to 1
-      resonance: moog.resonance, //0 to 4
-      bufferSize: 4096, //256 to 16384
-    });
-  }
+  useEffect(() => {
+    if (tuna) {
+      tunaMoog.current = new tuna.MoogFilter({
+        cutoff: moog.cutoff, //0 to 1
+        resonance: moog.resonance, //0 to 4
+        bufferSize: 4096, //256 to 16384
+      });
+    }
+  }, [moog]);
 
   const playAudio = (audioBuffer, startTime) => {
     source = audioContext.createBufferSource();
@@ -100,12 +115,12 @@ const Looper = ({
 
     volume.gain.value = masterVolume;
     source.connect(volume);
-    volume.connect(tunaChorus);
-    tunaChorus.connect(tunaPhaser);
-    tunaPhaser.connect(tunaTremolo);
-    // tunaTremolo.connect(tunaMoog);
-    tunaTremolo.connect(audioContext.destination);
+    volume.connect(tunaChorus.current);
+    tunaChorus.current.connect(tunaPhaser.current);
+    tunaPhaser.current.connect(tunaTremolo.current);
+    tunaTremolo.current.connect(audioContext.destination);
     source.start(startTime);
+    console.log(audioContext, "AUDIO CONTEXT");
   };
   //end audio things
 
@@ -115,7 +130,12 @@ const Looper = ({
     } else {
       const gridCopy = [...grid];
       const { triggered, activated } = gridCopy[row][col];
-      gridCopy[row][col] = { triggered, activated: !activated, audio: beat };
+      gridCopy[row][col] = {
+        triggered,
+        activated: !activated,
+        audio: beat,
+        instrument: colorInstrument,
+      };
       setGrid(gridCopy);
     }
   };
@@ -125,8 +145,13 @@ const Looper = ({
   const nextButton = (currButton) => {
     for (let i = 0; i < grid.length; i++) {
       for (let j = 0; j < grid[i].length; j++) {
-        const { activated, audio } = grid[i][j];
-        grid[i][j] = { activated, triggered: j === currButton, audio };
+        const { activated, audio, instrument } = grid[i][j];
+        grid[i][j] = {
+          activated,
+          triggered: j === currButton,
+          audio,
+          instrument,
+        };
 
         if (
           grid[i][j].triggered &&
@@ -145,8 +170,11 @@ const Looper = ({
   useEffect(() => {
     const timer = setTimeout(() => {
       if (playing) {
+        audioContext.resume();
         setCurrButton((currButton + 1) % steps);
         nextButton(currButton);
+      } else {
+        audioContext.suspend();
       }
       //use line below to control speed of timer/works like tempo!
     }, 60000 / bpm); //(60,000 / bpm = milliseconds for 1/4 notes)

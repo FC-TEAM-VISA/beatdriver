@@ -36,7 +36,12 @@ export const getServerSideProps = async (context) => {
 
 /* THE BOARD*/
 const steps = 8;
-const buttonState = { triggered: false, activated: false, audio: "" };
+const buttonState = {
+  triggered: false,
+  activated: false,
+  audio: "",
+  instrument: "",
+};
 
 //sets up how big the grid will be
 const initialGrid = [
@@ -61,6 +66,7 @@ const Board = ({ data }) => {
   const [selectedInstrument, setSelectedInstrument] = useState(
     data.selectedInstrument
   );
+  const [colorInstrument, setColorInstrument] = useState("");
   const [selected, setSelected] = useState(data.selected);
   const [beat, setBeat] = useState(data.beat);
   const [soundArray, setSoundArray] = useState(data.soundArray);
@@ -187,7 +193,8 @@ const Board = ({ data }) => {
   useEffect(() => {
     const idx = soundArray.indexOf(val);
     setBeat(idx);
-  }, [soundArray, val, beat]);
+    setColorInstrument(selectedInstrument);
+  }, [soundArray, val, beat, selectedInstrument]);
 
   const togglePlaying = () => {
     setPlaying((prev) => !prev);
@@ -268,6 +275,7 @@ const Board = ({ data }) => {
               phaser={phaser}
               tremolo={tremolo}
               moog={moog}
+              colorInstrument={colorInstrument}
             />
           </div>
         </div>
