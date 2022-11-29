@@ -8,7 +8,6 @@ const Button = ({
 }) => {
   const [triggeredInstrumentColor, setTriggeredInstrumentColor] = useState("");
   const [instrumentColor, setInstrumentColor] = useState("");
-
   const setColors = () => {
     if (selectedInstrument === "DRUMS") {
       setTriggeredInstrumentColor("bg-drums_dark");
@@ -26,16 +25,6 @@ const Button = ({
       setTriggeredInstrumentColor("bg-keys_dark");
       setInstrumentColor("bg-keys");
     }
-  };
-
-  const drumButton = (activated, triggered) => {
-    return activated && triggered
-      ? `bg-red-800 rounded-sm shadow-xl animate-pulse pulsed w-20`
-      : activated && !triggered
-      ? `bg-red-400 rounded-sm shadow-xl w-20`
-      : !activated && triggered
-      ? `bg-sky-500 rounded-sm shadow-xl animate-pulse w-20`
-      : `bg-purple-100 rounded-sm shadow-xl w-20`;
   };
 
   const changeColor = (activated, triggered) => {

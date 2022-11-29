@@ -21,7 +21,12 @@ import { useRouter } from "next/router";
 
 /* THE BOARD*/
 const steps = 8;
-const buttonState = { triggered: false, activated: false, audio: "" };
+const buttonState = {
+  triggered: false,
+  activated: false,
+  audio: "",
+  color: "bg-lavender_grey rounded-sm shadow-xl",
+};
 
 //sets up how big the grid will be
 const initialGrid = [
