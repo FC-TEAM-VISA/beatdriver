@@ -253,9 +253,9 @@ const Board = ({ data }) => {
             />
           </div>
 
-          <div>
+          {/* <div>
             <button onClick={handleCopyLink}>Share</button>
-          </div>
+          </div> */}
 
           <div ref={ref}>
             <Looper
