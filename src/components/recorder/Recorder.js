@@ -82,16 +82,14 @@ const Recorder = ({ togglePlaying, name }) => {
       }
     }
   }
-
+  //onClick={toggleRec}
   return (
     <div>
-      <button onClick={toggleRec}>
-        {isRec ? (
-          <BsRecordCircle className="text-red-600 animate-bounce" />
-        ) : (
-          <BsRecordCircle />
-        )}
-      </button>
+      {isRec ? (
+        <BsRecordCircle className="text-red-600 animate-bounce" />
+      ) : (
+        <BsRecordCircle />
+      )}
     </div>
   );
 };

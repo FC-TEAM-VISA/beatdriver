@@ -29,7 +29,7 @@ function EffectsMenu({
                                                       
        */}
       <div className="grid col-span-2 bg-violet-600 px-10 py-5">
-        <div>
+        <div className="grid place-items-center">
           <h1>CHORUS</h1>
         </div>
         <div className="flex place-items-center space-x-5">
@@ -111,7 +111,7 @@ function EffectsMenu({
                                                       
        */}
       <div className="grid col-span-2 bg-green-700 px-10 py-5 mt-5">
-        <div>
+        <div className="grid place-items-center">
           <h1>PHASER</h1>
         </div>
         <div className="flex space-x-5">
@@ -242,8 +242,8 @@ function EffectsMenu({
             ▐░▌     ▐░▌      ▐░▌ ▐░█▄▄▄▄▄▄▄▄▄ ▐░▌       ▐░▌▐░█▄▄▄▄▄▄▄█░▌▐░█▄▄▄▄▄▄▄▄▄ ▐░█▄▄▄▄▄▄▄█░▌
             ▐░▌     ▐░▌       ▐░▌▐░░░░░░░░░░░▌▐░▌       ▐░▌▐░░░░░░░░░░░▌▐░░░░░░░░░░░▌▐░░░░░░░░░░░▌                                          
        */}
-      <div className="grid col-span-2 bg-red-700 px-5 py-5 mt-5">
-        <div>
+      <div className="grid col-span-2 bg-red-700 px-10 py-5 mt-5">
+        <div className="grid place-items-center">
           <h1>TREMOLO</h1>
         </div>
         <div className="flex space-x-5">
@@ -324,11 +324,11 @@ function EffectsMenu({
         ▀         ▀  ▀▀▀▀▀▀▀▀▀▀▀          ▀          ▀▀▀▀▀▀▀▀▀▀▀  ▀         ▀  ▀▀▀▀▀▀▀▀▀▀ 
                                                       
        */}
-      <div className="grid col-span-2 bg-blue-500 py-5 px-5 mt-5 ml-6 justify-self-center">
-        <div>
+      <div className="grid col-span-2 bg-blue-500 py-5 mt-5 px-20">
+        <div className="grid place-items-center">
           <h1>MOOG</h1>
         </div>
-        <div className="flex">
+        <div className="flex space-x-7">
           <div className="field col-12 md:col-4 p-1 grid place-items-center">
             <Knob
               size={60}

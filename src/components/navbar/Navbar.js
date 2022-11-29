@@ -64,7 +64,7 @@ function Navbar() {
         {/* LEFT NAV */}
         <div className="mt-2 flex items-center flex-grow sm:flex-grow-0 text-5xl">
           <Link href="/">
-            <h3>BOMBBEATZ</h3>
+            <h3>BEATDRIVER</h3>
           </Link>
         </div>
         {/* RIGHT NAV */}

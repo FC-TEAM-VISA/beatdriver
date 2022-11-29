@@ -56,7 +56,7 @@ function TopToolbar({
   const notLoggedIn = () => (user ? handleSave() : setOpen(true));
 
   return (
-    <div className="flex flex-grow cursor-pointer place-items-center space-x-6">
+    <div className="flex flex-grow cursor-pointer place-items-center space-x-6 py-2">
       {/* PROJECT TITLE */}
       <div>
         <button data-tip data-for="title" className="hover:scale-110">

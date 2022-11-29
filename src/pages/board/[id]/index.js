@@ -103,6 +103,7 @@ const Board = ({ data }) => {
         updatedAt: serverTimestamp(),
         name: name,
         beat,
+        soundArray,
         selected,
         selectedInstrument,
         grid: {
@@ -129,8 +130,8 @@ const Board = ({ data }) => {
         ownerId: user.uid,
         username: currentUser.name,
         name: `${name}.copy` || "Untitled",
-        objectSounds: objectSounds,
-        beat: beat || null,
+        beat: beat || 0,
+        soundArray: soundArray,
         selected: selected || "SELECTED",
         selectedInstrument: selectedInstrument || "selected",
         grid: {
@@ -253,7 +254,6 @@ const Board = ({ data }) => {
               bpm={bpm}
               playing={playing}
               beat={beat}
-              objectSounds={objectSounds}
               steps={steps}
               grid={grid}
               setGrid={setGrid}
