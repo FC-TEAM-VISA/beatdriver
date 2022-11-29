@@ -177,32 +177,32 @@ const Board = ({ data }) => {
   };
 
   // KEEP THIS FOR TESTING COLLABORATION
-  useEffect(() => {
-    if (uniqueID) {
-      const realTime = async () => {
-        const image = await takeScreenShot(ref?.current);
-        await updateDoc(doc(database, `projects/${uniqueID}`), {
-          updatedAt: serverTimestamp(),
-          name: name,
-          beat,
-          selected,
-          selectedInstrument,
-          grid: {
-            r1: grid[0],
-            r2: grid[1],
-            r3: grid[2],
-            r4: grid[3],
-            r5: grid[4],
-          },
-          bpm: +bpm,
-          masterVolume: +masterVolume,
-          isPublic,
-          screen: image,
-        });
-      };
-      realTime();
-    }
-  }, [grid, bpm, masterVolume, beat, selected, selectedInstrument, name]);
+  //   useEffect(() => {
+  //     if (uniqueID) {
+  //       const realTime = async () => {
+  //         const image = await takeScreenShot(ref?.current);
+  //         await updateDoc(doc(database, `projects/${uniqueID}`), {
+  //           updatedAt: serverTimestamp(),
+  //           name: name,
+  //           beat,
+  //           selected,
+  //           selectedInstrument,
+  //           grid: {
+  //             r1: grid[0],
+  //             r2: grid[1],
+  //             r3: grid[2],
+  //             r4: grid[3],
+  //             r5: grid[4],
+  //           },
+  //           bpm: +bpm,
+  //           masterVolume: +masterVolume,
+  //           isPublic,
+  //           screen: image,
+  //         });
+  //       };
+  //       realTime();
+  //     }
+  //   }, [grid, bpm, masterVolume, beat, selected, selectedInstrument, name]);
 
   const handleBeatChange = (value) => {
     if (!objectSounds[value]) {
