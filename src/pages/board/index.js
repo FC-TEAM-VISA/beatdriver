@@ -25,7 +25,7 @@ const buttonState = {
   triggered: false,
   activated: false,
   audio: "",
-  color: "bg-lavender_grey rounded-sm shadow-xl",
+  instrument: "",
 };
 
 //sets up how big the grid will be
@@ -49,6 +49,7 @@ const Board = () => {
   }
   //instruments
   const [selectedInstrument, setSelectedInstrument] = useState("selected");
+  const [colorInstrument, setColorInstrument] = useState("");
   const [selected, setSelected] = useState("SELECTED");
   const [beat, setBeat] = useState(0);
   const [soundArray, setSoundArray] = useState([]);
@@ -60,21 +61,21 @@ const Board = () => {
   });
   const [phaser, setPhaser] = useState({
     rate: 0.1, //0.01 to 8 is a decent range, but higher values are possible
-    depth: 0.6, //0 to 1
-    feedback: 0.7, //0 to 1+
-    stereoPhase: 40, //0 to 180
+    depth: 0, //0 to 1
+    feedback: 0, //0 to 1+
+    stereoPhase: 0, //0 to 180
     baseModulationFrequency: 700, //500 to 1500
     bypass: 0,
   });
   const [tremolo, setTremolo] = useState({
-    intensity: 0.3, //0 to 1
-    rate: 5, //0.001 to 8
+    intensity: 0, //0 to 1
+    rate: 0.001, //0.001 to 8
     stereoPhase: 0, //0 to 180
     bypass: 0,
   });
   const [moog, setMoog] = useState({
-    cutoff: 0.065, //0 to 1
-    resonance: 3.5, //0 to 4
+    cutoff: 0.0, //0 to 1
+    resonance: 0, //0 to 4
     bufferSize: 4096, //256 to 16384
   });
   //project info
@@ -101,6 +102,7 @@ const Board = () => {
           triggered: false,
           activated: false,
           audio: "",
+          instrument: "",
         };
       }
     }
@@ -176,7 +178,8 @@ const Board = () => {
   useEffect(() => {
     const idx = soundArray.indexOf(val);
     setBeat(idx);
-  }, [soundArray, val, beat]);
+    setColorInstrument(selectedInstrument);
+  }, [soundArray, val, beat, selectedInstrument]);
 
   const togglePlaying = () => {
     setPlaying((prev) => !prev);
@@ -225,6 +228,7 @@ const Board = () => {
               uniqueID={uniqueID}
               handleSave={handleSave}
               selectedInstrument={selectedInstrument}
+              colorInstrument={colorInstrument}
               selected={selected}
               masterVolume={masterVolume}
               soundArray={soundArray}
