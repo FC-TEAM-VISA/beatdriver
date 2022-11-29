@@ -4,7 +4,7 @@ import Image from "next/image";
 import { auth } from "../../../utils/firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { database } from "../../../utils/firebase";
-import { collection, where, query } from "firebase/firestore";
+import { collection, where, query, doc, deleteDoc } from "firebase/firestore";
 import { useCollectionData } from "react-firebase-hooks/firestore";
 import { BsInstagram, BsTwitter } from "react-icons/bs";
 import { GrSoundcloud } from "react-icons/gr";
@@ -35,6 +35,11 @@ function User() {
   const closeModal = () => setModalOpen(false);
   const openPhotoModal = () => setPhotoModalOpen(true);
   const closePhotoModal = () => setPhotoModalOpen(false);
+
+  const handleDelete = async (projectId) => {
+    const deleted = await deleteDoc(doc(database, `projects/${projectId}`));
+    if (deleted) window.location.reload();
+  };
 
   const customStyles = {
     content: {
@@ -183,29 +188,33 @@ function User() {
           <h1 className="grid text-3xl p-2 font-extrabold">PROJECTS:</h1>
           <div className="grid grid-cols-5 m-5">
             {projects?.map(({ projectId, name, screen, username }, index) => (
-              <Link href={`/board/${projectId}`} key={index} className="p-2">
-                {screen && screen.length ? (
-                  <div className="m-2 flex-wrap">
-                    <div className="relative w-50 h-50 aspect-w-5 aspect-h-4">
-                      <Image
-                        src={screen}
-                        alt="screen"
-                        layout="fill" // required
-                        objectFit="fill" // change to suit your needs
-                        className="aspect-square" // just an example
-                      />
-                      {/* <Image src={screen} alt="screen" width={200} height={200} /> */}
-                    </div>
-                    <h5 className="mt-1">
-                      {name} by {username}
-                    </h5>
-                  </div>
-                ) : (
-                  <h5>
-                    {name} by {username}
-                  </h5>
-                )}
-              </Link>
+              // eslint-disable-next-line react/jsx-key
+              <div className="m-2 flex-wrap">
+                <div className="relative w-50 h-50 aspect-w-5 aspect-h-4">
+                  <Link
+                    href={`/board/${projectId}`}
+                    key={index}
+                    className="p-2"
+                  >
+                    <Image
+                      src={screen}
+                      alt="screen"
+                      layout="fill" // required
+                      objectFit="fill" // change to suit your needs
+                      className="aspect-square" // just an example
+                    />
+                  </Link>
+                </div>
+                <h5 className="mt-1">
+                  {name} by {username}
+                </h5>
+                <button
+                  className="mt-1 mx-2 border-2 p-2 bg-red-900 hover:bg-red-600 border-white hover:scale-110"
+                  onClick={() => handleDelete(projectId)}
+                >
+                  DELETE PROJECT
+                </button>
+              </div>
             ))}
           </div>
         </div>
