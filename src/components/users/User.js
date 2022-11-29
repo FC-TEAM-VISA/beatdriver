@@ -55,7 +55,7 @@ function User() {
 
   return (
     <>
-      <div className="grid grid-cols-10 mt-2 place-items-center">
+      <div className="grid grid-cols-10 pt-2 pb-2 place-items-center bg-slate-900">
         <div className="col-span-3">
           <Image
             src={currentUser?.photo}
