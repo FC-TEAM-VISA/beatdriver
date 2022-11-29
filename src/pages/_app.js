@@ -7,7 +7,7 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }) {
   return (
     <>
       <Head>
-        <title>Bomb Beatz</title>
+        <title>BEATDRIVER</title>
       </Head>
       <Navbar />
       <Component {...pageProps} />

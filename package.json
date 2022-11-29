@@ -33,7 +33,8 @@
     "react-tooltip": "^4.5.1",
     "reactjs-popup": "^2.0.5",
     "reactronica": "^0.8.1-canary.0",
-    "tone": "^14.7.77"
+    "tone": "^14.7.77",
+    "tunajs": "^1.0.15"
   },
   "devDependencies": {
     "autoprefixer": "^10.4.13",

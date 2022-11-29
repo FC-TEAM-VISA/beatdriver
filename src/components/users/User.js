@@ -204,7 +204,6 @@ function User() {
                       className="aspect-square" // just an example
                     />
                   </Link>
-                  {/* <Image src={screen} alt="screen" width={200} height={200} /> */}
                 </div>
                 <h5 className="mt-1">
                   {name} by {username}

@@ -1,8 +1,6 @@
-import * as Tone from "tone";
 import * as htmlToImage from "html-to-image";
 import React, { useState, createRef, useEffect } from "react";
 import Looper from "../../../components/board/Looper";
-import AudioPlayer from "../../../components/board/AudioPlayer";
 import TopToolbar from "../../../components/toolbar/TopToolbar";
 import EffectsMenu from "../../../components/effectsmenu/EffectsMenu";
 import Popup from "reactjs-popup";
@@ -20,7 +18,7 @@ import {
   query,
   getDoc,
 } from "firebase/firestore";
-import { database, auth, db } from "../../../../utils/firebase";
+import { database, auth } from "../../../../utils/firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useCollectionData } from "react-firebase-hooks/firestore";
 import { useRouter } from "next/router";
@@ -39,14 +37,6 @@ export const getServerSideProps = async (context) => {
 /* THE BOARD*/
 const steps = 8;
 const buttonState = { triggered: false, activated: false, audio: "" };
-//# for each cell on grid
-const sounds = [
-  ["1", "2", "3", "4", "5", "6", "7", "8"],
-  ["9", "10", "11", "12", "13", "14", "15", "16"],
-  ["17", "18", "19", "20", "21", "22", "23", "24"],
-  ["25", "26", "27", "28", "29", "30", "31", "32"],
-  ["33", "34", "35", "36", "37", "38", "39", "40"],
-];
 
 //sets up how big the grid will be
 const initialGrid = [
@@ -73,13 +63,13 @@ const Board = ({ data }) => {
   );
   const [selected, setSelected] = useState(data.selected);
   const [beat, setBeat] = useState(data.beat);
-  const [objectSounds, setObjectSounds] = useState(
-    data.objectSounds || {
-      "https://firebasestorage.googleapis.com/v0/b/music-collaboration-app.appspot.com/o/built-in-instruments%2Fdrums%2Fclap%2Fclap-808.wav?alt=media&token=1e2bd7d8-dad2-49b6-a6db-9959a06f1520":
-        "https://firebasestorage.googleapis.com/v0/b/music-collaboration-app.appspot.com/o/built-in-instruments%2Fdrums%2Fclap%2Fclap-808.wav?alt=media&token=1e2bd7d8-dad2-49b6-a6db-9959a06f1520",
-    }
-  );
+  const [soundArray, setSoundArray] = useState(data.soundArray);
+  const [chorus, setChorus] = useState(data.chorus);
+  const [phaser, setPhaser] = useState(data.phaser);
+  const [tremolo, setTremolo] = useState(data.tremolo);
+  const [moog, setMoog] = useState(data.moog);
   //project info
+
   const orderedKeys = Object.keys(data.grid).sort();
   const dataGrid = orderedKeys.map((row) => data.grid[row]);
   const [grid, setGrid] = useState(dataGrid || initialGrid); //project board
@@ -88,7 +78,6 @@ const Board = ({ data }) => {
   const [name, setName] = useState(data.name); //project name
   const [isPublic, setIsPublic] = useState(true); //collab or solo
   const [bpm, setBpm] = useState(data.bpm || 120); //tempo
-  const [mute, setMute] = useState(false); //mute button
   const [masterVolume, setMasterVolume] = useState(data.masterVolume); //master volume
   //popup
   const [open, setOpen] = useState(false);
@@ -108,14 +97,14 @@ const Board = ({ data }) => {
       (project) => uniqueID === project.projectId
     );
   }
-
   const handleSave = async () => {
     const image = await takeScreenShot(ref.current);
-    if (currentProject && currentProject.collaboratorIds) {
+    if (currentProject) {
       await updateDoc(doc(database, `projects/${uniqueID}`), {
         updatedAt: serverTimestamp(),
         name: name,
         beat,
+        soundArray,
         selected,
         selectedInstrument,
         grid: {
@@ -129,6 +118,10 @@ const Board = ({ data }) => {
         masterVolume: +masterVolume,
         isPublic,
         screen: image,
+        chorus: chorus,
+        phaser: phaser,
+        tremolo: tremolo,
+        moog: moog,
       });
       setUniqueID(uniqueID);
     } else {
@@ -138,8 +131,8 @@ const Board = ({ data }) => {
         ownerId: user.uid,
         username: currentUser.name,
         name: `${name}.copy` || "Untitled",
-        objectSounds: objectSounds,
-        beat: beat || null,
+        beat: beat || 0,
+        soundArray: soundArray,
         selected: selected || "SELECTED",
         selectedInstrument: selectedInstrument || "selected",
         grid: {
@@ -153,6 +146,10 @@ const Board = ({ data }) => {
         masterVolume: +masterVolume,
         isPublic: true,
         screen: image,
+        chorus: chorus,
+        phaser: phaser,
+        tremolo: tremolo,
+        moog: moog,
       });
 
       await setDoc(
@@ -172,56 +169,34 @@ const Board = ({ data }) => {
   };
 
   const takeScreenShot = async (node) => {
-    const dataURI = htmlToImage.toJpeg(node);
+    const dataURI = await htmlToImage.toJpeg(node);
     return dataURI;
   };
 
-  // KEEP THIS FOR TESTING COLLABORATION
-  //   useEffect(() => {
-  //     if (uniqueID) {
-  //       const realTime = async () => {
-  //         const image = await takeScreenShot(ref?.current);
-  //         await updateDoc(doc(database, `projects/${uniqueID}`), {
-  //           updatedAt: serverTimestamp(),
-  //           name: name,
-  //           beat,
-  //           selected,
-  //           selectedInstrument,
-  //           grid: {
-  //             r1: grid[0],
-  //             r2: grid[1],
-  //             r3: grid[2],
-  //             r4: grid[3],
-  //             r5: grid[4],
-  //           },
-  //           bpm: +bpm,
-  //           masterVolume: +masterVolume,
-  //           isPublic,
-  //           screen: image,
-  //         });
-  //       };
-  //       realTime();
-  //     }
-  //   }, [grid, bpm, masterVolume, beat, selected, selectedInstrument, name]);
-
+  const [val, setVal] = useState("");
   const handleBeatChange = (value) => {
-    if (!objectSounds[value]) {
-      let copyObject = { ...objectSounds };
-      copyObject[value] = value;
-      setObjectSounds(copyObject);
+    const findSample = soundArray.find((sample) => sample === value);
+    if (!findSample) {
+      let arrayCopy = [...soundArray];
+      arrayCopy.push(value);
+      setSoundArray(arrayCopy);
     }
-    setBeat(value);
+    setVal(value);
   };
+
+  useEffect(() => {
+    const idx = soundArray.indexOf(val);
+    setBeat(idx);
+  }, [soundArray, val, beat]);
 
   const togglePlaying = () => {
     setPlaying((prev) => !prev);
-    Tone.start();
   };
 
   const handleCopyLink = () => {
     const host = "localhost:3000";
-    navigator.clipboard.writeText(`${host}/board/${data.id}/invite`);
-    // window.alert(`Copied link "${host}/board/${data.id}/invite"!`);
+    const currentUrl = window.location.href;
+    navigator.clipboard.writeText(`${currentUrl}/invite`);
   };
 
   return (
@@ -242,82 +217,72 @@ const Board = ({ data }) => {
               <p className="mb-10">click anywhere to close</p>
             </div>
           </Popup>
-          <AudioPlayer
-            objectSounds={objectSounds}
-            bpm={bpm}
-            mute={mute}
-            masterVolume={masterVolume}
-          >
-            {({ player }) => {
-              if (!player) {
-                return (
-                  <p className="flex items-center justify-center animate-bounce">
-                    LOADING....
-                  </p>
-                );
-              }
-              return (
-                <>
-                  <div className="col-span-8 bg-black">
-                    {/* TOOLBAR */}
-                    <TopToolbar
-                      beat={beat}
-                      setBeat={setBeat}
-                      projects={projects}
-                      grid={grid}
-                      setGrid={setGrid}
-                      setUniqueID={setUniqueID}
-                      uniqueID={uniqueID}
-                      handleBeatChange={handleBeatChange}
-                      currentUser={currentUser}
-                      setSelectedInstrument={setSelectedInstrument}
-                      playing={playing}
-                      player={player}
-                      setPlaying={setPlaying}
-                      bpm={bpm}
-                      setBpm={setBpm}
-                      selected={selected}
-                      setSelected={setSelected}
-                      user={user}
-                      handleSave={handleSave}
-                      name={name}
-                      setName={setName}
-                      togglePlaying={togglePlaying}
-                      masterVolume={masterVolume}
-                      setMasterVolume={setMasterVolume}
-                    />
-                  </div>
+          <div className="col-span-8 bg-black">
+            {/* TOOLBAR */}
+            <TopToolbar
+              beat={beat}
+              setBeat={setBeat}
+              projects={projects}
+              grid={grid}
+              setGrid={setGrid}
+              setUniqueID={setUniqueID}
+              uniqueID={uniqueID}
+              handleBeatChange={handleBeatChange}
+              currentUser={currentUser}
+              setSelectedInstrument={setSelectedInstrument}
+              playing={playing}
+              setPlaying={setPlaying}
+              bpm={bpm}
+              setBpm={setBpm}
+              selected={selected}
+              setSelected={setSelected}
+              user={user}
+              handleSave={handleSave}
+              name={name}
+              setName={setName}
+              togglePlaying={togglePlaying}
+              masterVolume={masterVolume}
+              setMasterVolume={setMasterVolume}
+            />
+          </div>
 
-                  <div>
-                    <button onClick={handleCopyLink}>Share</button>
-                  </div>
+          <div>
+            <button onClick={handleCopyLink}>Share</button>
+          </div>
 
-                  <div ref={ref}>
-                    <Looper
-                      player={player}
-                      bpm={bpm}
-                      playing={playing}
-                      beat={beat}
-                      objectSounds={objectSounds}
-                      steps={steps}
-                      sounds={sounds}
-                      grid={grid}
-                      setGrid={setGrid}
-                      uniqueID={uniqueID}
-                      handleSave={handleSave}
-                      selectedInstrument={selectedInstrument}
-                      selected={selected}
-                      masterVolume={masterVolume}
-                    />
-                  </div>
-                </>
-              );
-            }}
-          </AudioPlayer>
+          <div ref={ref}>
+            <Looper
+              bpm={bpm}
+              playing={playing}
+              beat={beat}
+              steps={steps}
+              grid={grid}
+              setGrid={setGrid}
+              uniqueID={uniqueID}
+              handleSave={handleSave}
+              selectedInstrument={selectedInstrument}
+              selected={selected}
+              masterVolume={masterVolume}
+              soundArray={soundArray}
+              chorus={chorus}
+              phaser={phaser}
+              tremolo={tremolo}
+              moog={moog}
+            />
+          </div>
         </div>
 
         <div className="col-span-4 ml-4 bg-prussian_blue">
-          <EffectsMenu />
+          <EffectsMenu
+            chorus={chorus}
+            phaser={phaser}
+            tremolo={tremolo}
+            setChorus={setChorus}
+            setPhaser={setPhaser}
+            setTremolo={setTremolo}
+            moog={moog}
+            setMoog={setMoog}
+          />
         </div>
       </div>
     </div>

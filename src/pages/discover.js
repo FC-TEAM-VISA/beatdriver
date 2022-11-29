@@ -10,17 +10,6 @@ const isPublicQuery = query(
   where("isPublic", "==", true)
 );
 
-const getProjects = async () => {
-  const querySnapshot = await getDocs(isPublicQuery);
-
-  querySnapshot.forEach((doc) => {
-    console.log(doc.id, " => ", doc.data()); // doc.data() is never undefined for query doc snapshots
-  });
-
-  const docs = querySnapshot.docs.map((doc) => doc.data());
-  return docs;
-};
-
 const Discover = () => {
   const [projects] = useCollectionData(isPublicQuery);
 
@@ -39,7 +28,6 @@ const Discover = () => {
                     objectFit="fill" // change to suit your needs
                     className="aspect-square" // just an example
                   />
-                  {/* <Image src={screen} alt="screen" width={200} height={200} /> */}
                 </div>
                 <h5 className="mt-1">
                   {name} by {username}
