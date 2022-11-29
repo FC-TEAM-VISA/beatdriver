@@ -11,8 +11,9 @@ const Grid = ({ grid, toggleActivation, selectedInstrument }) => {
               return (
                 <Button
                   key={row + col}
-                  column={col + 1}
-                  row={row + 1}
+                  column={col}
+                  row={row}
+                  instrument={grid[row][col]["instrument"]}
                   activated={grid[row][col]["activated"]}
                   triggered={grid[row][col]["triggered"]}
                   toggleActivation={() => toggleActivation(row, col)}

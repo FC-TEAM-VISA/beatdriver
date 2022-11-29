@@ -1,24 +1,29 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 const Button = ({
   activated,
   triggered,
   toggleActivation,
   selectedInstrument,
+  instrument,
 }) => {
   const [triggeredInstrumentColor, setTriggeredInstrumentColor] = useState("");
   const [instrumentColor, setInstrumentColor] = useState("");
+
+  useEffect(() => {
+    setColors();
+  }, [instrument]);
   const setColors = () => {
-    if (selectedInstrument === "DRUMS") {
+    if (instrument === "DRUMS") {
       setTriggeredInstrumentColor("bg-drums_dark");
       setInstrumentColor("bg-drums");
-    } else if (selectedInstrument === "GUITAR") {
+    } else if (instrument === "GUITAR") {
       setTriggeredInstrumentColor("bg-guitar_dark");
       setInstrumentColor("bg-guitar");
-    } else if (selectedInstrument === "VOCALS") {
+    } else if (instrument === "VOCALS") {
       setTriggeredInstrumentColor("bg-vocals_dark");
       setInstrumentColor("bg-vocals");
-    } else if (selectedInstrument === "BASS") {
+    } else if (instrument === "BASS") {
       setTriggeredInstrumentColor("bg-bass_dark");
       setInstrumentColor("bg-bass");
     } else {
