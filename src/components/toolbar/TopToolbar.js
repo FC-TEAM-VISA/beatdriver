@@ -171,7 +171,7 @@ function TopToolbar({
       <div>
         <button
           onClick={handleClear}
-          className="mt-1 mx-2 border-2 p-2 bg-red-900 hover:bg-red-600 border-white hover:scale-110"
+          className="mt-1 mx-2 border-2 p-2 bg-red-900 hover:bg-red-600 border-white hover:scale-110 rounded-md"
         >
           CLEAR
         </button>

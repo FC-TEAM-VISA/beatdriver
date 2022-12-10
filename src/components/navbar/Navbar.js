@@ -75,6 +75,9 @@ function Navbar() {
           <Link href="/board">
             <button className="link">New Project</button>
           </Link>
+        </div>
+        <div className="px-64 flex flex-grow md:px-48 sm:px-0" />
+        <div className="text-ghost_white flex flex-grow items-center space-x-6 mx-6 whitespace-nowrap pl-10 text-2xl">
           {!userGoogleInfo && (
             <button onClick={login} className="link">
               <p>Sign In</p>
@@ -93,17 +96,14 @@ function Navbar() {
                   className="link rounded-full"
                 />
 
-                <p
-                  className="text-xl ml-2 pl-1 mt-1"
-                  style={{ marginTop: "5.6%" }}
-                >
+                <p className="text-2xl ml-2 pl-1 mt-0.5">
                   {`Hello, ${
                     currentUser ? currentUser.name : userGoogleInfo.displayName
                   }!`}
                 </p>
               </Link>
 
-              <div>
+              <div className="mt-0.5">
                 <button className="link text-md" onClick={handleSignOut}>
                   Sign Out
                 </button>

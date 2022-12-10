@@ -188,7 +188,7 @@ const Board = () => {
   return (
     <div>
       <div className="grid grid-cols-12 text-xl">
-        <div className="col-span-8 bg-slate-800">
+        <div className="col-span-8 bg-slate-900">
           <div className="col-span-8 bg-black">
             {/* TOOLBAR */}
             <TopToolbar
@@ -240,7 +240,7 @@ const Board = () => {
           </div>
         </div>
 
-        <div className="col-span-4 ml-4 bg-prussian_blue">
+        <div className="col-span-4 ml-4 bg-slate-900">
           <EffectsMenu
             chorus={chorus}
             phaser={phaser}
