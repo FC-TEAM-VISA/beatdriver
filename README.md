@@ -2,7 +2,7 @@
 
 ![beatdriver](./public/beatdriver.gif)
 
-Beatdriver is a beginner-friendly music creation tool you can use right in the browser. Create beats with built-in sounds and effects, upload your own samples, and save and record your projects to share with anyone!
+Description: Beatdriver is a beginner-friendly music creation tool you can use right in the browser. Users can create beats with built-in sounds and effects, upload their samples, and save and record their projects to share with anyone! Most music software can be expensive and require a high learning curve to use. With ours, you can make a beat loop in seconds for free! Our application is browser based, so there’s no need to download anything.
 
 ## Features
 
