@@ -1,6 +1,6 @@
 # Beatdriver
 
-<img src="./public/beatdriver.gif" width="1278" height="638" alt="beatdriver">
+![beatdriver](./public/beatdriver.gif)
 
 Beatdriver is a beginner-friendly music creation tool you can use right in the browser. Create beats with built-in sounds and effects, upload your own samples, and save and record your projects to share with anyone!
 
